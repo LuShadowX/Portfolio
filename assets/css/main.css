@@ -6,17 +6,14 @@
     --color-accent: #2979ff;        /* Blue Hover Effect */
     --bg-color: #FBF8FF;            /* Ghost Lavender */
     --text-color: #333333;          /* Dark Text */
-    
-    /* UPDATED: Darker gray so the track is visible */
-    --track-color: #cfcfcf;         
-    
+    --track-color: #cfcfcf;         /* Visible Gray Track */
     --font-main: 'Oswald', sans-serif;
 }
 
 [data-theme="dark"] {
     --bg-color: #0a0a0a;
     --text-color: #f0f0f0;
-    --track-color: #444444; /* Slightly lighter in dark mode for visibility */
+    --track-color: #444444; 
 }
 
 body {
@@ -47,14 +44,14 @@ body {
     background: transparent;
 }
 
-/* GROUP 1: LEFT SIDE (Menu + Logo Only) */
+/* GROUP 1: LEFT SIDE (Menu + Logo) */
 .nav-left-group {
     display: flex;
     align-items: center;
     gap: 30px; 
 }
 
-/* GROUP 2: RIGHT SIDE (Links + Theme Toggle) */
+/* GROUP 2: RIGHT SIDE (Links + Theme) */
 .nav-right-group {
     display: flex;
     align-items: center;
@@ -223,15 +220,7 @@ body {
 .p-left svg { left: 0; }
 .p-right svg { right: 0; }
 
-/* THE FIX: Darker stroke and higher opacity */
-.st-base { 
-    fill: none; 
-    stroke: var(--track-color); 
-    stroke-width: 1px; 
-    opacity: 0.5; /* Increased from 0.25 to 0.5 */
-    transition: stroke 0.3s; 
-}
-
+.st-base { fill: none; stroke: var(--track-color); stroke-width: 1px; opacity: 0.5; transition: stroke 0.3s; }
 .st-anim { fill: none; stroke: var(--color-primary); stroke-width: 0.6px; stroke-dasharray: 600 1400; stroke-dashoffset: 2000; animation: lineFlow 4s linear infinite; }
 @keyframes lineFlow { to { stroke-dashoffset: 0; } }
 
@@ -239,5 +228,107 @@ body {
 .scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 998; pointer-events: none; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.01) 50%, rgba(0,0,0,0.01)); background-size: 100% 4px; }
 #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; pointer-events: auto; background: transparent; }
 
-.hero-content { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none; transition: opacity 0.3s ease; }
-h1 { font-family: var(--font-main); font-size: 6rem; color: var(--text-color); margin: 0; letter-spacing: 5px; font-weight: 900; text-transform: uppercase; transition: color 0.3s; }
+/* 5. NEW HERO SECTION STYLES (Mayank Style) */
+.hero-content {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* LEFT ALIGNMENT */
+    align-items: flex-start; 
+    text-align: left;
+    padding-left: 12%; /* Space from left edge */
+    width: 100%;
+    box-sizing: border-box;
+    pointer-events: auto; /* Enable clicks for buttons */
+    transition: opacity 0.3s ease;
+}
+
+.hero-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.name-highlight {
+    background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* TYPEWRITER CONTAINER */
+.typewriter-container {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.cursor {
+    display: inline-block;
+    width: 3px;
+    height: 40px;
+    background-color: var(--text-color);
+    animation: blink 1s infinite;
+    margin-left: 8px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+/* BUTTONS */
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.6);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn-outline:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateY(-3px);
+}

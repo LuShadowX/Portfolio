@@ -1,6 +1,8 @@
 /* FILE: assets/js/common.js */
 
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. HAMBURGER MENU LOGIC
     const menuBtn = document.querySelector('.js-menu');
     const header = document.querySelector('.js-header');
     const body = document.body;
@@ -24,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 2. THEME TOGGLE LOGIC
     const toggleBtn = document.getElementById('theme-toggle');
     const sunIcon = document.querySelector('.theme-icon.sun');
     const moonIcon = document.querySelector('.theme-icon.moon');
@@ -48,4 +51,48 @@ document.addEventListener('DOMContentLoaded', () => {
             moonIcon.style.display = 'block';
         }
     });
+
+    // 3. TYPEWRITER EFFECT
+    const textElement = document.getElementById('typing-text');
+    const phrases = [
+        "I build machine learning models.",
+        "I develop python applications.",
+        "I design data visualizations.",
+        "I solve complex problems."
+    ];
+    
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typeSpeed = 100;
+
+    function type() {
+        if (!textElement) return;
+
+        const currentPhrase = phrases[phraseIndex];
+        
+        if (isDeleting) {
+            textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+            typeSpeed = 50; 
+        } else {
+            textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+            typeSpeed = 100; 
+        }
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+            isDeleting = true;
+            typeSpeed = 2000; // Wait before deleting
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            typeSpeed = 500; // Wait before new word
+        }
+
+        setTimeout(type, typeSpeed);
+    }
+
+    // Start Typing
+    type();
 });
