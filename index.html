@@ -1,30 +1,99 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | TO BE HERO STYLE</title>
+    <title>Portfolio | LuShadowX</title>
     <link rel="stylesheet" href="assets/css/main.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <header class="header js-header">
+        
+        <div class="top-bar">
+            
+            <div class="nav-left-group">
+                <div class="js-menu">
+                    <div class="menu-lines-wrapper">
+                        <span class="menu-line"></span>
+                        <span class="menu-line"></span>
+                        <span class="menu-line"></span>
+                    </div>
+                    <span class="menu-text text-open">MENU</span>
+                    <span class="menu-text text-close">CLOSE</span>
+                </div>
+
+                <div class="site-logo">PORTFOLIO</div>
+            </div>
+
+            <div class="nav-right-group">
+                
+                <ul class="top-links">
+                    <li><a href="#" class="t-link">Home</a></li>
+                    <li><a href="#" class="t-link">About</a></li>
+                    <li><a href="#" class="t-link">Certificates</a></li>
+                    <li><a href="#" class="t-link">Skills</a></li>
+                    <li><a href="#" class="t-link">Project</a></li>
+                    <li><a href="#" class="t-link">Blog</a></li>
+                    <li><a href="#" class="t-link">Contact</a></li>
+                </ul>
+
+                <div class="theme-toggle" id="theme-toggle">
+                    <svg class="theme-icon sun" viewBox="0 0 24 24" style="display:block;">
+                        <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                    </svg>
+                    <svg class="theme-icon moon" viewBox="0 0 24 24" style="display:none;">
+                        <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <nav class="header__nav">
+            <video class="nav-bg-video" autoplay loop muted playsinline webkit-playsinline>
+                <source src="assets/video/menu_bg.mp4" type="video/mp4">
+            </video>
+            <div class="nav-content">
+                <div class="nav-left">
+                    <a href="#" class="nav-link-overlay">NEWS</a>
+                    <a href="#" class="nav-link-overlay">INTRODUCTION</a>
+                    <a href="#" class="nav-link-overlay">PROJECTS</a>
+                    <a href="#" class="nav-link-overlay">PEOPLE</a>
+                    <a href="#" class="nav-link-overlay">MACHINE LEARNING</a>
+                    <a href="#" class="nav-link-overlay">CODING CONTEST</a>
+                    <a href="#" class="nav-link-overlay">MUSIC</a>
+                    <a href="#" class="nav-link-overlay">SPECIAL</a>
+                </div>
+                <div class="nav-right">
+                    <div class="brand-vertical">LuShadow<span class="brand-x">X</span></div>
+                </div>
+                <div class="nav-footer">
+                    <span class="official-text">OFFICIAL</span>
+                    <a href="https://github.com/LuShadowX" target="_blank" title="GitHub">
+                        <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/lukshya-supyal2006/" target="_blank" title="LinkedIn">
+                        <svg class="social-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://leetcode.com/u/Lu_ShadowX/" target="_blank" title="LeetCode">
+                        <svg class="social-icon" viewBox="0 0 24 24"><path d="M24 10.935v2.131c0 .8-.667 1.466-1.467 1.466h-1.28c-.027 3.547-2.507 6.426-5.84 7.093v-2.186c1.973-.507 3.413-2.293 3.413-4.427 0-2.533-2.053-4.586-4.587-4.586s-4.587 2.053-4.587 4.586c0 2.133 1.44 3.92 3.413 4.427v2.186c-3.333-.667-5.813-3.547-5.84-7.093h-1.28c-.8 0-1.467-.666-1.467-1.466v-2.131c0-.8.667-1.466 1.467-1.466h9.013c.8 0 1.467.666 1.467 1.466z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <div class="texture-overlay"></div>
     <div class="scanlines"></div>
 
     <div class="p-stc" style="transition: transform 0.1s ease-out;"> 
         <div class="p-bg">
-            <div class="p-left">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 545.41 640.59">
-                    <path class="st-base" d="M46.46,640.29l393.18-528.54h-46.56l-77.1,103.63l-21.73-103.63H100.68l65.5,305.02 L0.4,639.63 M545.01,0.3L68.92,640.29 M115.48,640.29l76.6-102.97l22.11,102.97"/>
-                    <path class="st-anim" d="M46.46,640.29l393.18-528.54h-46.56l-77.1,103.63l-21.73-103.63H100.68l65.5,305.02 L0.4,639.63 M545.01,0.3L68.92,640.29 M115.48,640.29l76.6-102.97l22.11,102.97"/>
-                </svg>
-            </div>
-            <div class="p-right">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 546.1 642.3">
-                    <path class="st-base" d="M500,1.8L106.8,530.4h46.6l77.1-103.6l21.7,103.6h193.6l-65.5-305L546.1,2.5 M1.5,641.8 l476.1-640 M431,1.8l-76.6,103l-22.1-103"/>
-                    <path class="st-anim" d="M500,1.8L106.8,530.4h46.6l77.1-103.6l21.7,103.6h193.6l-65.5-305L546.1,2.5 M1.5,641.8 l476.1-640 M431,1.8l-76.6,103l-22.1-103"/>
-                </svg>
-            </div>
+            <div class="p-left"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 545.41 640.59"><path class="st-base" d="M46.46,640.29l393.18-528.54h-46.56l-77.1,103.63l-21.73-103.63H100.68l65.5,305.02 L0.4,639.63 M545.01,0.3L68.92,640.29 M115.48,640.29l76.6-102.97l22.11,102.97"/><path class="st-anim" d="M46.46,640.29l393.18-528.54h-46.56l-77.1,103.63l-21.73-103.63H100.68l65.5,305.02 L0.4,639.63 M545.01,0.3L68.92,640.29 M115.48,640.29l76.6-102.97l22.11,102.97"/></svg></div>
+            <div class="p-right"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 546.1 642.3"><path class="st-base" d="M500,1.8L106.8,530.4h46.6l77.1-103.6l21.7,103.6h193.6l-65.5-305L546.1,2.5 M1.5,641.8 l476.1-640 M431,1.8l-76.6,103l-22.1-103"/><path class="st-anim" d="M500,1.8L106.8,530.4h46.6l77.1-103.6l21.7,103.6h193.6l-65.5-305L546.1,2.5 M1.5,641.8 l476.1-640 M431,1.8l-76.6,103l-22.1-103"/></svg></div>
         </div>
     </div>
 
@@ -36,6 +105,7 @@
     </main>
 
     <script src="assets/js/particles.js"></script>
+    <script src="assets/js/common.js"></script>
 
 </body>
 </html>

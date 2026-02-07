@@ -2,146 +2,231 @@
 
 /* 1. RESET & VARIABLES */
 :root {
-    --color-red: #ff0000;      
-    --color-track: #e0dce6;    /* UPDATED: Track color slightly tinted purple to match */
-    --bg-color: #FBF8FF;       /* UPDATED: "Ghost Lavender" (Not pure white) */
+    --color-primary: #ff0000;       /* Red X */
+    --color-accent: #2979ff;        /* Blue Hover Effect */
+    --bg-color: #FBF8FF;            /* Ghost Lavender */
+    --text-color: #333333;          /* Dark Text */
+    --track-color: #e0dce6;
+    --font-main: 'Oswald', sans-serif;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0a0a0a;
+    --text-color: #f0f0f0;
+    --track-color: #333333;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color); /* Uses the new tinted background */
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: 'Helvetica Neue', Arial, sans-serif;
     overflow-x: hidden;
     width: 100%;
     min-height: 100vh;
-    
-    /* Brightness boost */
-    filter: contrast(102%) brightness(105%);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 2. BACKGROUND CONTAINER */
-.p-stc {
+/* 2. THE TOP BAR CONTAINER */
+.top-bar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
-    z-index: -1;
-    pointer-events: none;
-    filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.2));
-}
-
-/* 3. SVG WRAPPER */
-.p-bg {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    height: 100px;
     display: flex;
-    justify-content: space-between;
-}
-
-/* 4. LEFT & RIGHT PANELS */
-.p-left, .p-right {
-    position: relative;
-    width: 50%;
-    height: 100%;
-}
-
-.p-left svg, .p-right svg {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: auto;
-}
-
-.p-left svg { left: 0; }
-.p-right svg { right: 0; }
-
-/* 5. THE "TRACK" (Static Line) */
-.st-base {
-    fill: none;
-    stroke: var(--color-track);
-    stroke-width: 1px;
-    opacity: 0.25; /* Slightly more visible on the new tinted background */
-}
-
-/* 6. THE "RUNNER" (Moving Red Line) */
-.st-anim {
-    fill: none;
-    stroke: var(--color-red);
-    stroke-width: 0.6px; 
-    stroke-dasharray: 600 1400; 
-    stroke-dashoffset: 2000;
-    animation: lineFlow 4s linear infinite;
-    mix-blend-mode: normal; 
-}
-
-@keyframes lineFlow {
-    to { stroke-dashoffset: 0; }
-}
-
-/* 7. CINEMATIC NOISE */
-.texture-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    pointer-events: none;
-    opacity: 0.02; 
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* 8. CRT SCANLINES */
-.scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 998;
-    pointer-events: none;
-    background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0,0,0,0.01) 50%, 
-        rgba(0,0,0,0.01)
-    );
-    background-size: 100% 4px;
-}
-
-/* 9. PARTICLE LAYER */
-#particle-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -5;
-    pointer-events: auto; 
+    align-items: center;
+    justify-content: space-between; /* Pushes Left Group and Right Group apart */
+    padding: 0 40px;
+    box-sizing: border-box;
+    z-index: 2000;
     background: transparent;
 }
 
-/* 10. HERO CONTENT */
-.hero-content {
+/* GROUP 1: LEFT SIDE (Menu + Logo Only) */
+.nav-left-group {
+    display: flex;
+    align-items: center;
+    gap: 30px; 
+}
+
+/* GROUP 2: RIGHT SIDE (Links + Theme Toggle) */
+.nav-right-group {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Space between Links and Theme Toggle */
+}
+
+/* A. MENU BUTTON */
+.js-menu {
     position: relative;
-    z-index: 10;
-    height: 100vh;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 2005; 
 }
 
-h1 {
-    font-family: sans-serif;
-    font-size: 6rem;
-    color: #000;
-    margin: 0;
-    letter-spacing: 5px;
-    font-weight: 900;
+.menu-lines-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 24px; }
+.menu-line { display: block; width: 40px; height: 3px; background-color: var(--text-color); margin: 3px 0; transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1); }
+.menu-text { font-family: var(--font-main); font-size: 10px; font-weight: 700; letter-spacing: 1px; position: absolute; bottom: 5px; transition: opacity 0.3s ease, transform 0.3s ease; color: var(--text-color); }
+
+.text-open { opacity: 1; transform: translateY(0); }
+.text-close { opacity: 0; transform: translateY(10px); }
+
+/* Menu Active State */
+.js-menu.is-active .menu-line { background-color: #fff; } 
+.js-menu.is-active .menu-text { color: #fff; }
+.js-menu.is-active .text-open { opacity: 0; transform: translateY(-10px); }
+.js-menu.is-active .text-close { opacity: 1; transform: translateY(0); }
+.js-menu.is-active .menu-line:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.js-menu.is-active .menu-line:nth-child(2) { opacity: 0; }
+.js-menu.is-active .menu-line:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+
+/* B. PORTFOLIO LOGO */
+.site-logo {
+    font-family: var(--font-main);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color);
     text-transform: uppercase;
+    letter-spacing: 2px;
+    user-select: none;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    cursor: default;
 }
+.site-logo:hover { color: var(--color-primary); cursor: pointer; }
+
+
+/* C. NAVIGATION LINKS (Now inside Right Group) */
+.top-links {
+    display: flex;
+    align-items: center;
+    gap: 30px; 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    transition: opacity 0.3s ease;
+}
+
+.t-link {
+    font-family: sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-decoration: none;
+    text-transform: capitalize;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.3s;
+}
+
+.t-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-accent);
+    transition: width 0.3s ease-out;
+}
+.t-link:hover { color: var(--color-accent); }
+.t-link:hover::after { width: 100%; }
+
+
+/* D. THEME TOGGLE */
+.theme-toggle { 
+    cursor: pointer; 
+    width: 24px; 
+    height: 24px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+
+.theme-icon { 
+    width: 24px; 
+    height: 24px; 
+    fill: var(--text-color); 
+    transition: fill 0.3s, transform 0.5s ease; 
+}
+.theme-toggle:hover .theme-icon { transform: rotate(180deg); fill: var(--color-accent); }
+
+
+/* --- HIDE ELEMENTS WHEN MENU IS OPEN --- */
+.header.is-active .site-logo,
+.header.is-active .nav-right-group, /* Hides Links + Theme */
+.header.is-active ~ .hero-content {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+
+/* 3. FULL SCREEN OVERLAY */
+.header__nav {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    z-index: 1900; background-color: #000;
+    opacity: 0; visibility: hidden;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden;
+}
+.header.is-active .header__nav { opacity: 1; visibility: visible; }
+.nav-bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.4) contrast(1.2); }
+.nav-content { width: 100%; height: 100%; display: flex; justify-content: space-between; padding: 120px 80px 60px; box-sizing: border-box; }
+.nav-left { display: flex; flex-direction: column; justify-content: center; width: 50%; }
+
+.nav-link-overlay {
+    font-family: var(--font-main); font-size: 3.5rem; line-height: 1.1; font-weight: 700; color: #ffffff;
+    text-decoration: none; text-transform: uppercase; letter-spacing: 2px; position: relative; display: inline-block;
+    opacity: 0; transform: translateY(20px); transition: color 0.3s ease, transform 0.5s ease, opacity 0.5s ease;
+}
+.nav-link-overlay:hover { color: var(--color-primary); text-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
+
+.nav-right { width: 40%; display: flex; align-items: center; justify-content: flex-end; position: relative; }
+.brand-vertical { writing-mode: vertical-rl; font-family: var(--font-main); font-size: 16vh; font-weight: 900; color: #ffffff; opacity: 1; letter-spacing: 2vh; cursor: default; }
+.brand-x { display: inline-block; color: var(--color-primary); font-size: 1.2em; vertical-align: middle; text-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
+
+/* Footer */
+.nav-footer { position: absolute; bottom: 40px; left: 80px; display: flex; align-items: center; gap: 20px; }
+.official-text { font-family: var(--font-main); color: #fff; font-size: 0.9rem; letter-spacing: 2px; margin-right: 20px; opacity: 0.7; }
+.social-icon { width: 24px; height: 24px; fill: #fff; transition: all 0.3s ease; opacity: 0.7; }
+.social-icon:hover { opacity: 1; fill: var(--color-primary); transform: scale(1.1); }
+
+/* Animation Delays */
+.header.is-active .nav-link-overlay { opacity: 1; transform: translateY(0); }
+.header.is-active .nav-link-overlay:nth-child(1) { transition-delay: 0.1s; }
+.header.is-active .nav-link-overlay:nth-child(2) { transition-delay: 0.15s; }
+.header.is-active .nav-link-overlay:nth-child(3) { transition-delay: 0.2s; }
+.header.is-active .nav-link-overlay:nth-child(4) { transition-delay: 0.25s; }
+.header.is-active .nav-link-overlay:nth-child(5) { transition-delay: 0.3s; }
+.header.is-active .nav-link-overlay:nth-child(6) { transition-delay: 0.35s; }
+.header.is-active .nav-link-overlay:nth-child(7) { transition-delay: 0.4s; }
+.header.is-active .nav-link-overlay:nth-child(8) { transition-delay: 0.45s; }
+
+
+/* 4. BACKGROUND & HERO */
+.p-stc { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.2)); }
+.p-bg { position: relative; width: 100%; height: 100%; display: flex; justify-content: space-between; }
+.p-left, .p-right { position: relative; width: 50%; height: 100%; }
+.p-left svg, .p-right svg { position: absolute; top: 0; height: 100%; width: auto; }
+.p-left svg { left: 0; }
+.p-right svg { right: 0; }
+
+.st-base { fill: none; stroke: var(--track-color); stroke-width: 1px; opacity: 0.25; transition: stroke 0.3s; }
+.st-anim { fill: none; stroke: var(--color-primary); stroke-width: 0.6px; stroke-dasharray: 600 1400; stroke-dashoffset: 2000; animation: lineFlow 4s linear infinite; }
+@keyframes lineFlow { to { stroke-dashoffset: 0; } }
+
+.texture-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; pointer-events: none; opacity: 0.02; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+.scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 998; pointer-events: none; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.01) 50%, rgba(0,0,0,0.01)); background-size: 100% 4px; }
+#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; pointer-events: auto; background: transparent; }
+
+.hero-content { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none; transition: opacity 0.3s ease; }
+h1 { font-family: var(--font-main); font-size: 6rem; color: var(--text-color); margin: 0; letter-spacing: 5px; font-weight: 900; text-transform: uppercase; transition: color 0.3s; }
