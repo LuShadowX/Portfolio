@@ -1,10 +1,8 @@
-/* FILE: assets/css/main.css */
 
-/* 1. RESET & VARIABLES */
 :root {
-    --color-red: #ff211e;      /* The Official TBHX Red */
-    --color-track: #dddddd;    /* Lighter, subtle gray for the track */
-    --bg-white: #ffffff;       /* Pure White Background */
+    --color-red: #ff211e;      
+    --color-track: #dddddd;    
+    --bg-white: #ffffff;       
 }
 
 body {
@@ -17,7 +15,6 @@ body {
     min-height: 100vh;
 }
 
-/* 2. BACKGROUND CONTAINER (Fixed Layer) */
 .p-stc {
     position: fixed;
     top: 0;
@@ -28,7 +25,6 @@ body {
     pointer-events: none;
 }
 
-/* 3. THE SVG WRAPPER */
 .p-bg {
     position: relative;
     width: 100%;
@@ -37,14 +33,12 @@ body {
     justify-content: space-between;
 }
 
-/* 4. LEFT & RIGHT PANELS */
 .p-left, .p-right {
     position: relative;
     width: 50%;
     height: 100%;
 }
 
-/* 5. SVG POSITIONING */
 .p-left svg, .p-right svg {
     position: absolute;
     top: 0;
@@ -55,48 +49,36 @@ body {
 .p-left svg { left: 0; }
 .p-right svg { right: 0; }
 
-/* --- THE CRITICAL UPDATES START HERE --- */
 
-/* 6. THE "TRACK" (Static Line) */
 .st-base {
     fill: none;
     stroke: var(--color-track);
     
-    /* UPDATED: Razor sharp 1px width */
     stroke-width: 1px; 
     
-    /* UPDATED: Lower opacity so it fades into background */
     opacity: 0.4; 
 }
 
-/* 7. THE "RUNNER" (Moving Red Line) */
 .st-anim {
     fill: none;
     stroke: var(--color-red);
     
-    /* UPDATED: Matches the track thickness for a "filled" look */
     stroke-width: 1px; 
     
-    /* ANIMATION SETUP */
-    /* 600px line, 1400px gap */
     stroke-dasharray: 600 1400; 
     stroke-dashoffset: 2000;
-    animation: lineFlow 4s linear infinite; /* Slightly faster for energy */
+    animation: lineFlow 4s linear infinite; 
     
-    /* BLEND MODE: Makes the red look 'burned' into the screen */
     mix-blend-mode: multiply; 
 }
 
-/* --- END CRITICAL UPDATES --- */
 
-/* 8. ANIMATION KEYFRAMES */
 @keyframes lineFlow {
     to {
         stroke-dashoffset: 0;
     }
 }
 
-/* 9. HERO CONTENT */
 .hero-content {
     position: relative;
     z-index: 10;
