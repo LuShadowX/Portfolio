@@ -6,14 +6,17 @@
     --color-accent: #2979ff;        /* Blue Hover Effect */
     --bg-color: #FBF8FF;            /* Ghost Lavender */
     --text-color: #333333;          /* Dark Text */
-    --track-color: #e0dce6;
+    
+    /* UPDATED: Darker gray so the track is visible */
+    --track-color: #cfcfcf;         
+    
     --font-main: 'Oswald', sans-serif;
 }
 
 [data-theme="dark"] {
     --bg-color: #0a0a0a;
     --text-color: #f0f0f0;
-    --track-color: #333333;
+    --track-color: #444444; /* Slightly lighter in dark mode for visibility */
 }
 
 body {
@@ -37,7 +40,7 @@ body {
     height: 100px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Pushes Left Group and Right Group apart */
+    justify-content: space-between; 
     padding: 0 40px;
     box-sizing: border-box;
     z-index: 2000;
@@ -55,7 +58,7 @@ body {
 .nav-right-group {
     display: flex;
     align-items: center;
-    gap: 40px; /* Space between Links and Theme Toggle */
+    gap: 40px; 
 }
 
 /* A. MENU BUTTON */
@@ -103,7 +106,7 @@ body {
 .site-logo:hover { color: var(--color-primary); cursor: pointer; }
 
 
-/* C. NAVIGATION LINKS (Now inside Right Group) */
+/* C. NAVIGATION LINKS */
 .top-links {
     display: flex;
     align-items: center;
@@ -162,7 +165,7 @@ body {
 
 /* --- HIDE ELEMENTS WHEN MENU IS OPEN --- */
 .header.is-active .site-logo,
-.header.is-active .nav-right-group, /* Hides Links + Theme */
+.header.is-active .nav-right-group, 
 .header.is-active ~ .hero-content {
     opacity: 0;
     pointer-events: none;
@@ -220,7 +223,15 @@ body {
 .p-left svg { left: 0; }
 .p-right svg { right: 0; }
 
-.st-base { fill: none; stroke: var(--track-color); stroke-width: 1px; opacity: 0.25; transition: stroke 0.3s; }
+/* THE FIX: Darker stroke and higher opacity */
+.st-base { 
+    fill: none; 
+    stroke: var(--track-color); 
+    stroke-width: 1px; 
+    opacity: 0.5; /* Increased from 0.25 to 0.5 */
+    transition: stroke 0.3s; 
+}
+
 .st-anim { fill: none; stroke: var(--color-primary); stroke-width: 0.6px; stroke-dasharray: 600 1400; stroke-dashoffset: 2000; animation: lineFlow 4s linear infinite; }
 @keyframes lineFlow { to { stroke-dashoffset: 0; } }
 
