@@ -83,16 +83,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isDeleting && charIndex === currentPhrase.length) {
             isDeleting = true;
-            typeSpeed = 2000; // Wait before deleting
+            typeSpeed = 2000; 
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             phraseIndex = (phraseIndex + 1) % phrases.length;
-            typeSpeed = 500; // Wait before new word
+            typeSpeed = 500; 
         }
 
         setTimeout(type, typeSpeed);
     }
-
-    // Start Typing
     type();
+
+    // 4. SMOOTH SCROLLING
+    const allLinks = document.querySelectorAll('a[href^="#"]');
+    allLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if(href.length > 1) {
+                const target = document.querySelector(href);
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // Close menu if needed
+                    menuBtn.classList.remove('is-active');
+                    header.classList.remove('is-active');
+                    body.style.overflow = '';
+                }
+            }
+        });
+    });
+
+    // 5. NAVBAR SCROLL EFFECT (Added logic)
+    const topBar = document.querySelector('.top-bar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            topBar.classList.add('scrolled');
+        } else {
+            topBar.classList.remove('scrolled');
+        }
+    });
 });
