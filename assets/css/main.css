@@ -644,3 +644,107 @@ body {
 .skill-tag i {
     font-size: 1.1rem;
 }
+/* FILE: assets/css/main.css */
+
+/* ... (Keep all existing code) ... */
+
+/* ========================================= */
+/* 10. BUG FIXES & REFINEMENTS               */
+/* ========================================= */
+
+/* FIX: Hide Solid Navbar when Menu is Open */
+.header.is-active .top-bar {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+}
+
+/* REFINEMENT: LuShadowX Hover Effect */
+/* First, reset the X to white */
+.brand-x {
+    color: #ffffff; /* Start White */
+    text-shadow: none; /* No glow initially */
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hover over the X: Turn Red + Glow + Scale */
+.brand-x:hover {
+    color: var(--color-primary); /* Red */
+    text-shadow: 0 0 30px rgba(255, 0, 0, 0.9), 0 0 60px rgba(255, 0, 0, 0.5); /* Radiate Light */
+    transform: scale(1.2) rotate(10deg); /* Slight pop interaction */
+}
+/* FILE: assets/css/main.css */
+
+/* ... (Keep all existing code) ... */
+
+/* ========================================= */
+/* 11. PROJECT CARD REFINEMENTS              */
+/* ========================================= */
+
+/* Position relative to hold the floating button */
+.card-img {
+    position: relative;
+}
+
+/* Floating GitHub Button on Image */
+.gh-link {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.9); /* Glassy White */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.4rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    opacity: 0; /* Hidden initially for clean look */
+    transform: translateY(-10px);
+}
+
+/* Show button on Card Hover */
+.card:hover .gh-link {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover over the Button itself */
+.gh-link:hover {
+    background: var(--text-color); /* Dark Background */
+    color: #fff; /* White Icon */
+    transform: scale(1.1) rotate(360deg); /* Spin Effect */
+}
+
+/* Dark Mode adjustment for button */
+[data-theme="dark"] .gh-link {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+[data-theme="dark"] .gh-link:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* Tech Stack Tags */
+.project-meta {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tech-pill {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    background: rgba(41, 121, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+}
