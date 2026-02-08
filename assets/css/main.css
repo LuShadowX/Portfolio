@@ -548,3 +548,99 @@ body {
     .next-btn { right: 0; }
     .arrow-btn:hover { transform: translateY(-50%) rotate(360deg); }
 }
+/* FILE: assets/css/main.css */
+
+/* ... (Keep all previous code) ... */
+
+/* ========================================= */
+/* 9. SKILLS SECTION (God-Tier Update)       */
+/* ========================================= */
+
+#skills {
+    /* Transparent to show the Red X/Purple Particles behind */
+    background-color: transparent; 
+    position: relative;
+    z-index: 20;
+}
+
+/* The Grid Layout */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    padding: 20px 0;
+}
+
+/* White Card Style */
+.skill-card {
+    background: #ffffff; /* Explicitly White */
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    border-top: 5px solid var(--color-accent); /* Blue accent line on top */
+    height: 100%; /* Uniform height */
+    box-sizing: border-box;
+}
+
+/* Dark Mode Adjustment */
+[data-theme="dark"] .skill-card {
+    background: var(--card-bg); /* Dark Gray in dark mode */
+    border-top: 5px solid var(--color-accent);
+}
+
+/* HOVER: Pop Up Animation */
+.skill-card:hover {
+    transform: translateY(-10px) scale(1.03); /* Pop Up */
+    box-shadow: 0 20px 40px rgba(123, 47, 247, 0.3); /* Purple Glow */
+    z-index: 10;
+}
+
+/* Typography inside Card */
+.skill-card h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-color);
+    margin-bottom: 25px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* The Tags Container */
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* Individual Skill Tag Styling */
+.skill-tag {
+    padding: 10px 20px;
+    background: var(--alt-bg); /* Slight contrast */
+    color: var(--text-color);
+    border: 1px solid var(--track-color);
+    border-radius: 50px; /* Pill shape */
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Tag Hover Effect */
+.skill-tag:hover {
+    background: var(--btn-gradient); /* Blue/Purple Gradient */
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Icons inside tags */
+.skill-tag i {
+    font-size: 1.1rem;
+}

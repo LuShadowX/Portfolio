@@ -99,13 +99,13 @@
             </div>
 
             <div class="about-grid">
-                <div class="about-image reveal-left">
+                <div class="about-image reveal-left delay-100">
                     <div class="img-frame">
                         <img src="assets/images/profile1.jpg" alt="Lukshya Supyal" onerror="this.src='https://via.placeholder.com/400x500?text=Profile+Image'">
                     </div>
                 </div>
 
-                <div class="about-content reveal-right">
+                <div class="about-content reveal-right delay-200">
                     <span class="about-subheading">Who I am?</span>
                     <h3 class="about-title-large">I'm Lukshya Supyal, a Machine Learning Engineer & Developer.</h3>
                     
@@ -115,7 +115,7 @@
                         I enjoy cracking complex coding challenges and optimizing solutions for efficiency.
                     </p>
 
-                    <div class="education-block reveal-right delay-200">
+                    <div class="education-block">
                         <h2 style="color: var(--color-accent); font-size: 2rem; font-weight: 800; margin-bottom: 10px;">Education</h2>
                         <div class="edu-item">
                             <h4 class="edu-degree">BTech in Computer Science & Engineering</h4>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div class="about-footer reveal-right delay-300">
+                    <div class="about-footer">
                         <a href="assets/cv/resume.pdf" target="_blank" class="btn-download">
                             <i class="fas fa-download"></i> Download CV
                         </a>
@@ -150,88 +150,77 @@
 
     <section id="certificates" class="section">
         <div class="container">
-            <div class="section-header reveal-item">
+            <div class="section-header reveal">
                 <h2 class="section-title">Certificates</h2>
             </div>
 
-            <div class="carousel-container reveal-item delay-100">
-                
-                <button class="arrow-btn prev-btn">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-
+            <div class="carousel-container reveal-right delay-200">
+                <button class="arrow-btn prev-btn"><i class="fas fa-arrow-left"></i></button>
                 <div class="carousel-window">
                     <div class="carousel-track">
-                        
                         <div class="carousel-slide">
                             <div class="cert-card">
-                                <div class="cert-img-wrapper">
-                                    <img src="assets/images/Infosys.png" alt="Infosys Certification" onerror="this.src='https://via.placeholder.com/600x400?text=Infosys'">
-                                </div>
-                                <div class="cert-body">
-                                    <h3>Infosys Certified</h3>
-                                    <p>Software Engineering & Python</p>
-                                </div>
+                                <div class="cert-img-wrapper"><img src="assets/images/Infosys.png" alt="Infosys" onerror="this.src='https://via.placeholder.com/600x400?text=Infosys'"></div>
+                                <div class="cert-body"><h3>Infosys Certified</h3><p>Software Engineering & Python</p></div>
                             </div>
                         </div>
-
                         <div class="carousel-slide">
                             <div class="cert-card">
-                                <div class="cert-img-wrapper">
-                                    <img src="assets/images/Skillera.jpeg" alt="Skillera Certification" onerror="this.src='https://via.placeholder.com/600x400?text=Skillera'">
-                                </div>
-                                <div class="cert-body">
-                                    <h3>Skillera Achievement</h3>
-                                    <p>Advanced Machine Learning Concepts</p>
-                                </div>
+                                <div class="cert-img-wrapper"><img src="assets/images/Skillera.jpeg" alt="Skillera" onerror="this.src='https://via.placeholder.com/600x400?text=Skillera'"></div>
+                                <div class="cert-body"><h3>Skillera Achievement</h3><p>Advanced Machine Learning Concepts</p></div>
                             </div>
                         </div>
-
                         <div class="carousel-slide">
                             <div class="cert-card">
-                                <div class="cert-img-wrapper">
-                                    <img src="assets/images/TimeManagement.png" alt="Time Management" onerror="this.src='https://via.placeholder.com/600x400?text=Time+Management'">
-                                </div>
-                                <div class="cert-body">
-                                    <h3>Time Management</h3>
-                                    <p>Professional Soft Skills</p>
-                                </div>
+                                <div class="cert-img-wrapper"><img src="assets/images/TimeManagement.png" alt="Time" onerror="this.src='https://via.placeholder.com/600x400?text=Time+Management'"></div>
+                                <div class="cert-body"><h3>Time Management</h3><p>Professional Soft Skills</p></div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-                <button class="arrow-btn next-btn">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-
+                <button class="arrow-btn next-btn"><i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
 
     <section id="skills" class="section alt-bg">
         <div class="container">
-            <div class="section-header reveal-item">
+            <div class="section-header reveal">
                 <h2 class="section-title">Skills</h2>
             </div>
             <div class="skills-grid">
-                <div class="skill-category reveal-item delay-100">
+                <div class="skill-card reveal-left delay-100">
                     <h3>Languages</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">C++</span>
-                        <span class="skill-tag">Java</span>
-                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag"><i class="fab fa-python"></i> Python</span>
+                        <span class="skill-tag"><i class="fas fa-code"></i> C++</span>
+                        <span class="skill-tag"><i class="fab fa-java"></i> Java</span>
+                        <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
+                        <span class="skill-tag"><i class="fas fa-database"></i> SQL</span>
+                        <span class="skill-tag"><i class="fab fa-html5"></i> HTML/CSS</span>
                     </div>
                 </div>
-                <div class="skill-category reveal-item delay-200">
-                    <h3>Machine Learning</h3>
+                <div class="skill-card reveal delay-200">
+                    <h3>Frameworks & Libs</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">TensorFlow</span>
-                        <span class="skill-tag">PyTorch</span>
-                        <span class="skill-tag">Scikit-Learn</span>
-                        <span class="skill-tag">Pandas</span>
+                        <span class="skill-tag"><i class="fas fa-brain"></i> TensorFlow</span>
+                        <span class="skill-tag"><i class="fas fa-fire"></i> PyTorch</span>
+                        <span class="skill-tag"><i class="fas fa-chart-line"></i> Scikit-Learn</span>
+                        <span class="skill-tag"><i class="fas fa-table"></i> Pandas</span>
+                        <span class="skill-tag"><i class="fas fa-calculator"></i> NumPy</span>
+                        <span class="skill-tag"><i class="fas fa-chart-bar"></i> Matplotlib</span>
+                        <span class="skill-tag"><i class="fab fa-react"></i> React.js</span>
+                    </div>
+                </div>
+                <div class="skill-card reveal-right delay-300">
+                    <h3>Tools & Platforms</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fab fa-git-alt"></i> Git</span>
+                        <span class="skill-tag"><i class="fab fa-github"></i> GitHub</span>
+                        <span class="skill-tag"><i class="fas fa-terminal"></i> VS Code</span>
+                        <span class="skill-tag"><i class="fab fa-linux"></i> Linux</span>
+                        <span class="skill-tag"><i class="fas fa-book"></i> Jupyter</span>
+                        <span class="skill-tag"><i class="fas fa-cloud"></i> Google Colab</span>
                     </div>
                 </div>
             </div>
@@ -240,11 +229,11 @@
 
     <section id="projects" class="section">
         <div class="container">
-            <div class="section-header reveal-item">
+            <div class="section-header reveal">
                 <h2 class="section-title">Projects</h2>
             </div>
             <div class="card-grid">
-                <div class="card reveal-item delay-100">
+                <div class="card reveal-left delay-100">
                     <div class="card-img"><img src="https://via.placeholder.com/300x200?text=Project+1" alt="Project"></div>
                     <div class="card-info">
                         <h3>AI Image Classifier</h3>
@@ -252,7 +241,7 @@
                         <a href="#" class="card-link">View Project</a>
                     </div>
                 </div>
-                <div class="card reveal-item delay-200">
+                <div class="card reveal-right delay-200">
                     <div class="card-img"><img src="https://via.placeholder.com/300x200?text=Project+2" alt="Project"></div>
                     <div class="card-info">
                         <h3>Portfolio Website</h3>
@@ -265,7 +254,7 @@
     </section>
 
     <section id="contact" class="section alt-bg">
-        <div class="container contact-container reveal-item">
+        <div class="container contact-container reveal">
             <div class="section-header">
                 <h2 class="section-title">Contact Me</h2>
             </div>
