@@ -1,8 +1,10 @@
-/* FILE: assets/js/common.js */
+
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. HAMBURGER MENU LOGIC
+    // 1. MENU LOGIC
     const menuBtn = document.querySelector('.js-menu');
     const header = document.querySelector('.js-header');
     const body = document.body;
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 2. THEME TOGGLE LOGIC
+    // 2. THEME TOGGLE
     const toggleBtn = document.getElementById('theme-toggle');
     const sunIcon = document.querySelector('.theme-icon.sun');
     const moonIcon = document.querySelector('.theme-icon.moon');
@@ -60,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         "I design data visualizations.",
         "I solve complex problems."
     ];
-    
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -68,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function type() {
         if (!textElement) return;
-
         const currentPhrase = phrases[phraseIndex];
-        
         if (isDeleting) {
             textElement.textContent = currentPhrase.substring(0, charIndex - 1);
             charIndex--;
@@ -80,16 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
             charIndex++;
             typeSpeed = 100; 
         }
-
         if (!isDeleting && charIndex === currentPhrase.length) {
-            isDeleting = true;
-            typeSpeed = 2000; 
+            isDeleting = true; typeSpeed = 2000; 
         } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            typeSpeed = 500; 
+            isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500; 
         }
-
         setTimeout(type, typeSpeed);
     }
     type();
@@ -104,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const target = document.querySelector(href);
                 if(target) {
                     target.scrollIntoView({ behavior: 'smooth' });
-                    // Close menu if needed
                     menuBtn.classList.remove('is-active');
                     header.classList.remove('is-active');
                     body.style.overflow = '';
@@ -113,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 5. NAVBAR SCROLL EFFECT (Added logic)
+    // 5. NAVBAR SCROLL
     const topBar = document.querySelector('.top-bar');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
@@ -122,4 +115,75 @@ document.addEventListener('DOMContentLoaded', () => {
             topBar.classList.remove('scrolled');
         }
     });
+
+    // 6. SCROLL ANIMATIONS (INTERSECTION OBSERVER)
+    // Selects elements with 'reveal', 'reveal-left', or 'reveal-right'
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.15, // Trigger when 15% visible
+        rootMargin: "0px"
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
 });
+/* FILE: assets/js/common.js (Add to end of DOMContentLoaded) */
+
+    // ... (Previous code: Menu, Theme, Typing, Scroll, Reveal) ...
+
+    // 7. CERTIFICATE CAROUSEL LOGIC
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const nextBtn = document.querySelector('.next-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    let slideIndex = 0;
+    let autoSlideInterval;
+
+    // Function to move slide
+    const moveToSlide = (index) => {
+        // Loop back logic
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        
+        slideIndex = index;
+        const amountToMove = -100 * index;
+        track.style.transform = `translateX(${amountToMove}%)`;
+    };
+
+    // Button Listeners
+    nextBtn.addEventListener('click', () => {
+        moveToSlide(slideIndex + 1);
+        resetAutoSlide();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        moveToSlide(slideIndex - 1);
+        resetAutoSlide();
+    });
+
+    // Auto Slide Logic (Every 3.5 seconds)
+    const startAutoSlide = () => {
+        autoSlideInterval = setInterval(() => {
+            moveToSlide(slideIndex + 1);
+        }, 3500); 
+    };
+
+    const resetAutoSlide = () => {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    };
+
+    // Pause on Hover (Interactive feel)
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+    carouselContainer.addEventListener('mouseleave', startAutoSlide);
+
+    // Initialize
+    startAutoSlide();
