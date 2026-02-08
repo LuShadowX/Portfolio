@@ -15,6 +15,7 @@
     --font-main: 'Oswald', sans-serif;
     --shadow-light: 0 10px 30px rgba(0,0,0,0.08);
     --btn-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="dark"] {
@@ -102,10 +103,11 @@ body {
 .theme-icon { width: 24px; height: 24px; fill: var(--text-color); transition: fill 0.3s, transform 0.5s ease; }
 .theme-toggle:hover .theme-icon { transform: rotate(180deg); fill: var(--color-accent); }
 
-.header.is-active .site-logo, 
-.header.is-active .nav-right-group, 
-.header.is-active ~ .hero-content {
-    opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+/* Fix: Hide solid navbar when menu is open */
+.header.is-active .top-bar {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
 }
 
 /* ========================================= */
@@ -128,7 +130,19 @@ body {
 .nav-link-overlay:hover { color: var(--color-primary); text-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
 .nav-right { width: 40%; display: flex; align-items: center; justify-content: flex-end; position: relative; }
 .brand-vertical { writing-mode: vertical-rl; font-family: var(--font-main); font-size: 16vh; font-weight: 900; color: #ffffff; opacity: 1; letter-spacing: 2vh; cursor: default; }
-.brand-x { display: inline-block; color: var(--color-primary); font-size: 1.2em; vertical-align: middle; text-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
+
+/* LuShadowX Interaction */
+.brand-x {
+    color: #ffffff; text-shadow: none; cursor: pointer; display: inline-block;
+    font-size: 1.2em; vertical-align: middle;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.brand-x:hover {
+    color: var(--color-primary);
+    text-shadow: 0 0 30px rgba(255, 0, 0, 0.9), 0 0 60px rgba(255, 0, 0, 0.5);
+    transform: scale(1.2) rotate(10deg);
+}
+
 .nav-footer { position: absolute; bottom: 40px; left: 80px; display: flex; align-items: center; gap: 20px; }
 .official-text { font-family: var(--font-main); color: #fff; font-size: 0.9rem; letter-spacing: 2px; margin-right: 20px; opacity: 0.7; }
 .social-icon { width: 24px; height: 24px; fill: #fff; transition: all 0.3s ease; opacity: 0.7; }
@@ -207,8 +221,14 @@ body {
     justify-content: center;
     position: relative;
     z-index: 20; 
-    background-color: var(--bg-color); 
+    /* Default background set to transparent for dynamic flow */
+    background-color: transparent; 
     transition: background-color 0.3s ease;
+}
+
+/* Specific Solid White Background for Contact */
+#contact {
+    background-color: var(--alt-bg);
 }
 
 .section.alt-bg {
@@ -237,7 +257,6 @@ body {
 
 /* --- ABOUT SECTION (SPLIT BACKGROUND) --- */
 #about {
-    /* Magic Gradient: Left 40% Transparent (shows particles), Right 60% Solid White (for text) */
     background: linear-gradient(to right, 
         rgba(255,255,255,0) 0%, 
         rgba(255,255,255,0) 40%, 
@@ -245,7 +264,6 @@ body {
         var(--alt-bg) 100%
     );
 }
-/* Dark Mode Logic for Split BG */
 [data-theme="dark"] #about {
     background: linear-gradient(to right, 
         rgba(0,0,0,0) 0%, 
@@ -318,6 +336,86 @@ body {
 .social-btn.github { background: #333; }
 .social-btn:hover { transform: translateY(-3px) scale(1.1); }
 
+/* CERTIFICATES & PROJECTS - TRANSPARENT BG */
+#certificates, #projects {
+    background: transparent;
+}
+
+.carousel-container {
+    position: relative; width: 100%; max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center; padding: 20px 0;
+}
+.carousel-window {
+    width: 100%; max-width: 600px; overflow: hidden;
+    border-radius: 15px; padding: 20px;
+}
+.carousel-track {
+    display: flex; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.carousel-slide {
+    min-width: 100%; display: flex; justify-content: center; padding: 10px; box-sizing: border-box;
+}
+.cert-card {
+    background: var(--card-bg); border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 100%; overflow: hidden; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+.cert-card:hover {
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(123, 47, 247, 0.4); z-index: 10;
+}
+.cert-img-wrapper { width: 100%; height: 350px; overflow: hidden; }
+.cert-img-wrapper img {
+    width: 100%; height: 100%; object-fit: contain; background-color: #f0f0f0;
+}
+.cert-body { padding: 20px; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); }
+.cert-body h3 { font-size: 1.5rem; color: var(--text-color); margin-bottom: 5px; }
+.cert-body p { color: var(--text-muted); font-size: 1rem; }
+
+.arrow-btn {
+    background: transparent; border: 2px solid var(--text-color);
+    color: var(--text-color); width: 50px; height: 50px; border-radius: 50%;
+    font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.4s ease; z-index: 50; margin: 0 20px;
+}
+.arrow-btn:hover {
+    background: var(--text-color); color: var(--bg-color);
+    transform: rotate(360deg) scale(1.1);
+}
+
+.skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px; padding: 20px 0;
+}
+.skill-card {
+    background: #ffffff; padding: 35px; border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    border-top: 5px solid var(--color-accent); height: 100%; box-sizing: border-box;
+}
+[data-theme="dark"] .skill-card { background: var(--card-bg); border-top: 5px solid var(--color-accent); }
+.skill-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(123, 47, 247, 0.3); z-index: 10;
+}
+.skill-card h3 {
+    font-size: 1.8rem; font-weight: 800; color: var(--text-color);
+    margin-bottom: 25px; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+}
+.skill-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.skill-tag {
+    padding: 10px 20px; background: var(--alt-bg); color: var(--text-color);
+    border: 1px solid var(--track-color); border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem; transition: all 0.3s ease;
+    cursor: default; display: flex; align-items: center; gap: 8px;
+}
+.skill-tag:hover {
+    background: var(--btn-gradient); color: white;
+    border-color: transparent; transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+.skill-tag i { font-size: 1.1rem; }
+
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
 .card {
     background: var(--card-bg); border-radius: 15px; overflow: hidden;
@@ -335,19 +433,60 @@ body {
 .card-link::after { content: '→'; margin-left: 5px; transition: margin 0.3s; }
 .card-link:hover::after { margin-left: 10px; }
 
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; }
-.skill-category h3 { font-size: 1.5rem; color: var(--color-accent); margin-bottom: 25px; font-weight: 700; }
-.skill-tags { display: flex; flex-wrap: wrap; gap: 15px; }
-.skill-tag {
-    padding: 10px 20px; background: var(--alt-bg); color: var(--text-color);
-    border-radius: 30px; font-weight: 500; font-size: 0.95rem;
-    transition: background 0.3s, color 0.3s, transform 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+/* PROJECT CARD EXTRAS */
+.gh-link {
+    position: absolute; top: 15px; right: 15px; width: 45px; height: 45px;
+    background: rgba(255, 255, 255, 0.9); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; color: #333; font-size: 1.4rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5; opacity: 0; transform: translateY(-10px);
 }
-.skill-tag:hover { background: var(--color-accent); color: white; transform: translateY(-3px); }
+.card:hover .gh-link { opacity: 1; transform: translateY(0); }
+.gh-link:hover { background: var(--text-color); color: #fff; transform: scale(1.1) rotate(360deg); }
+[data-theme="dark"] .gh-link { background: rgba(0, 0, 0, 0.8); color: #fff; }
+[data-theme="dark"] .gh-link:hover { background: #fff; color: #000; }
 
+.project-meta { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+.tech-pill {
+    font-size: 0.85rem; font-weight: 600; color: var(--color-accent);
+    background: rgba(41, 121, 255, 0.1); padding: 5px 12px; border-radius: 20px;
+}
+
+/* CONTACT SECTION */
 .contact-container { text-align: center; max-width: 600px; margin: 0 auto; }
 .contact-text { font-size: 1.3rem; color: var(--text-muted); margin-bottom: 40px; }
+.contact-wrapper {
+    display: flex; flex-direction: column; align-items: center; gap: 30px; margin-top: 20px;
+}
+.contact-item {
+    display: flex; align-items: center; gap: 15px; font-size: 1.3rem; font-weight: 500;
+    background: var(--bg-color); padding: 15px 30px; border-radius: 50px;
+    border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; text-decoration: none; color: var(--text-color);
+}
+.contact-item:hover {
+    transform: translateY(-5px); box-shadow: 0 10px 25px rgba(123, 47, 247, 0.2);
+    border-color: var(--color-accent);
+}
+.contact-item i { color: var(--color-accent); font-size: 1.4rem; }
+.contact-socials { display: flex; gap: 20px; margin-top: 10px; }
+.contact-socials .social-btn { width: 55px; height: 55px; font-size: 1.2rem; }
+
+/* FOOTER */
+.site-footer {
+    text-align: center; padding: 40px 20px;
+    background-color: var(--alt-bg); color: var(--text-muted);
+    font-size: 1rem; font-weight: 600; letter-spacing: 0.5px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .site-footer { border-top: 1px solid rgba(255,255,255,0.05); }
+.footer-name {
+    background: linear-gradient(90deg, #7b2ff7 0%, #2ab5f6 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; font-weight: 800; text-transform: uppercase;
+}
 
 @media (max-width: 900px) {
     #about { background: var(--alt-bg); }
@@ -362,389 +501,56 @@ body {
     .nav-right-group .top-links { display: none; }
     .hero-title { font-size: 3rem; }
     .typewriter-container { justify-content: center; }
+    #certificates, #projects { background: var(--alt-bg); } /* Reset transparent bg on mobile for readability */
+    .arrow-btn { position: absolute; top: 50%; transform: translateY(-50%); }
+    .prev-btn { left: 0; } .next-btn { right: 0; }
+    .arrow-btn:hover { transform: translateY(-50%) rotate(360deg); }
 }
 
 /* ========================================= */
 /* 7. SCROLL ANIMATIONS (SLIDE ONLY)         */
 /* ========================================= */
-
-/* State: Hidden (Initial) */
 .reveal {
-    opacity: 0;
-    transform: translateY(50px); /* Start lower */
-    transition: all 0.8s ease-out;
+    opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out;
 }
-
 .reveal-left {
-    opacity: 0;
-    transform: translateX(-100px); /* Slide from Left */
-    transition: all 0.8s ease-out;
+    opacity: 0; transform: translateX(-100px); transition: all 0.8s ease-out;
 }
-
 .reveal-right {
-    opacity: 0;
-    transform: translateX(100px); /* Slide from Right */
-    transition: all 0.8s ease-out;
+    opacity: 0; transform: translateX(100px); transition: all 0.8s ease-out;
 }
-
-/* State: Active (Visible) */
-.reveal.active, 
-.reveal-left.active, 
-.reveal-right.active {
-    opacity: 1;
-    transform: translate(0, 0);
+.reveal.active, .reveal-left.active, .reveal-right.active {
+    opacity: 1; transform: translate(0, 0);
 }
-
-/* Stagger Delays */
 .delay-100 { transition-delay: 0.1s; }
 .delay-200 { transition-delay: 0.2s; }
 .delay-300 { transition-delay: 0.3s; }
 .delay-400 { transition-delay: 0.4s; }
 /* FILE: assets/css/main.css */
 
-/* ... (Keep all previous code) ... */
+/* ... (All previous code) ... */
 
 /* ========================================= */
-/* 8. CERTIFICATES CAROUSEL (Mayank Style)   */
+/* 15. FIX: HIDE NAVBAR ITEMS ON MENU OPEN   */
 /* ========================================= */
 
-#certificates {
-    /* MAGIC TRICK: 
-       Side parts are White (var(--alt-bg)).
-       Middle part is Transparent (rgba 0,0,0,0) to show the Red X/Purple lines.
-    */
-    background: linear-gradient(90deg, 
-        var(--alt-bg) 0%, 
-        var(--alt-bg) 25%, 
-        rgba(0,0,0,0) 35%, 
-        rgba(0,0,0,0) 65%, 
-        var(--alt-bg) 75%, 
-        var(--alt-bg) 100%
-    );
-    overflow: hidden; /* Hide scrollbars */
+/* When menu is active, force hide the Logo and Right Links */
+.header.is-active .site-logo,
+.header.is-active .nav-right-group {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important; /* Ensures they are gone */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Container to center the slider */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 0;
+/* Ensure the Menu Button (Hamburger/Close) stays visible and on top */
+.header.is-active .js-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 2005; /* Higher than everything */
 }
 
-/* The Window that hides other slides */
-.carousel-window {
-    width: 100%;
-    max-width: 600px; /* Width of one slide */
+/* Optional: Ensure the background page content doesn't scroll/interfere */
+body.menu-open {
     overflow: hidden;
-    border-radius: 15px;
-    padding: 20px; /* Space for hover expansion */
-}
-
-/* The Track that moves */
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth Slide */
-}
-
-/* Individual Slide */
-.carousel-slide {
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-/* The Certificate Card Styling */
-.cert-card {
-    background: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    width: 100%;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Pop effect */
-    position: relative;
-}
-
-/* Hover: Pop-up Effect */
-.cert-card:hover {
-    transform: scale(1.05) translateY(-10px);
-    box-shadow: 0 20px 40px rgba(123, 47, 247, 0.4); /* Purple Glow */
-    z-index: 10;
-}
-
-.cert-img-wrapper {
-    width: 100%;
-    height: 350px; /* Fixed height for consistency */
-    overflow: hidden;
-}
-
-.cert-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Shows full certificate */
-    background-color: #f0f0f0; /* Light gray bg for transparent pngs */
-}
-
-.cert-body {
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
-
-.cert-body h3 {
-    font-size: 1.5rem;
-    color: var(--text-color);
-    margin-bottom: 5px;
-}
-
-.cert-body p {
-    color: var(--text-muted);
-    font-size: 1rem;
-}
-
-/* NAVIGATION ARROWS */
-.arrow-btn {
-    background: transparent;
-    border: 2px solid var(--text-color);
-    color: var(--text-color);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.4s ease;
-    z-index: 50;
-    margin: 0 20px;
-}
-
-/* Hover: Rotate like the Sun */
-.arrow-btn:hover {
-    background: var(--text-color);
-    color: var(--bg-color);
-    transform: rotate(360deg) scale(1.1); /* The rotation animation */
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    #certificates {
-        /* On mobile, remove transparent middle to read text better */
-        background: var(--alt-bg); 
-    }
-    .arrow-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-    .prev-btn { left: 0; }
-    .next-btn { right: 0; }
-    .arrow-btn:hover { transform: translateY(-50%) rotate(360deg); }
-}
-/* FILE: assets/css/main.css */
-
-/* ... (Keep all previous code) ... */
-
-/* ========================================= */
-/* 9. SKILLS SECTION (God-Tier Update)       */
-/* ========================================= */
-
-#skills {
-    /* Transparent to show the Red X/Purple Particles behind */
-    background-color: transparent; 
-    position: relative;
-    z-index: 20;
-}
-
-/* The Grid Layout */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-    padding: 20px 0;
-}
-
-/* White Card Style */
-.skill-card {
-    background: #ffffff; /* Explicitly White */
-    padding: 35px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-    border-top: 5px solid var(--color-accent); /* Blue accent line on top */
-    height: 100%; /* Uniform height */
-    box-sizing: border-box;
-}
-
-/* Dark Mode Adjustment */
-[data-theme="dark"] .skill-card {
-    background: var(--card-bg); /* Dark Gray in dark mode */
-    border-top: 5px solid var(--color-accent);
-}
-
-/* HOVER: Pop Up Animation */
-.skill-card:hover {
-    transform: translateY(-10px) scale(1.03); /* Pop Up */
-    box-shadow: 0 20px 40px rgba(123, 47, 247, 0.3); /* Purple Glow */
-    z-index: 10;
-}
-
-/* Typography inside Card */
-.skill-card h3 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--text-color);
-    margin-bottom: 25px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* The Tags Container */
-.skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-}
-
-/* Individual Skill Tag Styling */
-.skill-tag {
-    padding: 10px 20px;
-    background: var(--alt-bg); /* Slight contrast */
-    color: var(--text-color);
-    border: 1px solid var(--track-color);
-    border-radius: 50px; /* Pill shape */
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    cursor: default;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Tag Hover Effect */
-.skill-tag:hover {
-    background: var(--btn-gradient); /* Blue/Purple Gradient */
-    color: white;
-    border-color: transparent;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-/* Icons inside tags */
-.skill-tag i {
-    font-size: 1.1rem;
-}
-/* FILE: assets/css/main.css */
-
-/* ... (Keep all existing code) ... */
-
-/* ========================================= */
-/* 10. BUG FIXES & REFINEMENTS               */
-/* ========================================= */
-
-/* FIX: Hide Solid Navbar when Menu is Open */
-.header.is-active .top-bar {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    border-bottom: none !important;
-}
-
-/* REFINEMENT: LuShadowX Hover Effect */
-/* First, reset the X to white */
-.brand-x {
-    color: #ffffff; /* Start White */
-    text-shadow: none; /* No glow initially */
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Hover over the X: Turn Red + Glow + Scale */
-.brand-x:hover {
-    color: var(--color-primary); /* Red */
-    text-shadow: 0 0 30px rgba(255, 0, 0, 0.9), 0 0 60px rgba(255, 0, 0, 0.5); /* Radiate Light */
-    transform: scale(1.2) rotate(10deg); /* Slight pop interaction */
-}
-/* FILE: assets/css/main.css */
-
-/* ... (Keep all existing code) ... */
-
-/* ========================================= */
-/* 11. PROJECT CARD REFINEMENTS              */
-/* ========================================= */
-
-/* Position relative to hold the floating button */
-.card-img {
-    position: relative;
-}
-
-/* Floating GitHub Button on Image */
-.gh-link {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 45px;
-    height: 45px;
-    background: rgba(255, 255, 255, 0.9); /* Glassy White */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #333;
-    font-size: 1.4rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 5;
-    opacity: 0; /* Hidden initially for clean look */
-    transform: translateY(-10px);
-}
-
-/* Show button on Card Hover */
-.card:hover .gh-link {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Hover over the Button itself */
-.gh-link:hover {
-    background: var(--text-color); /* Dark Background */
-    color: #fff; /* White Icon */
-    transform: scale(1.1) rotate(360deg); /* Spin Effect */
-}
-
-/* Dark Mode adjustment for button */
-[data-theme="dark"] .gh-link {
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-}
-[data-theme="dark"] .gh-link:hover {
-    background: #fff;
-    color: #000;
-}
-
-/* Tech Stack Tags */
-.project-meta {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.tech-pill {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-accent);
-    background: rgba(41, 121, 255, 0.1);
-    padding: 5px 12px;
-    border-radius: 20px;
 }
