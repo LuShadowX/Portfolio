@@ -1,6 +1,5 @@
-# 👨‍💻 Portfolio | Lushadowx
+# Portfolio | Lushadowx
 
-![Portfolio Banner](https://via.placeholder.com/1000x300?text=Welcome+to+My+Portfolio) 
 > **"Code is like humor. When you have to explain it, it’s bad."** – *Cory House*
 
 Welcome to my personal corner of the web! This repository hosts the source code for my personal portfolio website, designed to showcase my journey as a developer, my technical skills, and the projects I've brought to life.
@@ -12,9 +11,9 @@ Check out the live website here:
 
 ---
 
-## 🧐 About This Project
+## About This Project
 
-This portfolio is a reflection of my passion for web development. It is built with a focus on **clean code**, **responsiveness**, and **user experience**. 
+This portfolio is a reflection of my passion for Artificaial Intelligence And Machine Learning. It is built with a focus on **clean code**, **responsiveness**, and **user experience**. 
 
 **Key Highlights:**
 * **Responsive Design:** Looks great on desktops, tablets, and mobile phones.
