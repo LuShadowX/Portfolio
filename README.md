@@ -41,3 +41,4 @@ Here's a quick look at how the project is organized:
  ┃ ┗ 📂 js        # Functionality scripts
  ┣ 📜 index.html  # Main Entry Point
  ┗ 📜 README.md   # You are here!
+## Feel Free to like and Star!!
