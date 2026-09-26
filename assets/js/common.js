@@ -19,6 +19,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // BlueLink hover: swap the menu background to the news app video
+    const nav = document.querySelector('.header__nav');
+    const newsLink = document.querySelector('.nav-link-news');
+    const newsVideo = document.querySelector('.nav-bg-video--news');
+    if (nav && newsLink && newsVideo) {
+        newsLink.addEventListener('mouseenter', () => {
+            nav.classList.add('is-news');
+            newsVideo.play().catch(() => {});
+        });
+        newsLink.addEventListener('mouseleave', () => {
+            nav.classList.remove('is-news');
+            newsVideo.pause();
+        });
+    }
+
     const overlayLinks = document.querySelectorAll('.nav-link-overlay');
     overlayLinks.forEach(link => {
         link.addEventListener('click', () => {

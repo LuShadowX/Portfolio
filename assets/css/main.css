@@ -129,6 +129,13 @@ body {
 }
 .nav-link-overlay:hover { color: var(--color-primary); text-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
 .nav-link-news { display: inline-flex; align-items: center; gap: 0.3em; }
+.nav-link-news:hover { color: #3fc4f0; text-shadow: 0 0 12px rgba(63, 196, 240, 0.8), 0 0 32px rgba(27, 159, 207, 0.6); }
+.nav-link-news .news-logo { transition: filter 0.3s ease; }
+.nav-link-news:hover .news-logo { filter: drop-shadow(0 0 10px rgba(63, 196, 240, 0.9)); }
+.nav-bg-video { transition: opacity 0.5s ease, transform 0.8s ease; }
+.nav-bg-video--news { opacity: 0; transform: scale(1.05); filter: brightness(0.45) contrast(1.1); }
+.header__nav.is-news .nav-bg-video--news { opacity: 1; transform: scale(1); }
+.header__nav.is-news .nav-bg-video:not(.nav-bg-video--news) { opacity: 0; }
 .news-logo { height: 0.9em; width: auto; flex-shrink: 0; }
 .nav-right { width: 40%; display: flex; align-items: center; justify-content: flex-end; position: relative; }
 .brand-vertical { writing-mode: vertical-rl; font-family: var(--font-main); font-size: 16vh; font-weight: 900; color: #ffffff; opacity: 1; letter-spacing: 2vh; cursor: default; }
