@@ -129,7 +129,7 @@ body {
 }
 .nav-link-overlay:hover { color: var(--color-primary); text-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
 .nav-link-news { display: inline-flex; align-items: center; gap: 0.3em; }
-.news-logo { width: 0.85em; height: 0.85em; flex-shrink: 0; }
+.news-logo { height: 0.9em; width: auto; flex-shrink: 0; }
 .nav-right { width: 40%; display: flex; align-items: center; justify-content: flex-end; position: relative; }
 .brand-vertical { writing-mode: vertical-rl; font-family: var(--font-main); font-size: 16vh; font-weight: 900; color: #ffffff; opacity: 1; letter-spacing: 2vh; cursor: default; }
 
