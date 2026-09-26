@@ -1,5 +1,5 @@
 /* FILE: assets/js/blackhole.js */
-/* Click the X in LuShadowX: the page crumbles into a black hole, says goodbye, then restarts. */
+/* Click the X in LuShadowX: the page crumbles into a black hole, glitches out to a 404, then restarts. */
 
 (() => {
     const trigger = document.querySelector('.brand-x');
@@ -15,25 +15,29 @@
     const CSS = `
     .bh-hide body > *:not(.bh-root):not(.p-stc):not(#particle-canvas):not(.texture-overlay):not(.scanlines) { opacity: 0 !important; transition: none !important; }
     .bh-root { position: fixed; inset: 0; z-index: 2147483000; pointer-events: all; cursor: none; }
-    .bh-dark { position: absolute; inset: 0; background: radial-gradient(circle at 50% 16vh, #000 0, #050208 45%, #000 100%); opacity: 0; }
+    .bh-dark { position: absolute; inset: 0; background: radial-gradient(circle at 50% 18vh, #000 0, #050208 45%, #000 100%); opacity: 0; }
     .bh-layer { position: absolute; inset: 0; overflow: visible; }
     .bh-piece { position: absolute; margin: 0; box-sizing: border-box; white-space: pre; will-change: transform, opacity; transform-origin: 50% 50%; }
-    .bh-hole { position: absolute; left: 50%; top: 16vh; width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%; transform: scale(0); z-index: 3; }
-    .bh-hole::before { content: ''; position: absolute; inset: -55%; border-radius: 50%;
-        background: conic-gradient(from 0deg, transparent 0 8%, #ff9a3c 14%, #ff3d6e 24%, transparent 34%, #7b2ff7 46%, #ffcf6b 58%, transparent 70%, #ff5a36 82%, transparent 92%);
-        -webkit-mask: radial-gradient(circle, transparent 34%, #000 38%, #000 52%, transparent 70%); mask: radial-gradient(circle, transparent 34%, #000 38%, #000 52%, transparent 70%);
-        filter: blur(6px); animation: bh-spin 1.1s linear infinite; }
-    .bh-hole::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; background: #000;
-        box-shadow: 0 0 0 3px rgba(255, 190, 120, 0.9), 0 0 28px 10px rgba(255, 120, 50, 0.75), 0 0 90px 30px rgba(123, 47, 247, 0.45), inset 0 0 30px rgba(255, 140, 60, 0.5); }
-    .bh-lens { position: absolute; inset: -140%; border-radius: 50%; background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(255,140,60,0.08) 42%, rgba(0,0,0,0) 60%); animation: bh-pulse 1.6s ease-in-out infinite; }
-    .bh-bye { position: absolute; left: 0; right: 0; top: 56vh; display: flex; justify-content: center; gap: 0.08em; z-index: 4;
-        font-family: 'Oswald', sans-serif; font-weight: 900; font-size: clamp(3rem, 11vw, 9rem); letter-spacing: 0.12em; color: #fff;
-        text-shadow: 0 0 18px rgba(255, 40, 40, 0.9), 0 0 60px rgba(255, 0, 0, 0.6); }
-    .bh-bye span { display: inline-block; opacity: 0; }
-    .bh-flash { position: absolute; left: 50%; top: 16vh; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #fff; opacity: 0; z-index: 5;
+    .bh-hole { position: absolute; left: 50%; top: 18vh; width: 0; height: 0; transform: scale(0); z-index: 3; }
+    .bh-hole canvas { position: absolute; transform: translate(-50%, -50%); }
+    .bh-404 { position: absolute; inset: 0; z-index: 6; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0;
+        background: #000 repeating-linear-gradient(to bottom, rgba(255,255,255,0.035) 0 1px, transparent 1px 4px);
+        font-family: 'Oswald', sans-serif; color: #fff; text-transform: uppercase; }
+    .bh-404 .e-top, .bh-404 .e-bot { font-weight: 700; letter-spacing: 0.08em; font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+        text-shadow: -2px 0 #3dffa0, 2px 0 #ff2d75; }
+    .bh-404 .e-bot { letter-spacing: 0.1em; }
+    .bh-404 .e-num { position: relative; font-weight: 900; font-size: clamp(8rem, 30vw, 22rem); line-height: 0.95; letter-spacing: 0.04em; margin: 0.05em 0 0.1em;
+        text-shadow: -6px 0 #3dffa0, 6px 0 #ff2d75; }
+    .bh-404 .e-num::before, .bh-404 .e-num::after { content: attr(data-text); position: absolute; inset: 0; }
+    .bh-404 .e-num::before { color: #3dffa0; transform: translateX(-10px); mix-blend-mode: screen; clip-path: inset(40% 0 45% 0); animation: bh-slice 0.9s steps(1) infinite; }
+    .bh-404 .e-num::after { color: #ff2d75; transform: translateX(10px); mix-blend-mode: screen; clip-path: inset(70% 0 12% 0); animation: bh-slice 0.7s steps(1) infinite reverse; }
+    .bh-404 .bar { position: absolute; height: 6px; background: #fff; }
+    .bh-404 .bar.k { background: #000; height: 5px; }
+    .bh-404 .bar.g { background: #3dffa0; width: 12px !important; height: 12px; }
+    .bh-404 .bar.p { background: #ff2d75; width: 12px !important; height: 12px; }
+    @keyframes bh-slice { 0% { clip-path: inset(40% 0 45% 0); } 20% { clip-path: inset(8% 0 80% 0); } 40% { clip-path: inset(62% 0 20% 0); } 60% { clip-path: inset(25% 0 60% 0); } 80% { clip-path: inset(85% 0 3% 0); } }
+    .bh-flash { position: absolute; left: 50%; top: 18vh; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #fff; opacity: 0; z-index: 5;
         box-shadow: 0 0 60px 30px #fff, 0 0 200px 90px rgba(255, 180, 120, 0.8); }
-    @keyframes bh-spin { to { transform: rotate(360deg); } }
-    @keyframes bh-pulse { 50% { transform: scale(1.08); opacity: 0.6; } }
     `;
 
     const alpha = c => {
@@ -244,6 +248,100 @@
         ], { duration: dur, delay, fill: 'forwards' });
     }
 
+    // glitch black hole: black core, white photon ring, a flickering disk of neon streaks and a band across the middle
+    function glitchHole(host, R = 95) {
+        const PAL = ['#ffff00', '#00e5ff', '#ff2bd6', '#1a2cff', '#ff2020', '#39ff14', '#ffffff', '#8a2be2', '#ff8c00'];
+        const W = R * 4.4, H = R * 3.1, dpr = Math.min(2, devicePixelRatio || 1);
+        const cv = document.createElement('canvas');
+        cv.width = W * dpr; cv.height = H * dpr;
+        Object.assign(cv.style, { width: `${W}px`, height: `${H}px` });
+        host.appendChild(cv);
+        const g = cv.getContext('2d');
+        g.scale(dpr, dpr);
+        const cx = W / 2, cy = H / 2;
+        let alive = true, last = 0;
+        const pick = () => PAL[(Math.random() * PAL.length) | 0];
+
+        const streak = (x, y, w, h, c) => {
+            g.fillStyle = c;
+            g.fillRect(x, y, w, h);
+            if (Math.random() < 0.25) {          // scan-line texture inside some blocks
+                g.fillStyle = 'rgba(0,0,0,0.55)';
+                for (let yy = y + 1; yy < y + h; yy += 3) g.fillRect(x, yy, w, 1);
+            }
+        };
+
+        const frame = t => {
+            if (!alive) return;
+            requestAnimationFrame(frame);
+            if (t - last < 70) return;       // ~14 fps: glitchy, not smooth
+            last = t;
+            g.clearRect(0, 0, W, H);
+            g.globalAlpha = 1;
+            // accretion disk: streaks packed in a ring that bulges left and right
+            for (let k = 0; k < 560; k++) {
+                const th = Math.random() * Math.PI * 2, c2 = Math.cos(th) ** 2;
+                const rho = R * (1.0 + Math.random() ** 2.2 * (0.3 + 0.5 * c2));
+                const x = cx + Math.cos(th) * rho * (1 + 0.38 * c2 * c2), y = cy + Math.sin(th) * rho * (1.02 - 0.1 * c2);
+                const near = rho < R * 1.18;
+                const w = rand(6, (near ? 34 : 20) + 44 * c2), h = near ? rand(4, 14) : rand(2, 7);
+                streak(x - w / 2, y - h / 2, w, h, pick());
+            }
+            // far equatorial spikes
+            for (let k = 0; k < 24; k++) {
+                const side = Math.random() < 0.5 ? -1 : 1, x = cx + side * R * rand(1.3, 2.15), y = cy + rand(-0.12, 0.12) * R;
+                streak(x - 20, y, rand(10, 40), rand(2, 7), Math.random() < 0.4 ? '#ffffff' : pick());
+            }
+            // core and photon ring
+            g.fillStyle = '#000';
+            g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
+            g.strokeStyle = '#fff'; g.lineWidth = Math.max(2.5, R * 0.04);
+            g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.stroke();
+            // the band that crosses in front of the hole
+            for (let k = 0; k < 80; k++) {
+                const x = cx + rand(-1.35, 1.2) * R, y = cy + rand(-0.16, 0.06) * R;
+                streak(x, y, rand(10, 58), rand(5, 18), Math.random() < 0.1 ? '#000' : pick());
+            }
+            // horizontal tearing
+            const tears = Math.random() < 0.55 ? (1 + Math.random() * 4) | 0 : 0;
+            for (let k = 0; k < tears; k++) {
+                const y = rand(0, H - 20), h = rand(3, 22), dx = rand(-28, 28);
+                g.drawImage(cv, 0, y * dpr, W * dpr, h * dpr, dx, y, W, h);
+            }
+        };
+        requestAnimationFrame(frame);
+        return () => { alive = false; };
+    }
+
+    // glitch 404 screen: RGB-split digits, flickering bars and scanlines
+    function show404(root) {
+        const el = document.createElement('div');
+        el.className = 'bh-404';
+        el.innerHTML = '<div class="e-top">Error!</div><div class="e-num" data-text="404">404</div><div class="e-bot">Page not found</div>';
+        root.appendChild(el);
+        const num = el.querySelector('.e-num');
+        const bars = [];
+        for (let i = 0; i < 22; i++) {
+            const b = document.createElement('div');
+            b.className = 'bar' + (i % 6 === 0 ? ' g' : i % 6 === 1 ? ' p' : i % 3 === 0 ? ' k' : '');
+            el.appendChild(b);
+            bars.push(b);
+        }
+        const tick = () => {
+            const r = num.getBoundingClientRect();
+            for (const b of bars) {
+                const w = rand(20, r.width * 0.28);
+                Object.assign(b.style, { left: `${rand(r.left - 40, r.right - w + 40)}px`, top: `${rand(r.top + 10, r.bottom - 10)}px`, width: `${w}px`, opacity: Math.random() < 0.8 ? 1 : 0 });
+            }
+            num.style.transform = Math.random() < 0.3 ? `translateX(${rand(-8, 8)}px) skewX(${rand(-4, 4)}deg)` : '';
+        };
+        tick();
+        const timer = setInterval(tick, 110);
+        el.animate([{ opacity: 0 }, { opacity: 1, offset: 0.1 }, { opacity: 0.2, offset: 0.2 }, { opacity: 1, offset: 0.35 }, { opacity: 0.5, offset: 0.45 }, { opacity: 1 }],
+            { duration: 700, fill: 'forwards', easing: 'steps(1)' });
+        return { el, stop: () => clearInterval(timer) };
+    }
+
     async function run() {
         if (running) return;
         running = true;
@@ -264,14 +362,15 @@
         document.head.appendChild(style);
         const root = document.createElement('div');
         root.className = 'bh-root';
-        root.innerHTML = '<div class="bh-dark"></div><div class="bh-layer"></div><div class="bh-hole"><div class="bh-lens"></div></div><div class="bh-bye"></div><div class="bh-flash"></div>';
-        const [dark, layer, hole, bye, flash] = root.children;
+        root.innerHTML = '<div class="bh-dark"></div><div class="bh-layer"></div><div class="bh-hole"></div><div class="bh-flash"></div>';
+        const [dark, layer, hole, flash] = root.children;
+        const stopHole = glitchHole(hole);
 
         const pieces = reduced ? { boxes: [], small: [], words: [] } : collect(layer);
         document.body.appendChild(root);
         document.documentElement.classList.add('bh-hide');
 
-        const hx = innerWidth / 2, hy = innerHeight * 0.16;
+        const hx = innerWidth / 2, hy = innerHeight * 0.18;
         const maxD = Math.hypot(innerWidth, innerHeight);
         const lag = n => {
             const [x, y] = centerOf(n);
@@ -300,31 +399,19 @@
 
         await Promise.race([Promise.all(anims.map(a => a.finished)), wait(7500)]);
 
-        // goodbye rises out of the hole
-        const letters = [...'GOODBYE'].map(ch => { const s = document.createElement('span'); s.textContent = ch; bye.appendChild(s); return s; });
-        letters.forEach((s, i) => {
-            const r = s.getBoundingClientRect();
-            const dx = hx - (r.left + r.width / 2), dy = hy - (r.top + r.height / 2);
-            s.animate([
-                { transform: `translate(${dx}px,${dy}px) scale(0) rotate(${rand(-180, 180)}deg)`, opacity: 0 },
-                { transform: 'translate(0,0) scale(1.15) rotate(0deg)', opacity: 1, offset: 0.75 },
-                { transform: 'translate(0,0) scale(1)', opacity: 1 }
-            ], { duration: 700, delay: i * 90, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'forwards' });
-        });
-        await wait(700 + letters.length * 90 + 900);
-
-        // and falls back in; the hole collapses
-        letters.forEach((s, i) => {
-            const r = s.getBoundingClientRect();
-            const dx = hx - (r.left + r.width / 2), dy = hy - (r.top + r.height / 2);
-            s.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${dx}px,${dy}px) scale(0) rotate(${rand(-360, 360)}deg)`, opacity: 0 }],
-                { duration: 650, delay: (letters.length - i) * 50, easing: 'cubic-bezier(.6,0,1,.5)', fill: 'forwards' });
-        });
-        await wait(900);
-        hole.animate([{ transform: 'scale(1.45)' }, { transform: 'scale(1.7)', offset: 0.35 }, { transform: 'scale(0)' }], { duration: 700, easing: 'cubic-bezier(.7,0,1,.4)', fill: 'forwards' });
+        // the hole swallows itself, then the page is simply gone: 404
+        await wait(300);
+        hole.animate([{ transform: 'scale(1.45)' }, { transform: 'scale(1.75)', offset: 0.35 }, { transform: 'scale(0)' }], { duration: 700, easing: 'cubic-bezier(.7,0,1,.4)', fill: 'forwards' });
         await wait(650);
         flash.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: 'scale(40)', opacity: 0.9, offset: 0.3 }, { transform: 'scale(80)', opacity: 0 }], { duration: 900, easing: 'ease-out', fill: 'forwards' });
-        await wait(1000);
+        await wait(700);
+        stopHole();
+        const err = show404(root);
+        await wait(3200);
+        err.el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0.3, transform: 'translateX(-14px) skewX(8deg)', offset: 0.3 }, { opacity: 1, transform: 'translateX(10px)', offset: 0.5 }, { opacity: 0, transform: 'scaleY(0.02)' }],
+            { duration: 550, easing: 'steps(1)', fill: 'forwards' });
+        await wait(600);
+        err.stop();
         clearTimeout(failsafe);
         restart();
     }
