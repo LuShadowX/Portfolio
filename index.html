@@ -59,16 +59,19 @@
         </div>
 
         <nav class="header__nav">
-            <video class="nav-bg-video" autoplay loop muted playsinline webkit-playsinline>
+            <video class="nav-bg-video nav-bg-video--main" autoplay loop muted playsinline webkit-playsinline>
                 <source src="assets/video/menu_bg.mp4" type="video/mp4">
             </video>
-            <video class="nav-bg-video nav-bg-video--news" loop muted playsinline webkit-playsinline preload="none">
+            <video class="nav-bg-video nav-bg-video--preview" data-preview="news" loop muted playsinline webkit-playsinline preload="none">
                 <source src="assets/video/bluelink_bg.webm" type="video/webm">
+            </video>
+            <video class="nav-bg-video nav-bg-video--preview" data-preview="intro" loop muted playsinline webkit-playsinline preload="none">
+                <source src="assets/video/intro_bg.webm" type="video/webm">
             </video>
             <div class="nav-content">
                 <div class="nav-left">
-                    <a href="https://lushadowx.github.io/bluelink/" target="_blank" class="nav-link-overlay nav-link-news" title="BlueLink — news reader"><img class="news-logo" src="https://lushadowx.github.io/bluelink/mark.png" alt="">BLUELINK</a>
-                    <a href="#" class="nav-link-overlay">INTRODUCTION</a>
+                    <a href="https://lushadowx.github.io/bluelink/" target="_blank" class="nav-link-overlay nav-link-news" data-preview="news" title="BlueLink — news reader"><img class="news-logo" src="https://lushadowx.github.io/bluelink/mark.png" alt="">BLUELINK</a>
+                    <a href="https://lushadowx.github.io/bluelink/#/about" target="_blank" class="nav-link-overlay nav-link-intro" data-preview="intro" title="About me"><span class="intro-x">X</span>INTRODUCTION</a>
                     <a href="#" class="nav-link-overlay">PROJECTS</a>
                     <a href="#" class="nav-link-overlay">PEOPLE</a>
                     <a href="#" class="nav-link-overlay">MACHINE LEARNING</a>
@@ -78,6 +81,23 @@
                 </div>
                 <div class="nav-right">
                     <div class="brand-vertical">LuShadow<span class="brand-x">X</span></div>
+                </div>
+                <div class="preview-bar" aria-hidden="true">
+                    <div class="preview-bar__track"><div class="preview-bar__fill"></div></div>
+                    <svg class="preview-cat" viewBox="0 0 64 40">
+                        <path class="cat-tail" d="M14 19 C6 17 3 10 6 4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        <g class="cat-legs cat-legs--a" stroke="currentColor" stroke-width="4" stroke-linecap="round"><line x1="18" y1="24" x2="18" y2="35"/><line x1="38" y1="24" x2="38" y2="35"/></g>
+                        <g class="cat-legs cat-legs--b" stroke="currentColor" stroke-width="4" stroke-linecap="round"><line x1="22" y1="24" x2="22" y2="35"/><line x1="34" y1="24" x2="34" y2="35"/></g>
+                        <g class="cat-body">
+                            <ellipse cx="28" cy="20" rx="15" ry="8.5" fill="currentColor"/>
+                            <polygon points="40,10 41,1 47,7" fill="currentColor"/>
+                            <polygon points="49,7 55,1 55,11" fill="currentColor"/>
+                            <circle cx="48" cy="14" r="8.5" fill="currentColor"/>
+                            <circle cx="51" cy="12.5" r="1.4" fill="#111"/>
+                            <circle cx="56" cy="15.5" r="1.1" fill="#ff8fa3"/>
+                            <circle cx="49" cy="17" r="1.6" fill="#ff8fa3" opacity="0.6"/>
+                        </g>
+                    </svg>
                 </div>
                 <div class="nav-footer">
                     <span class="official-text">OFFICIAL</span>

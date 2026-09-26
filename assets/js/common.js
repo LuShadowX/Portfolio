@@ -19,20 +19,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // BlueLink hover: swap the menu background to the news app video
+    // Hover previews: play the hovered link's video behind the menu, with a progress bar
     const nav = document.querySelector('.header__nav');
-    const newsLink = document.querySelector('.nav-link-news');
-    const newsVideo = document.querySelector('.nav-bg-video--news');
-    if (nav && newsLink && newsVideo) {
-        newsLink.addEventListener('mouseenter', () => {
-            nav.classList.add('is-news');
-            newsVideo.play().catch(() => {});
+    const previewBar = document.querySelector('.preview-bar');
+    let activeVideo = null;
+
+    const trackProgress = () => {
+        if (!activeVideo) return;
+        if (activeVideo.duration) {
+            previewBar.style.setProperty('--p', activeVideo.currentTime / activeVideo.duration);
+        }
+        requestAnimationFrame(trackProgress);
+    };
+
+    document.querySelectorAll('.nav-link-overlay[data-preview]').forEach(link => {
+        const video = document.querySelector(`.nav-bg-video--preview[data-preview="${link.dataset.preview}"]`);
+        if (!nav || !video) return;
+        video.addEventListener('playing', () => { if (video === activeVideo) nav.classList.add('is-playing'); });
+        video.addEventListener('waiting', () => nav.classList.remove('is-playing'));
+
+        link.addEventListener('mouseenter', () => {
+            activeVideo = video;
+            nav.dataset.preview = link.dataset.preview;
+            previewBar.style.setProperty('--p', 0);
+            video.currentTime = 0;
+            video.play().catch(() => {});
+            requestAnimationFrame(trackProgress);
         });
-        newsLink.addEventListener('mouseleave', () => {
-            nav.classList.remove('is-news');
-            newsVideo.pause();
+        link.addEventListener('mouseleave', () => {
+            activeVideo = null;
+            delete nav.dataset.preview;
+            nav.classList.remove('is-playing');
+            video.pause();
         });
-    }
+    });
 
     const overlayLinks = document.querySelectorAll('.nav-link-overlay');
     overlayLinks.forEach(link => {
