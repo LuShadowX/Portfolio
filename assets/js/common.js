@@ -2,61 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 0. ANIME LOADER LOGIC (Liquid Fill Fix)
-    const loader = document.getElementById('tbhx-loader');
-    const fillLayer = document.querySelector('.layer-fill'); // Targets the filling layer
-    const loadingPercent = document.querySelector('.loading-percent');
-    const progressBar = document.querySelector('.progress-bar');
-    const logoWrapper = document.querySelector('.logo-wrapper');
-
-    if (loader && fillLayer) {
-        let count = 0;
-        const totalDuration = 3500; // 3.5 seconds
-        const intervalTime = 30;
-        const increment = 100 / (totalDuration / intervalTime);
-
-        const loadingInterval = setInterval(() => {
-            count += increment;
-            
-            if (count >= 100) {
-                count = 100;
-                clearInterval(loadingInterval);
-                
-                // Final State
-                if(loadingPercent) loadingPercent.textContent = "100%";
-                if(progressBar) progressBar.style.width = "100%";
-                
-                // Ensure Fill is complete (Show fully)
-                fillLayer.style.clipPath = `inset(0 0 0 0)`;
-                
-                // Phase 2: Red Strip
-                logoWrapper.classList.add('phase-2'); 
-                
-                // Phase 3: Glitch
-                setTimeout(() => {
-                    logoWrapper.classList.add('glitching');
-                }, 600);
-
-                // Phase 4: Reveal Website
-                setTimeout(() => {
-                    document.body.classList.add('loaded');
-                }, 1600);
-            } else {
-                // Update text & bar
-                const currentPercent = Math.floor(count);
-                if(loadingPercent) loadingPercent.textContent = `${currentPercent}%`;
-                if(progressBar) progressBar.style.width = `${count}%`;
-                
-                // *** LIQUID FILL LOGIC ***
-                // We clip the TOP of the fill layer. 
-                // 100% inset = fully hidden (clipped). 0% inset = fully visible.
-                // As count goes 0->100, clip goes 100->0.
-                const clipValue = 100 - count;
-                fillLayer.style.clipPath = `inset(${clipValue}% 0 0 0)`;
-            }
-        }, intervalTime);
-    }
-
     // 1. MENU LOGIC
     const menuBtn = document.querySelector('.js-menu');
     const header = document.querySelector('.js-header');
