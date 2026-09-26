@@ -65,6 +65,9 @@
             <video class="nav-bg-video nav-bg-video--preview" data-preview="news" loop muted playsinline webkit-playsinline preload="none">
                 <source src="assets/video/bluelink_bg.webm" type="video/webm">
             </video>
+            <video class="nav-bg-video nav-bg-video--preview" data-preview="projects" loop muted playsinline webkit-playsinline preload="none">
+                <source src="assets/video/projects_bg.webm" type="video/webm">
+            </video>
             <video class="nav-bg-video nav-bg-video--preview" data-preview="intro" loop muted playsinline webkit-playsinline preload="none">
                 <source src="assets/video/intro_bg.webm" type="video/webm">
             </video>
@@ -72,7 +75,7 @@
                 <div class="nav-left">
                     <a href="https://lushadowx.github.io/bluelink/" target="_blank" class="nav-link-overlay nav-link-news" data-preview="news" title="BlueLink — news reader"><img class="news-logo" src="https://lushadowx.github.io/bluelink/mark.png" alt="">BLUELINK</a>
                     <a href="https://lushadowx.github.io/bluelink/#/about" target="_blank" class="nav-link-overlay nav-link-intro" data-preview="intro" title="About me"><span class="intro-x">X</span>INTRODUCTION</a>
-                    <a href="#" class="nav-link-overlay">PROJECTS</a>
+                    <a href="#projects" class="nav-link-overlay nav-link-projects" data-preview="projects" title="My projects"><svg class="projects-logo" aria-hidden="true" viewBox="-600 -600 1200 1200"><g fill="none" stroke="currentColor" stroke-linecap="round"><path d="M-78.2 493.8 A500 500 0 0 1 -466.8 -179.2" stroke-width="78"/><line x1="0.0" y1="482.0" x2="-140.4" y2="257.3" stroke-width="62"/><line x1="0.0" y1="482.0" x2="140.4" y2="257.3" stroke-width="62"/><circle cx="-0.0" cy="-255.0" r="112" stroke-width="36"/><path d="M-388.6 -314.7 A500 500 0 0 1 388.6 -314.7" stroke-width="78"/><line x1="-417.4" y1="-241.0" x2="-152.6" y2="-250.2" stroke-width="62"/><line x1="-417.4" y1="-241.0" x2="-293.0" y2="-7.0" stroke-width="62"/><circle cx="220.8" cy="127.5" r="112" stroke-width="36"/><path d="M466.8 -179.2 A500 500 0 0 1 78.2 493.8" stroke-width="78"/><line x1="417.4" y1="-241.0" x2="293.0" y2="-7.0" stroke-width="62"/><line x1="417.4" y1="-241.0" x2="152.6" y2="-250.2" stroke-width="62"/><circle cx="-220.8" cy="127.5" r="112" stroke-width="36"/></g></svg>PROJECTS</a>
                     <a href="#" class="nav-link-overlay">PEOPLE</a>
                     <a href="#" class="nav-link-overlay">MACHINE LEARNING</a>
                     <a href="#" class="nav-link-overlay">CODING CONTEST</a>
@@ -309,6 +312,618 @@
                         <div class="card-actions">
                             <a href="#" class="card-link">View Project</a>
                             <a href="https://github.com/LuShadowX/AI-Powered-Process-Performance-Analyzer-For-OS" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-300">
+                    <div class="card-img">
+                        <img src="assets/images/bluelink.jpg" alt="BlueLink" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>BlueLink</h3>
+                        <p>An editorial news reader for tech, AI, sport, games and lifestyle. A Node pipeline pulls RSS and YouTube feeds server-side, de-duplicates them and publishes static JSON, and GitHub Actions refreshes every section on a schedule.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">TypeScript</span>
+                            <span class="tech-pill">Vite</span>
+                            <span class="tech-pill">Node.js</span>
+                            <span class="tech-pill">GitHub Actions</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://lushadowx.github.io/bluelink/" target="_blank" class="card-link">Live Demo</a>
+                            <a href="https://github.com/LuShadowX/bluelink" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/ai-support-agent" alt="AI Support Agent" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>AI Support Agent</h3>
+                        <p>A customer-support agent that answers only from your business documents using RAG and takes real actions: it looks up orders, checks live stock and hands off to a human. Runs as a one-line website widget and as a Telegram bot.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">FastAPI</span>
+                            <span class="tech-pill">ChromaDB</span>
+                            <span class="tech-pill">RAG</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/LuShadowX/ai-support-agent" target="_blank" class="card-link">View Project</a>
+                            <a href="https://github.com/LuShadowX/ai-support-agent" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/lua-anime-chatbot" alt="Lua: Anime Chatbot" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>Lua: Anime Chatbot</h3>
+                        <p>An LLM anime chatbot grounded in live AniList, Fandom and Wikipedia data, so it says so instead of making things up. Remembers each conversation and fails over between LLM providers automatically.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">LLM</span>
+                            <span class="tech-pill">AniList API</span>
+                            <span class="tech-pill">OpenRouter</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://lua-anime-chatbot.onrender.com" target="_blank" class="card-link">Live Demo</a>
+                            <a href="https://github.com/LuShadowX/lua-anime-chatbot" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/nova-novel-bot" alt="Nova: Novel Bot" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>Nova: Novel Bot</h3>
+                        <p>A friendly novels-expert chatbot grounded in Open Library and Wikipedia. Answers questions about any book, shows a cover card for the novel being discussed and recommends what to read next.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">JavaScript</span>
+                            <span class="tech-pill">LLM</span>
+                            <span class="tech-pill">Open Library API</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://nova-novel-bot.onrender.com" target="_blank" class="card-link">Live Demo</a>
+                            <a href="https://github.com/LuShadowX/nova-novel-bot" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/nodrift" alt="nodrift" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>nodrift</h3>
+                        <p>Proves a refactor changed nothing by running it. It records the real inputs your test suite produces, replays them against both versions and compares return values, exceptions, argument mutations and files written. Published on PyPI.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">pytest</span>
+                            <span class="tech-pill">Differential Testing</span>
+                            <span class="tech-pill">PyPI</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://pypi.org/project/nodrift/" target="_blank" class="card-link">View on PyPI</a>
+                            <a href="https://github.com/LuShadowX/nodrift" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/conviction" alt="conviction" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>conviction</h3>
+                        <p>Values that know how sure they are. Uncertainty from a model stays attached to a number and propagates through arithmetic, so a comparison returns a probability and code can act only at a chosen confidence.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Probability</span>
+                            <span class="tech-pill">Uncertainty</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/LuShadowX/conviction" target="_blank" class="card-link">View Project</a>
+                            <a href="https://github.com/LuShadowX/conviction" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/cmdo" alt="cmdo" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>cmdo</h3>
+                        <p>A mini Google for the terminal. Explains what a command does, finds the right command for a task described in plain words and checks what is installed. Fully offline, with no dependencies beyond Python.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">CLI</span>
+                            <span class="tech-pill">Offline Search</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/LuShadowX/cmdo" target="_blank" class="card-link">View Project</a>
+                            <a href="https://github.com/LuShadowX/cmdo" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/Github-badge-tracker" alt="GitHub Badge Tracker" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>GitHub Badge Tracker</h3>
+                        <p>A CLI that shows exactly how close you are to every GitHub profile achievement: merged PRs, co-authored PRs, stars and accepted answers, with the count still needed for the next tier.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">CLI</span>
+                            <span class="tech-pill">GitHub API</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/LuShadowX/Github-badge-tracker" target="_blank" class="card-link">View Project</a>
+                            <a href="https://github.com/LuShadowX/Github-badge-tracker" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/LuShadowX/Ai-Limited-Edition-Product-Tracker-" alt="Limited Edition Product Tracker" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>Limited Edition Product Tracker</h3>
+                        <p>Tracks high-end limited-edition products by scraping retailer pages, keeps a price history in CSV and sends an email alert when a deal appears.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Web Scraping</span>
+                            <span class="tech-pill">BeautifulSoup</span>
+                            <span class="tech-pill">SMTP</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/LuShadowX/Ai-Limited-Edition-Product-Tracker-" target="_blank" class="card-link">View Project</a>
+                            <a href="https://github.com/LuShadowX/Ai-Limited-Edition-Product-Tracker-" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-300">
+                    <div class="card-img">
+                        <img src="assets/images/bluelink-blog.jpg" alt="Blue Link Blog" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>Blue Link Blog</h3>
+                        <p>My personal blog on machine learning, systems and the code in between. Plain HTML, one CSS file and about 130 lines of vanilla JavaScript: no framework, no build step and no tracking.</p>
+                        <div class="project-meta">
+                            <span class="tech-pill">HTML</span>
+                            <span class="tech-pill">CSS</span>
+                            <span class="tech-pill">JavaScript</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://lushadowx.github.io/" target="_blank" class="card-link">Live Demo</a>
+                            <a href="https://github.com/LuShadowX/LuShadowX.github.io" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="open-source" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">Open Source</h2>
+                <p class="section-subtitle">27 merged pull requests across 18 projects, from bug fixes to docs.</p>
+            </div>
+            <div class="card-grid">
+                <div class="card reveal-left delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/scikit-learn/scikit-learn" alt="scikit-learn/scikit-learn" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>scikit-learn/scikit-learn</h3>
+                        <p>scikit-learn: machine learning in Python</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/scikit-learn/scikit-learn/pull/34556" target="_blank">#34556</a> DOC refactor examples/ensemble/plot_forest_iris.py to use DecisionBoundaryDisplay</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 67.4k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/scikit-learn/scikit-learn/pull/34556" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/scikit-learn/scikit-learn" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/scrapy/scrapy" alt="scrapy/scrapy" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>scrapy/scrapy</h3>
+                        <p>Scrapy, a fast high-level web crawling &amp; scraping framework for Python.</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/scrapy/scrapy/pull/7783" target="_blank">#7783</a> Fix CaseInsensitiveDict.copy() sharing state with the original</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 64.5k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/scrapy/scrapy/pull/7783" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/scrapy/scrapy" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/mozilla/pdf.js" alt="mozilla/pdf.js" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>mozilla/pdf.js</h3>
+                        <p>PDF Reader in JavaScript</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/mozilla/pdf.js/pull/21622" target="_blank">#21622</a> Document the preserve and dependencyLists params for recordOperation</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 53.9k</span>
+                            <span class="tech-pill">JavaScript</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/mozilla/pdf.js/pull/21622" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/mozilla/pdf.js" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/roboflow/supervision" alt="roboflow/supervision" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>roboflow/supervision</h3>
+                        <p>We write your reusable computer vision tools.</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/roboflow/supervision/pull/2463" target="_blank">#2463</a> fix(dataset): keep `class_id` integral for VOC background images</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 51k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/roboflow/supervision/pull/2463" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/roboflow/supervision" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/psf/black" alt="psf/black" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>psf/black</h3>
+                        <p>The uncompromising Python code formatter</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/psf/black/pull/5271" target="_blank">#5271</a> Don&#x27;t hug brackets when it would merge two `type: ignore` comments</li>
+                            <li><a href="https://github.com/psf/black/pull/5272" target="_blank">#5272</a> Keep the required trailing comma of a one-element subscript under --skip-magic-trailing-comma</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 41.9k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">2 merged PRs</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/psf/black/pulls?q=is%3Apr+author%3ALuShadowX+is%3Amerged" target="_blank" class="card-link">View PRs</a>
+                            <a href="https://github.com/psf/black" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/huggingface/diffusers" alt="huggingface/diffusers" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>huggingface/diffusers</h3>
+                        <p>Diffusers: State-of-the-art diffusion models for image, video, and audio generation in PyTorch.</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/huggingface/diffusers/pull/14416" target="_blank">#14416</a> Fix callback tensor inputs that are never bound in the denoising loop</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 34.6k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/huggingface/diffusers/pull/14416" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/huggingface/diffusers" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/tqdm/tqdm" alt="tqdm/tqdm" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>tqdm/tqdm</h3>
+                        <p>A Fast, Extensible Progress Bar for Python and CLI</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/tqdm/tqdm/pull/1781" target="_blank">#1781</a> Fix format_meter OverflowError when total is inf</li>
+                            <li><a href="https://github.com/tqdm/tqdm/pull/1783" target="_blank">#1783</a> Treat inf total as unknown in reset() too</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 31.3k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">2 merged PRs</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/tqdm/tqdm/pulls?q=is%3Apr+author%3ALuShadowX+is%3Amerged" target="_blank" class="card-link">View PRs</a>
+                            <a href="https://github.com/tqdm/tqdm" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/pydantic/pydantic" alt="pydantic/pydantic" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>pydantic/pydantic</h3>
+                        <p>Data validation using Python type hints</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/pydantic/pydantic/pull/13503" target="_blank">#13503</a> Make `FailFast` hashable</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 28.9k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/pydantic/pydantic/pull/13503" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/pydantic/pydantic" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/huggingface/sentence-transformers" alt="huggingface/sentence-transformers" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>huggingface/sentence-transformers</h3>
+                        <p>State-of-the-Art Embeddings, Retrieval, and Reranking</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/huggingface/sentence-transformers/pull/3906" target="_blank">#3906</a> [`fix`] Support mixed sparse/dense inputs in euclidean and manhattan similarity</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 19.1k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/huggingface/sentence-transformers/pull/3906" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/huggingface/sentence-transformers" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/aio-libs/aiohttp" alt="aio-libs/aiohttp" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>aio-libs/aiohttp</h3>
+                        <p>Asynchronous HTTP client/server framework for asyncio and Python</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/aio-libs/aiohttp/pull/13246" target="_blank">#13246</a> Strip trailing OWS from header values in the C parser</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 16.6k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/aio-libs/aiohttp/pull/13246" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/aio-libs/aiohttp" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/python-pillow/Pillow" alt="python-pillow/Pillow" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>python-pillow/Pillow</h3>
+                        <p>Python Imaging Library (fork)</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/python-pillow/Pillow/pull/9825" target="_blank">#9825</a> Raise ValueError instead of asserting ImageOps colorize() arguments</li>
+                            <li><a href="https://github.com/python-pillow/Pillow/pull/9826" target="_blank">#9826</a> Treat an MPO with too few MP entries as a JPEG</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 13.8k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">2 merged PRs</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/python-pillow/Pillow/pulls?q=is%3Apr+author%3ALuShadowX+is%3Amerged" target="_blank" class="card-link">View PRs</a>
+                            <a href="https://github.com/python-pillow/Pillow" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/ogx-ai/ogx" alt="ogx-ai/ogx" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>ogx-ai/ogx</h3>
+                        <p>Open GenAI Stack</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/ogx-ai/ogx/pull/6367" target="_blank">#6367</a> fix(inference, anthropic): emit tool messages before user text in translation</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 8.4k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/ogx-ai/ogx/pull/6367" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/ogx-ai/ogx" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/fonttools/fonttools" alt="fonttools/fonttools" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>fonttools/fonttools</h3>
+                        <p>A library to manipulate font files from Python.</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/fonttools/fonttools/pull/4136" target="_blank">#4136</a> [cmap] Don&#x27;t drop subtables in unsupported formats</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 5.3k</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/fonttools/fonttools/pull/4136" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/fonttools/fonttools" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/microsoft/typeagent-py" alt="microsoft/typeagent-py" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>microsoft/typeagent-py</h3>
+                        <p>Structured RAG: ingest, index, query</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/microsoft/typeagent-py/pull/294" target="_blank">#294</a> Format 0.0 facet values consistently with other floats</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 885</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/microsoft/typeagent-py/pull/294" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/microsoft/typeagent-py" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/Pbatch/ClashRoyaleBuildABot" alt="Pbatch/ClashRoyaleBuildABot" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>Pbatch/ClashRoyaleBuildABot</h3>
+                        <p>A platform for creating bots to play Clash Royale</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/Pbatch/ClashRoyaleBuildABot/pull/284" target="_blank">#284</a> Fix defense placement when the threat is on the right</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 374</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/Pbatch/ClashRoyaleBuildABot/pull/284" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/Pbatch/ClashRoyaleBuildABot" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-100">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/longturn/freeciv21" alt="longturn/freeciv21" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>longturn/freeciv21</h3>
+                        <p>Develop your civilization from humble roots to a global empire</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/longturn/freeciv21/pull/2936" target="_blank">#2936</a> Fix name parameter type in Tile has_extra/has_base/has_road stubs</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 267</span>
+                            <span class="tech-pill">C++</span>
+                            <span class="tech-pill">1 merged PR</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/longturn/freeciv21/pull/2936" target="_blank" class="card-link">View PR</a>
+                            <a href="https://github.com/longturn/freeciv21" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-left delay-200">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/zabuldon/teslajsonpy" alt="zabuldon/teslajsonpy" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>zabuldon/teslajsonpy</h3>
+                        <p>An async Python library for the Tesla owner API, used by Home Assistant.</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/zabuldon/teslajsonpy/pull/502" target="_blank">#502</a> fix: don&#x27;t assume the SITE_DATA response is a dict</li>
+                            <li><a href="https://github.com/zabuldon/teslajsonpy/pull/503" target="_blank">#503</a> ci: pin Poetry to 2.2.1</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 58</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">2 merged PRs</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/zabuldon/teslajsonpy/pulls?q=is%3Apr+author%3ALuShadowX+is%3Amerged" target="_blank" class="card-link">View PRs</a>
+                            <a href="https://github.com/zabuldon/teslajsonpy" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card reveal-right delay-300">
+                    <div class="card-img">
+                        <img src="https://opengraph.githubassets.com/1/sanitizers/patchback-github-app" alt="sanitizers/patchback-github-app" loading="lazy">
+                    </div>
+                    <div class="card-info">
+                        <h3>sanitizers/patchback-github-app</h3>
+                        <p>A GitHub App that backports merged pull requests to release branches.</p>
+                        <ul class="pr-list">
+                            <li><a href="https://github.com/sanitizers/patchback-github-app/pull/58" target="_blank">#58</a> Don&#x27;t render `None` as the backport PR body</li>
+                            <li><a href="https://github.com/sanitizers/patchback-github-app/pull/59" target="_blank">#59</a> Add a GitHub App manifest with the needed privileges</li>
+                            <li><a href="https://github.com/sanitizers/patchback-github-app/pull/60" target="_blank">#60</a> Add a pre-commit config with hygiene checks</li>
+                            <li><a href="https://github.com/sanitizers/patchback-github-app/pull/62" target="_blank">#62</a> State the license in the readme</li>
+                            <li><a href="https://github.com/sanitizers/patchback-github-app/pull/63" target="_blank">#63</a> Point the readme at the issue tracker</li>
+                            <li><a href="https://github.com/sanitizers/patchback-github-app/pull/67" target="_blank">#67</a> Add the banner and badges to the readme</li>
+                        </ul>
+                        <div class="project-meta">
+                            <span class="tech-pill">★ 14</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">6 merged PRs</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/sanitizers/patchback-github-app/pulls?q=is%3Apr+author%3ALuShadowX+is%3Amerged" target="_blank" class="card-link">View PRs</a>
+                            <a href="https://github.com/sanitizers/patchback-github-app" target="_blank" class="gh-btn-bottom" title="View Source"><i class="fab fa-github"></i></a>
                         </div>
                     </div>
                 </div>
