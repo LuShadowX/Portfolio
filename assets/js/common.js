@@ -11,10 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         menuBtn.addEventListener('click', () => {
             menuBtn.classList.toggle('is-active');
             header.classList.toggle('is-active');
+            const menuVideo = header.querySelector('.nav-bg-video--main');
             if (header.classList.contains('is-active')) {
                 body.style.overflow = 'hidden';
+                menuVideo?.play().catch(() => {});
             } else {
                 body.style.overflow = '';
+                menuVideo?.pause();
             }
         });
     }
