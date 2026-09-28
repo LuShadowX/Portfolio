@@ -149,6 +149,45 @@ body {
 .nav-link-projects:hover { color: #86efac; text-shadow: 0 0 12px rgba(134, 239, 172, 0.85), 0 0 32px rgba(74, 222, 128, 0.55); }
 .nav-link-projects:hover .projects-logo { color: #86efac; filter: drop-shadow(0 0 12px rgba(134, 239, 172, 0.95)); transform: rotate(120deg); }
 
+.nav-link-special { display: inline-flex; align-items: center; gap: 0.3em; }
+.special-logo {
+    width: 0.9em; height: 0.9em; flex-shrink: 0;
+    filter: drop-shadow(-1.5px 0 #ff2bd6) drop-shadow(1.5px 0 #22e6ff) drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+    transition: filter 0.3s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.special-logo .sp-l { fill: #ffffff; }
+.special-logo .sp-d { fill: #b9bfcc; }
+.nav-link-special:hover, .header__nav.is-special .nav-link-special {
+    color: #ffffff;
+    text-shadow: -2px 0 rgba(255, 43, 214, 0.85), 2px 0 rgba(34, 230, 255, 0.85), 0 0 14px rgba(255, 255, 255, 0.9), 0 0 34px rgba(150, 130, 255, 0.6);
+}
+.nav-link-special:hover .special-logo, .header__nav.is-special .special-logo {
+    filter: drop-shadow(-3px 0 #ff2bd6) drop-shadow(3px 0 #22e6ff) drop-shadow(0 0 14px rgba(255, 255, 255, 0.95));
+    transform: rotate(135deg);
+}
+.header.is-active .header__nav.is-special .nav-link-overlay:not(.nav-link-special) { opacity: 0.15; transition-delay: 0s; }
+
+/* SPECIAL click: a hand-drawn arrow points at the LuShadowX X */
+.special-arrow {
+    position: absolute; left: 0; top: 0; width: 170px; height: auto; pointer-events: none; z-index: 2;
+    opacity: 0; transform-origin: 100% 50%;
+    transform: translate(var(--ax, 0px), var(--ay, 0px)) rotate(var(--ar, 0deg)) scale(0.4);
+    transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+}
+.header__nav.is-special .special-arrow {
+    opacity: 1; transform: translate(var(--ax, 0px), var(--ay, 0px)) rotate(var(--ar, 0deg)) scale(1);
+    animation: special-arrow-nudge 0.9s ease-in-out 0.5s infinite;
+}
+@keyframes special-arrow-nudge {
+    0%, 100% { transform: translate(var(--ax, 0px), var(--ay, 0px)) rotate(var(--ar, 0deg)) translateX(0); }
+    50% { transform: translate(var(--ax, 0px), var(--ay, 0px)) rotate(var(--ar, 0deg)) translateX(14px); }
+}
+.header__nav.is-special .brand-x {
+    color: #ffffff;
+    text-shadow: -3px 0 rgba(255, 43, 214, 0.85), 3px 0 rgba(34, 230, 255, 0.85), 0 0 30px rgba(255, 255, 255, 0.8);
+}
+
 /* Hover previews: menu background swaps to the hovered link's video */
 .nav-bg-video { transition: opacity 0.5s ease, transform 0.8s ease; }
 .nav-bg-video--preview { opacity: 0; transform: scale(1.05); filter: brightness(0.45) contrast(1.1); }

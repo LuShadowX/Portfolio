@@ -54,7 +54,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const overlayLinks = document.querySelectorAll('.nav-link-overlay');
+    // SPECIAL: dim the other links and point an arrow at the LuShadowX X
+    const specialLink = document.querySelector('.nav-link-special');
+    const specialArrow = document.querySelector('.special-arrow');
+    const brandX = document.querySelector('.brand-x');
+
+    const aimArrow = () => {
+        if (!nav || !specialArrow || !brandX) return;
+        const navBox = nav.getBoundingClientRect();
+        const from = specialLink.getBoundingClientRect();
+        const to = brandX.getBoundingClientRect();
+        const tx = to.left + to.width / 2 - navBox.left;
+        const ty = to.top + to.height / 2 - navBox.top;
+        const fx = from.right - navBox.left;
+        const fy = from.top + from.height / 2 - navBox.top;
+        const angle = Math.atan2(ty - fy, tx - fx);
+        // Arrow tip sits a little short of the X, rotated around the tip
+        const gap = to.width / 2 + 30;
+        const w = parseFloat(getComputedStyle(specialArrow).width) || 170;
+        const h = w * 110 / 200;
+        specialArrow.style.setProperty('--ax', `${tx - Math.cos(angle) * gap - w}px`);
+        specialArrow.style.setProperty('--ay', `${ty - Math.sin(angle) * gap - h / 2}px`);
+        specialArrow.style.setProperty('--ar', `${angle * 180 / Math.PI}deg`);
+    };
+
+    const endSpecial = () => nav && nav.classList.remove('is-special');
+
+    if (specialLink) {
+        specialLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            aimArrow();
+            nav.classList.toggle('is-special');
+        });
+        window.addEventListener('resize', aimArrow);
+        if (menuBtn) menuBtn.addEventListener('click', endSpecial);
+    }
+
+    const overlayLinks = document.querySelectorAll('.nav-link-overlay:not(.nav-link-special)');
     overlayLinks.forEach(link => {
         link.addEventListener('click', () => {
             menuBtn.classList.remove('is-active');
