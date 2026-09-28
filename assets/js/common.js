@@ -118,21 +118,24 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.toggle('at-intro', entry.intersectionRatio > 0.35);
         }, { threshold: [0, 0.35, 1] }).observe(stage);
 
-        // Clock animation: step through the 116-frame sprite sheet (12 x 10 grid) at 15 fps
+        // Clock animation: 154 frames (13 x 12 sheet) at the source's 20 fps, timed by the display clock
         const clip = stage.querySelector('.signal-clip');
         if (clip) {
             // A drawn first frame shows until the sheet arrives, then playback starts from frame 0
-            let frame = 0;
-            const sheet = new Image();
-            sheet.onload = () => {
-                clip.classList.add('is-ready');
-                setInterval(() => {
-                    if (!body.classList.contains('at-intro')) return;
-                    frame = (frame + 1) % 116;
-                    clip.style.backgroundPosition = `${(frame % 12) * 100 / 11}% ${Math.floor(frame / 12) * 100 / 9}%`;
-                }, 1000 / 15);
+            const FRAMES = 154, COLS = 13, ROWS = 12, FPS = 20;
+            let start = null, last = -1;
+            const tick = (now) => {
+                if (start === null) start = now;
+                const frame = Math.floor((now - start) / 1000 * FPS) % FRAMES;
+                if (frame !== last && body.classList.contains('at-intro')) {
+                    last = frame;
+                    clip.style.backgroundPosition = `${(frame % COLS) * 100 / (COLS - 1)}% ${Math.floor(frame / COLS) * 100 / (ROWS - 1)}%`;
+                }
+                requestAnimationFrame(tick);
             };
-            sheet.src = 'assets/images/clock-sprite.webp';
+            const sheet = new Image();
+            sheet.onload = () => { clip.classList.add('is-ready'); requestAnimationFrame(tick); };
+            sheet.src = 'assets/images/clock-sprite.webp?v=2';
         }
 
         stage.querySelectorAll('.cutout').forEach(cutout => {
