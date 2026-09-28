@@ -340,6 +340,10 @@ body {
     mix-blend-mode: screen; opacity: 0.62; pointer-events: none; transition: opacity 0.5s ease, transform 0.8s var(--ease-out-expo);
 }
 .gh-graph-card:hover .gh-graph-art { opacity: 0.45; transform: scale(1.04); }
+.gh-graph-card { cursor: pointer; }
+.gh-graph { transition: filter 0.5s ease, opacity 0.5s ease; }
+.gh-graph-card.is-art .gh-graph { filter: brightness(0.25) saturate(0.4); }
+.gh-graph-card.is-art .gh-graph-art { opacity: 1; mix-blend-mode: normal; transform: scale(1.02); }
 .gh-graph {
     padding: 48px 28px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(18, 18, 18, 0.85); min-height: 120px; min-width: 0; overflow-x: auto;

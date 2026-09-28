@@ -114,6 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // GitHub contribution graph (last 12 months)
     const graph = document.getElementById('gh-graph');
     if (graph) {
+        // Click the heatmap to dim it and bring the art forward; click again to go back
+        const graphCard = graph.closest('.gh-graph-card');
+        if (graphCard) graphCard.addEventListener('click', () => graphCard.classList.toggle('is-art'));
         const user = graph.dataset.user;
         fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`)
             .then(r => r.json())
