@@ -333,11 +333,11 @@ body {
 .cutout:hover img { filter: brightness(1.09) saturate(1.06); transform: perspective(53rem) translate3d(0, -0.35rem, 1.25rem) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.035); }
 .cutout.is-grabbed { cursor: grabbing; z-index: 8; }
 .cutout.is-grabbed img { transform: perspective(53rem) translate3d(0, 0, 1.75rem) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(0.98); }
-.guitar { --enter-x: -110%; --enter-y: -75%; --enter-r: -42deg; --enter-rx: -18deg; --enter-ry: 24deg; --snap-x: 1.6rem; --snap-y: 0.65rem; --snap-r: 4deg; --echo-x: -0.62rem; --echo-y: -0.26rem; --echo-r: -1.8deg; --arrival-delay: 80ms; width: clamp(19rem, 29vw, 36rem); top: -8%; left: 4%; rotate: -14deg; }
+.guitar { --enter-x: -110%; --enter-y: -75%; --enter-r: -42deg; --enter-rx: -18deg; --enter-ry: 24deg; --snap-x: 1.6rem; --snap-y: 0.65rem; --snap-r: 4deg; --echo-x: -0.62rem; --echo-y: -0.26rem; --echo-r: -1.8deg; --arrival-delay: 80ms; width: clamp(12rem, 17vw, 22rem); top: 3%; left: 6%; rotate: -12deg; }
 .keyboard { --enter-x: 115%; --enter-y: -85%; --enter-r: 44deg; --enter-rx: -16deg; --enter-ry: -22deg; --snap-x: -1.65rem; --snap-y: 0.7rem; --snap-r: -4deg; --echo-x: 0.65rem; --echo-y: -0.28rem; --echo-r: 1.8deg; --arrival-delay: 0.18s; width: clamp(23rem, 35vw, 43rem); top: -5%; right: 1%; rotate: 8deg; }
-.headphones { --enter-x: -120%; --enter-y: 25%; --enter-r: -38deg; --enter-rx: 14deg; --enter-ry: 20deg; --snap-x: 1.85rem; --snap-y: -0.35rem; --snap-r: 4.5deg; --echo-x: -0.7rem; --echo-y: 0.16rem; --echo-r: -2deg; --arrival-delay: 0.3s; width: clamp(18rem, 25vw, 31rem); top: 42%; left: -1%; rotate: -5deg; }
-.sampler { --enter-x: 120%; --enter-y: 26%; --enter-r: 40deg; --enter-rx: 16deg; --enter-ry: -22deg; --snap-x: -1.85rem; --snap-y: -0.4rem; --snap-r: -4.5deg; --echo-x: 0.72rem; --echo-y: 0.18rem; --echo-r: 2deg; --arrival-delay: 0.42s; width: clamp(21rem, 29vw, 36rem); top: 48%; right: -2%; rotate: 11deg; }
-.watch { --enter-x: 0%; --enter-y: 135%; --enter-r: 25deg; --enter-rx: 22deg; --enter-ry: -8deg; --snap-y: -1.3rem; --snap-r: -3deg; --echo-y: 0.5rem; --echo-r: 1.35deg; --arrival-delay: 0.54s; width: clamp(20rem, 30vw, 38rem); bottom: 2%; left: 34%; rotate: -10deg; }
+.headphones { --enter-x: -120%; --enter-y: 25%; --enter-r: -38deg; --enter-rx: 14deg; --enter-ry: 20deg; --snap-x: 1.85rem; --snap-y: -0.35rem; --snap-r: 4.5deg; --echo-x: -0.7rem; --echo-y: 0.16rem; --echo-r: -2deg; --arrival-delay: 0.3s; width: clamp(13rem, 19vw, 24rem); top: 47%; left: 2%; rotate: -5deg; }
+.sampler { --enter-x: 120%; --enter-y: 26%; --enter-r: 40deg; --enter-rx: 16deg; --enter-ry: -22deg; --snap-x: -1.85rem; --snap-y: -0.4rem; --snap-r: -4.5deg; --echo-x: 0.72rem; --echo-y: 0.18rem; --echo-r: 2deg; --arrival-delay: 0.42s; width: clamp(12rem, 17vw, 21rem); top: 46%; right: 4%; rotate: 9deg; }
+.watch { --enter-x: 0%; --enter-y: 135%; --enter-r: 25deg; --enter-rx: 22deg; --enter-ry: -8deg; --snap-y: -1.3rem; --snap-r: -3deg; --echo-y: 0.5rem; --echo-r: 1.35deg; --arrival-delay: 0.54s; width: clamp(12rem, 17vw, 21rem); bottom: 4%; left: 42%; rotate: -6deg; }
 
 .scroll-cue {
     position: absolute; z-index: 13; bottom: 1.1rem; left: 50%; transform: translate(-50%);
@@ -373,11 +373,11 @@ body.on-light .js-menu:not(.is-active) .menu-text { color: #11110f; }
     .masthead { top: 0.85rem; left: 0.85rem; right: 0.85rem; }
     .stage-copy { width: min(29rem, 72vw); }
     .stage-copy h1 { font-size: clamp(3.5rem, 10.5vw, 6rem); }
-    .guitar { width: clamp(16rem, 42vw, 24rem); top: -3%; left: -6%; }
+    .guitar { width: clamp(10rem, 26vw, 15rem); top: 4%; left: 2%; }
     .keyboard { width: clamp(19rem, 48vw, 28rem); top: 4%; right: -12%; }
-    .headphones { width: clamp(15rem, 36vw, 22rem); top: 59%; left: -12%; }
-    .sampler { width: clamp(18rem, 43vw, 26rem); top: 61%; right: -14%; }
-    .watch { width: clamp(18rem, 48vw, 27rem); bottom: 3%; left: 24%; }
+    .headphones { width: clamp(10rem, 28vw, 16rem); top: 60%; left: -3%; }
+    .sampler { width: clamp(9rem, 24vw, 14rem); top: 60%; right: 0%; }
+    .watch { width: clamp(10rem, 28vw, 16rem); bottom: 5%; left: 36%; }
 }
 @media (max-width: 42rem) {
     .stage { min-height: max(44rem, 100svh); }
@@ -387,11 +387,11 @@ body.on-light .js-menu:not(.is-active) .menu-text { color: #11110f; }
     .stage-copy { width: 82%; top: 48%; }
     .stage-copy h1 { font-size: clamp(3.2rem, 14vw, 4.75rem); }
     .title-label { padding: 0.28rem 0.4rem; font-size: 0.34rem; left: 52%; }
-    .guitar { width: 58vw; top: 1%; left: -14%; }
+    .guitar { width: 36vw; top: 5%; left: -4%; }
     .keyboard { width: 65vw; top: 9%; right: -21%; }
-    .headphones { width: 52vw; top: 64%; left: -20%; }
-    .sampler { width: 62vw; top: 66%; right: -26%; }
-    .watch { width: 66vw; bottom: 5%; left: 18%; }
+    .headphones { width: 40vw; top: 66%; left: -8%; }
+    .sampler { width: 34vw; top: 64%; right: -4%; }
+    .watch { width: 40vw; bottom: 5%; left: 30%; }
     .scroll-cue { font-size: 0.45rem; bottom: 0.8rem; }
 }
 @media (max-width: 25rem) {
