@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | Lukshya Supyal</title>
     
-    <link rel="stylesheet" href="assets/css/main.css?v=20260928e">
+    <link rel="preload" href="assets/images/clock-sprite.webp" as="image" fetchpriority="high">
+    <link rel="stylesheet" href="assets/css/main.css?v=20260928g">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,7 +139,7 @@
         <svg class="signal-thread" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M -20 548 C 104 468, 220 582, 350 506 C 418 466, 412 401, 448 338 C 501 244, 630 242, 684 330 C 739 421, 669 520, 568 518 C 468 516, 410 436, 438 350 C 483 211, 695 206, 796 326 C 874 419, 901 171, 1020 68"/></svg>
         <div class="masthead">
             <a class="wordmark" href="#contact" aria-label="Contact Lukshya Supyal"><b>lukshya<br>supyal</b></a>
-            <canvas class="signal-clip" aria-hidden="true"></canvas><video class="signal-source" src="assets/video/dote.mp4" autoplay muted loop playsinline webkit-playsinline aria-hidden="true"></video>
+            <div class="signal-clip" aria-hidden="true"></div>
         </div>
         <div class="stage-copy">
             <h1 aria-label="Ideas Into Reality"><span class="lockup-i" aria-hidden="true">I</span><span class="ideas-rest" aria-hidden="true">deas</span><span class="into-rest" aria-hidden="true">nto<span class="title-label">LUKSHYA SUPYAL</span></span><span class="reality-word" aria-hidden="true">Reality</span></h1>
@@ -154,7 +155,7 @@
     <main class="hero" id="home">
         <p class="hero-kicker">AI / ML Engineer &middot; Open-source contributor</p>
         <div class="hero-name">
-            <h1 class="hero-title"><span class="hero-first">LUKSHYA</span><span class="hero-last">SUP<span class="hero-portrait-anchor"><img class="hero-portrait" src="assets/images/portrait.jpg" alt="Lukshya Supyal"></span>YAL</span></h1>
+            <h1 class="hero-title"><span class="hero-first">LUKSHYA</span><span class="hero-last">SUP<span class="hero-portrait-anchor"><img loading="lazy" class="hero-portrait" src="assets/images/portrait.jpg" alt="Lukshya Supyal"></span>YAL</span></h1>
         </div>
         <div class="hero-intro">
             <svg class="hero-intro__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 8 V18 H8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -175,7 +176,7 @@
             </div>
             <div class="gh-graph-card">
                 <div class="gh-graph" id="gh-graph" data-user="LuShadowX"></div>
-                <img class="gh-graph-art" src="assets/images/sukuna.jpg" alt="" aria-hidden="true">
+                <img loading="lazy" class="gh-graph-art" src="assets/images/sukuna.jpg" alt="" aria-hidden="true">
             </div>
         </div>
     </section>
@@ -189,7 +190,7 @@
             <div class="about-grid">
                 <div class="about-image reveal-left delay-100">
                     <div class="img-frame">
-                        <img src="assets/images/profile1.jpg" alt="Lukshya Supyal" onerror="this.src='https://via.placeholder.com/400x500?text=Profile+Image'">
+                        <img loading="lazy" src="assets/images/profile1.jpg" alt="Lukshya Supyal" onerror="this.src='https://via.placeholder.com/400x500?text=Profile+Image'">
                     </div>
                 </div>
 
@@ -248,19 +249,19 @@
                     <div class="carousel-track">
                         <div class="carousel-slide">
                             <div class="cert-card">
-                                <div class="cert-img-wrapper"><img src="assets/images/Infosys.png" alt="Infosys" onerror="this.src='https://via.placeholder.com/600x400?text=Infosys'"></div>
+                                <div class="cert-img-wrapper"><img loading="lazy" src="assets/images/Infosys.png" alt="Infosys" onerror="this.src='https://via.placeholder.com/600x400?text=Infosys'"></div>
                                 <div class="cert-body"><h3>Infosys Certified</h3><p>Software Engineering & Python</p></div>
                             </div>
                         </div>
                         <div class="carousel-slide">
                             <div class="cert-card">
-                                <div class="cert-img-wrapper"><img src="assets/images/Skillera.jpeg" alt="Skillera" onerror="this.src='https://via.placeholder.com/600x400?text=Skillera'"></div>
+                                <div class="cert-img-wrapper"><img loading="lazy" src="assets/images/Skillera.jpeg" alt="Skillera" onerror="this.src='https://via.placeholder.com/600x400?text=Skillera'"></div>
                                 <div class="cert-body"><h3>Skillera Achievement</h3><p>Advanced Machine Learning Concepts</p></div>
                             </div>
                         </div>
                         <div class="carousel-slide">
                             <div class="cert-card">
-                                <div class="cert-img-wrapper"><img src="assets/images/TimeManagement.png" alt="Time" onerror="this.src='https://via.placeholder.com/600x400?text=Time+Management'"></div>
+                                <div class="cert-img-wrapper"><img loading="lazy" src="assets/images/TimeManagement.png" alt="Time" onerror="this.src='https://via.placeholder.com/600x400?text=Time+Management'"></div>
                                 <div class="cert-body"><h3>Time Management</h3><p>Professional Soft Skills</p></div>
                             </div>
                         </div>
@@ -324,7 +325,7 @@
                 
                 <div class="card reveal-left delay-100">
                     <div class="card-img">
-                        <img src="assets/images/yt.png" alt="YouTube Video Downloader" onerror="this.src='https://via.placeholder.com/300x200?text=YT+Downloader'">
+                        <img loading="lazy" src="assets/images/yt.png" alt="YouTube Video Downloader" onerror="this.src='https://via.placeholder.com/300x200?text=YT+Downloader'">
                     </div>
                     <div class="card-info">
                         <h3>YouTube Video Downloader</h3>
@@ -344,7 +345,7 @@
 
                 <div class="card reveal-right delay-200">
                     <div class="card-img">
-                        <img src="assets/images/analyzer.png" alt="AI Process Analyzer" onerror="this.src='https://via.placeholder.com/300x200?text=AI+Analyzer'">
+                        <img loading="lazy" src="assets/images/analyzer.png" alt="AI Process Analyzer" onerror="this.src='https://via.placeholder.com/300x200?text=AI+Analyzer'">
                     </div>
                     <div class="card-info">
                         <h3>AI Process Analyzer</h3>
@@ -1011,8 +1012,8 @@
         <p>Built in silence with 🧠 and 💻 by <span class="footer-name">Lukshya Supyal</span></p>
     </footer>
 
-    <script src="assets/js/common.js?v=20260928e"></script>
-    <script src="assets/js/blackhole.js?v=20260928e"></script>
+    <script src="assets/js/common.js?v=20260928g"></script>
+    <script src="assets/js/blackhole.js?v=20260928g"></script>
 
 </body>
 </html>
