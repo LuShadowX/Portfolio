@@ -148,6 +148,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Contact form: no backend, so hand the message to the visitor's email app
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = new FormData(contactForm);
+            const subject = `Portfolio message from ${data.get('user_name')}`;
+            const bodyText = `${data.get('message')}\n\n${data.get('user_name')} <${data.get('user_email')}>`;
+            window.location.href = `mailto:${contactForm.dataset.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+            contactForm.querySelector('[role="status"]').textContent = 'Opening your email app...';
+        });
+        // The menu button sits over this light section once it reaches the top of the screen
+        new IntersectionObserver(([entry]) => {
+            body.classList.toggle('on-light', entry.isIntersecting);
+        }, { rootMargin: '-40px 0px -90% 0px' }).observe(contactForm.closest('.contact-section'));
+    }
+
     // GitHub contribution graph (last 12 months)
     const graph = document.getElementById('gh-graph');
     if (graph) {
