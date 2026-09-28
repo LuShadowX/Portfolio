@@ -277,7 +277,7 @@ body {
 }
 .stage.is-active .masthead { animation: stage-header-drop 1s var(--ease-premium) 0.25s both; }
 .wordmark { display: block; color: var(--paper); text-decoration: none; font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; }
-.wordmark b { display: block; font-size: clamp(1.25rem, 1.65vw, 2rem); line-height: 0.9; letter-spacing: -0.08em; }
+.wordmark b { font-size: clamp(1.25rem, 1.65vw, 2rem); line-height: 0.66; letter-spacing: -0.08em; }
 .signal { position: absolute; left: 50%; transform: translate(-50%); display: flex; gap: 0.4rem; }
 .signal i { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--amber); }
 .stage.is-active .signal i { animation: stage-signal 2.4s ease-in-out infinite; }
@@ -286,7 +286,7 @@ body {
 
 .stage-copy { position: absolute; z-index: 9; top: 48%; left: 50%; width: min(27rem, 32vw); transform: translate(-50%, -50%); }
 .stage-copy h1 {
-    position: relative; display: grid; grid-template-columns: 0.34em auto; grid-template-rows: repeat(3, 0.69em); align-items: start;
+    position: relative; display: grid; grid-template-columns: 0.34em 3.4em; grid-template-rows: repeat(3, 0.69em); align-items: start;
     width: max-content; margin: 0; color: var(--red); font-family: var(--display); font-weight: 700;
     font-size: clamp(3.25rem, 5.2vw, 6.25rem); line-height: 0.69; letter-spacing: -0.072em;
 }
@@ -357,8 +357,14 @@ body.at-intro .top-bar, body.at-intro .js-menu { opacity: 0; pointer-events: non
 @keyframes stage-cue-in { from { opacity: 0; transform: translate(-50%, 0.9rem); } to { opacity: 1; transform: translate(-50%); } }
 @keyframes stage-cue-bounce { 0%, 100% { transform: translateY(-0.15rem); } 50% { transform: translateY(0.35rem); } }
 
-@media (max-width: 64rem) {
+@media (max-width: 74rem) {
     .stage-copy { width: min(25rem, 38vw); }
+}
+@media (max-width: 60rem) {
+    .stage { min-height: max(46rem, 100svh); }
+    .masthead { top: 0.85rem; left: 0.85rem; right: 0.85rem; }
+    .stage-copy { width: min(29rem, 72vw); }
+    .stage-copy h1 { font-size: clamp(3.5rem, 10.5vw, 6rem); }
     .guitar { width: clamp(16rem, 42vw, 24rem); top: -3%; left: -6%; }
     .keyboard { width: clamp(19rem, 48vw, 28rem); top: 4%; right: -12%; }
     .headphones { width: clamp(15rem, 36vw, 22rem); top: 59%; left: -12%; }
@@ -378,6 +384,9 @@ body.at-intro .top-bar, body.at-intro .js-menu { opacity: 0; pointer-events: non
     .sampler { width: 62vw; top: 66%; right: -26%; }
     .watch { width: 66vw; bottom: 5%; left: 18%; }
     .scroll-cue { font-size: 0.45rem; bottom: 0.8rem; }
+}
+@media (max-width: 25rem) {
+    .stage-copy h1 { font-size: 3rem; }
 }
 
 /* Hero: big name with the portrait over it */
