@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // About + Skills in Orbit: reveal on scroll, the "Skills" hand-off, and the particle globe
     document.documentElement.classList.add('motion-ready');
-    const revealItems = document.querySelectorAll('.about-page [data-reveal], .skills-orbit-page [data-orbit-reveal]');
+    const revealItems = document.querySelectorAll('.about-page [data-reveal], .skills-orbit-page [data-orbit-reveal], .projects-page [data-project-reveal]');
     const revealer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
@@ -306,6 +306,124 @@ document.addEventListener('DOMContentLoaded', () => {
             if (visible) raf = requestAnimationFrame(draw);
         }, { rootMargin: '12% 0%' }).observe(sphere);
     }
+
+    // Projects + Open Source: ASCII previews, tap-to-reveal and the case-study dialog
+    const projectData = JSON.parse(document.getElementById('project-data')?.textContent || '{}');
+    const drawAscii = (holder) => {
+        const canvas = holder.querySelector('canvas');
+        const source = holder.querySelector('.ascii-source-image');
+        let image = null, raf = 0;
+        const render = () => {
+            if (!image?.naturalWidth) return;
+            const box = holder.getBoundingClientRect();
+            if (!box.width || !box.height) return;
+            const ratio = Math.min(devicePixelRatio || 1, 1.35);
+            canvas.width = Math.round(box.width * ratio); canvas.height = Math.round(box.height * ratio);
+            canvas.style.width = `${box.width}px`; canvas.style.height = `${box.height}px`;
+            const ctx = canvas.getContext('2d');
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            ctx.fillStyle = '#080a09'; ctx.fillRect(0, 0, box.width, box.height);
+            const cols = Math.max(72, Math.min(innerWidth < 768 ? 110 : 160, Math.round(box.width / 5.3)));
+            const rows = Math.max(32, Math.round(cols * (image.naturalHeight / image.naturalWidth) * 0.44));
+            const sample = document.createElement('canvas'); sample.width = cols; sample.height = rows;
+            const sx = sample.getContext('2d', { willReadFrequently: true });
+            sx.drawImage(image, 0, 0, cols, rows);
+            const px = sx.getImageData(0, 0, cols, rows).data;
+            const ramp = "   ..'',:;irsXA253hMHGS#9B&@";
+            const cw = box.width / cols, ch = box.height / rows, size = Math.min(ch * 1.02, cw * 1.62);
+            const lum = Array.from({ length: cols * rows }, (_, i) => (0.2126 * px[i * 4] + 0.7152 * px[i * 4 + 1] + 0.0722 * px[i * 4 + 2]) / 255);
+            const sorted = [...lum].sort((x, y) => x - y);
+            const lo = sorted[Math.floor(0.04 * sorted.length)] ?? 0;
+            const span = Math.max((sorted[Math.floor(0.96 * sorted.length)] ?? 1) - lo, 0.08);
+            const v = lum.map(x => Math.max(0, Math.min(1, (x - lo) / span)));
+            ctx.font = `400 ${size}px "Courier New", monospace`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
+                const i = y * cols + x, a = px[i * 4 + 3] / 255, c = v[i];
+                const around = [x > 0 ? v[i - 1] : c, x < cols - 1 ? v[i + 1] : c, y > 0 ? v[i - cols] : c, y < rows - 1 ? v[i + cols] : c];
+                const n = Math.max(0, Math.min(1, c + (c - around.reduce((p, q) => p + q, 0) / 4) * 0.72));
+                const chr = ramp[Math.min(ramp.length - 1, Math.floor(n * ramp.length))];
+                if (chr === ' ') continue;
+                const g = Math.round(132 + 118 * n);
+                ctx.fillStyle = `rgba(${g}, ${Math.max(0, g - 4)}, ${Math.max(0, g - 10)}, ${(0.22 + 0.78 * n) * a})`;
+                ctx.fillText(chr, (x + 0.5) * cw, (y + 0.5) * ch);
+            }
+        };
+        const queue = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(render); };
+        const load = () => { if (image) return; image = new Image(); image.decoding = 'async'; image.addEventListener('load', queue, { once: true }); image.src = source.getAttribute('src'); };
+        new ResizeObserver(queue).observe(holder);
+        const seen = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { load(); seen.disconnect(); } }, { rootMargin: '35% 0px' });
+        seen.observe(holder);
+    };
+    document.querySelectorAll('.ascii-preview').forEach(drawAscii);
+
+    const touchy = matchMedia('(hover: none), (pointer: coarse), (max-width: 64rem)');
+    let revealed = null, openList = null, openIndex = 0, returnFocus = null, savedScroll = 0;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'project-dialog-backdrop';
+    backdrop.setAttribute('role', 'presentation');
+    backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+    const escapeHtml = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const renderDialog = () => {
+        const list = projectData[openList], f = list[openIndex];
+        const prev = list[(openIndex - 1 + list.length) % list.length], next = list[(openIndex + 1) % list.length];
+        backdrop.innerHTML = `<section class="project-dialog" id="project-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="project-dialog-title" style="--dialog-accent:#c9c5bc;--dialog-ratio:8 / 5">
+            <header class="project-dialog-header"><span>${{ oss: 'REPOSITORY', notes: 'FIELD NOTE' }[openList] || 'CASE STUDY'} ${f.id} / ${String(list.length).padStart(2, '0')}</span><p>${escapeHtml(f.stamp)}</p><button class="project-dialog-close" type="button" aria-label="Close project details">CLOSE <span aria-hidden="true">×</span></button></header>
+            <div class="project-dialog-body">
+                <div class="project-dialog-media-panel"><div class="project-dialog-visual" aria-live="polite"><img src="${f.image}" alt="${escapeHtml(f.name)}" draggable="false"><span>FEATURED</span></div></div>
+                <div class="project-dialog-copy">
+                    <div class="project-dialog-title-block"><p>${escapeHtml(f.type)}</p><h3 id="project-dialog-title">${escapeHtml(f.name)}</h3><span>${escapeHtml(f.stamp)}</span></div>
+                    <dl>${f.sections.map(([t, body]) => `<div><dt>${t}</dt><dd>${body}</dd></div>`).join('')}</dl>
+                    <ul aria-label="${escapeHtml(f.name)} technologies">${f.tools.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
+                    <div class="project-dialog-links">${f.links.map(l => `<a href="${escapeHtml(l.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>
+                </div>
+            </div>
+            <nav class="project-dialog-pagination" aria-label="Browse case studies">
+                <button type="button" data-step="-1"><span>PREVIOUS / ${prev.id}</span><b>${escapeHtml(prev.name)}</b></button>
+                <button type="button" data-step="1"><span>NEXT / ${next.id}</span><b>${escapeHtml(next.name)}</b></button>
+            </nav></section>`;
+        backdrop.querySelector('.project-dialog-close').focus();
+    };
+    const closeDialog = () => {
+        if (backdrop.hidden) return;
+        backdrop.hidden = true; backdrop.innerHTML = '';
+        document.documentElement.classList.remove('project-dialog-open');
+        Object.assign(body.style, { position: '', top: '', width: '', overflow: '' });
+        scrollTo(0, savedScroll);
+        returnFocus?.focus({ preventScroll: true });
+    };
+    const openDialog = (kind, index) => {
+        openList = kind; openIndex = index; returnFocus = document.activeElement; savedScroll = scrollY;
+        Object.assign(body.style, { position: 'fixed', top: `-${savedScroll}px`, width: '100%', overflow: 'hidden' });
+        document.documentElement.classList.add('project-dialog-open');
+        backdrop.hidden = false;
+        renderDialog();
+    };
+    const step = (d) => { const list = projectData[openList]; openIndex = (openIndex + d + list.length) % list.length; renderDialog(); };
+    backdrop.addEventListener('mousedown', (e) => { if (e.target === backdrop) closeDialog(); });
+    backdrop.addEventListener('click', (e) => {
+        if (e.target.closest('.project-dialog-close')) closeDialog();
+        const nav = e.target.closest('[data-step]');
+        if (nav) step(Number(nav.dataset.step));
+    });
+    addEventListener('keydown', (e) => {
+        if (backdrop.hidden) return;
+        if (e.key === 'Escape') closeDialog();
+        else if (e.key === 'ArrowLeft') step(-1);
+        else if (e.key === 'ArrowRight') step(1);
+    });
+    document.querySelectorAll('.ascii-project-card').forEach(card => {
+        card.addEventListener('click', () => {
+            if (touchy.matches && revealed !== card) {
+                revealed?.classList.remove('is-touch-revealed');
+                revealed = card; card.classList.add('is-touch-revealed');
+                card.querySelector('.ascii-instruction-touch').textContent = 'TAP AGAIN TO OPEN';
+                return;
+            }
+            revealed?.classList.remove('is-touch-revealed'); revealed = null;
+            openDialog(card.dataset.kind, Number(card.dataset.index));
+        });
+    });
 
     // GitHub contribution graph (last 12 months)
     const graph = document.getElementById('gh-graph');
