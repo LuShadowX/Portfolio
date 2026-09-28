@@ -425,6 +425,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Scroll progress rail: ticks at each section's start, marker follows the scroll
+    const rail = document.querySelector('.scroll-progress-rail');
+    if (rail) {
+        const marker = rail.querySelector('.scroll-progress-marker');
+        const sections = [...document.querySelectorAll('main.hero, body > section')];
+        let travel = 0;
+        const layout = () => {
+            const max = Math.max(document.documentElement.scrollHeight - innerHeight, 1);
+            rail.querySelectorAll('.scroll-progress-page').forEach(t => t.remove());
+            sections.forEach(sec => {
+                const tick = document.createElement('i');
+                tick.className = 'scroll-progress-page';
+                tick.style.left = `${Math.min(1, (sec.getBoundingClientRect().top + scrollY) / max) * 100}%`;
+                rail.appendChild(tick);
+            });
+            travel = Math.max(rail.clientWidth - marker.offsetWidth, 0);
+            move();
+        };
+        const move = () => {
+            const max = Math.max(document.documentElement.scrollHeight - innerHeight, 1);
+            marker.style.setProperty('--scroll-progress-x', `${(Math.min(1, scrollY / max) * travel).toFixed(1)}px`);
+        };
+        let queued = false;
+        addEventListener('scroll', () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; move(); }); }, { passive: true });
+        addEventListener('resize', layout, { passive: true });
+        addEventListener('load', layout);
+        new ResizeObserver(layout).observe(document.body);
+        layout();
+    }
+
     // GitHub contribution graph (last 12 months)
     const graph = document.getElementById('gh-graph');
     if (graph) {

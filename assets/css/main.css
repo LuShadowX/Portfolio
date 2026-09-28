@@ -896,6 +896,19 @@ html.project-dialog-open .top-bar, html.project-dialog-open .js-menu { display: 
 .project-dialog dd a { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
 
 
+/* Scroll progress rail (bottom right): a tick per section and a sliding marker */
+.scroll-progress { --red: #b94835; right: clamp(.75rem,1.6vw,1.5rem); bottom: max(.75rem, env(safe-area-inset-bottom)); z-index: 90; pointer-events: none; -webkit-backdrop-filter: blur(.4rem); backdrop-filter: blur(.4rem); contain: layout paint; background: #050606f0; border: .0625rem solid #f2ecde1a; border-radius: .85rem; place-items: center; width: clamp(10rem,17vw,16.5rem); height: clamp(2.35rem,3vw,2.8rem); padding: .55rem .8rem; display: grid; position: fixed; overflow: hidden; box-shadow: 0 .75rem 1.8rem #00000047; box-sizing: border-box; }
+.scroll-progress-rail { background: repeating-linear-gradient(90deg,#efe8d861 0 .0625rem,#0000 .0625rem .43rem); width: 100%; height: 1.3rem; display: block; position: relative; }
+.scroll-progress-rail::before { content: ""; background: #efe8d81f; height: .0625rem; position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); }
+.scroll-progress-marker { z-index: 3; background: var(--red); width: .32rem; height: 1.65rem; transform: translate3d(var(--scroll-progress-x, 0px), -50%, 0); will-change: transform; border-radius: .18rem; position: absolute; top: 50%; left: 0; }
+.scroll-progress-page { z-index: 1; background: var(--red); opacity: .72; border-radius: .08rem; width: .14rem; height: 1.35rem; position: absolute; top: 50%; transform: translate(-50%,-50%); }
+.project-dialog-open .scroll-progress, .header.is-active ~ .scroll-progress { display: none; }
+@media (max-width: 42rem) {
+    .scroll-progress { right: .7rem; border-radius: .7rem; width: 8.75rem; height: 2.25rem; padding: .48rem .65rem; }
+    .scroll-progress-rail { background-size: .36rem 100%; height: 1rem; }
+    .scroll-progress-marker { width: .28rem; height: 1.35rem; }
+}
+
 /* Hero: big name with the portrait over it */
 .hero {
     position: relative; z-index: 10; min-height: 100vh; box-sizing: border-box;
