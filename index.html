@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -28,7 +29,7 @@
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <header class="header js-header">
         <div class="top-bar">
@@ -51,10 +52,6 @@
                     <li><a href="#projects" class="t-link">Projects</a></li>
                     <li><a href="#contact" class="t-link">Contact</a></li>
                 </ul>
-                <div class="theme-toggle" id="theme-toggle">
-                    <svg class="theme-icon sun" viewBox="0 0 24 24" style="display:block;"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" /></svg>
-                    <svg class="theme-icon moon" viewBox="0 0 24 24" style="display:none;"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" /></svg>
-                </div>
             </div>
         </div>
 
@@ -131,19 +128,33 @@
             <div class="p-right"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 546.1 642.3"><path class="st-base" d="M500,1.8L106.8,530.4h46.6l77.1-103.6l21.7,103.6h193.6l-65.5-305L546.1,2.5 M1.5,641.8 l476.1-640 M431,1.8l-76.6,103l-22.1-103"/><path class="st-anim" d="M500,1.8L106.8,530.4h46.6l77.1-103.6l21.7,103.6h193.6l-65.5-305L546.1,2.5 M1.5,641.8 l476.1-640 M431,1.8l-76.6,103l-22.1-103"/></svg></div>
         </div>
     </div>
-    <canvas id="particle-canvas"></canvas>
 
-    <main class="hero-content">
-        <h1 class="hero-title reveal">Hi, I'm <span class="name-highlight">Lukshya Supyal</span></h1>
-        <div class="typewriter-container reveal delay-100">
-            <span class="typewriter-text" id="typing-text"></span><span class="cursor">|</span>
+    <main class="hero" id="home">
+        <p class="hero-kicker">AI / ML Engineer &middot; Open-source contributor</p>
+        <div class="hero-name">
+            <h1 class="hero-title"><span class="hero-first">LUKSHYA</span><span class="hero-last">SUPYAL</span></h1>
+            <img class="hero-portrait" src="assets/images/portrait.jpg" alt="Lukshya Supyal">
         </div>
-        <p class="hero-subtitle reveal delay-200">Specialized in AI, Machine Learning, and Python Development</p>
-        <div class="hero-buttons reveal delay-300">
-            <a href="#projects" class="btn btn-primary">View My Work</a>
-            <a href="#contact" class="btn btn-outline">Contact Me</a>
+        <div class="hero-intro">
+            <svg class="hero-intro__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 8 V18 H8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <p>I build machine learning models and Python tools, and fix real bugs in the open-source libraries I use every day.</p>
+            <a href="#contact" class="hero-cta">Let's connect <span aria-hidden="true">&#8599;</span></a>
         </div>
+        <div class="hero-status"><span class="hero-status__dot"></span>Actively seeking opportunities</div>
+        <a href="#github" class="hero-scroll">Scroll to explore <span aria-hidden="true">&#8600;</span></a>
     </main>
+
+    <section id="github" class="gh-activity">
+        <div class="gh-activity__inner">
+            <div class="gh-activity__text">
+                <p class="gh-activity__kicker">Live GitHub activity</p>
+                <h2 class="gh-activity__title">Building in public.</h2>
+                <p class="gh-activity__total" id="gh-total"></p>
+                <a href="https://github.com/LuShadowX" target="_blank" class="gh-activity__link"><i class="fab fa-github"></i> View GitHub profile <span aria-hidden="true">&#8599;</span></a>
+            </div>
+            <div class="gh-graph" id="gh-graph" data-user="LuShadowX"></div>
+        </div>
+    </section>
 
     <section id="about" class="section alt-bg">
         <div class="container">
@@ -975,7 +986,6 @@
         <p>Built in silence with 🧠 and 💻 by <span class="footer-name">Lukshya Supyal</span></p>
     </footer>
 
-    <script src="assets/js/particles.js"></script>
     <script src="assets/js/common.js"></script>
     <script src="assets/js/blackhole.js"></script>
 

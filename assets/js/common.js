@@ -100,32 +100,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 2. THEME TOGGLE
-    const toggleBtn = document.getElementById('theme-toggle');
-    const sunIcon = document.querySelector('.theme-icon.sun');
-    const moonIcon = document.querySelector('.theme-icon.moon');
-
-    if(toggleBtn) {
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            body.setAttribute('data-theme', 'dark');
-            if(sunIcon) sunIcon.style.display = 'none';
-            if(moonIcon) moonIcon.style.display = 'block';
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-                if(sunIcon) sunIcon.style.display = 'block';
-                if(moonIcon) moonIcon.style.display = 'none';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                if(sunIcon) sunIcon.style.display = 'none';
-                if(moonIcon) moonIcon.style.display = 'block';
-            }
+    // 2. BACKGROUND X: follows the mouse a little
+    const bgLayer = document.querySelector('.p-stc');
+    if (bgLayer) {
+        window.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+            const moveY = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+            bgLayer.style.transform = `translate(${moveX * 30}px, ${moveY * 30}px)`;
         });
+        document.addEventListener('mouseleave', () => { bgLayer.style.transform = 'translate(0px, 0px)'; });
+    }
+
+    // GitHub contribution graph (last 12 months)
+    const graph = document.getElementById('gh-graph');
+    if (graph) {
+        const user = graph.dataset.user;
+        fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`)
+            .then(r => r.json())
+            .then(data => {
+                const days = data.contributions;
+                const cell = 11, gap = 3, step = cell + gap, left = 32, top = 20;
+                const offset = new Date(days[0].date + 'T00:00:00').getDay();
+                const weeks = Math.ceil((days.length + offset) / 7);
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                let out = '';
+                let lastMonth = -1;
+                days.forEach((d, i) => {
+                    const date = new Date(d.date + 'T00:00:00');
+                    const col = Math.floor((i + offset) / 7), row = (i + offset) % 7;
+                    if (row === 0 && date.getMonth() !== lastMonth && date.getDate() <= 7 && col < weeks - 2) {
+                        lastMonth = date.getMonth();
+                        out += `<text class="gh-graph__label" x="${left + col * step}" y="12">${months[lastMonth]}</text>`;
+                    }
+                    const label = `${d.count} contribution${d.count === 1 ? '' : 's'} on ${date.toDateString().slice(4)}`;
+                    out += `<rect class="gh-cell gh-cell--${d.level}" x="${left + col * step}" y="${top + row * step}" width="${cell}" height="${cell}" rx="2"><title>${label}</title></rect>`;
+                });
+                ['Mon', 'Wed', 'Fri'].forEach((name, i) => {
+                    out += `<text class="gh-graph__label" x="0" y="${top + (i * 2 + 1) * step + cell - 2}">${name}</text>`;
+                });
+                graph.innerHTML = `<svg viewBox="0 0 ${left + weeks * step} ${top + 7 * step}" role="img" aria-label="GitHub contributions in the last year">${out}</svg>`;
+                const total = document.getElementById('gh-total');
+                if (total) total.textContent = `${data.total.lastYear} contributions in the last year`;
+            })
+            .catch(() => { graph.closest('.gh-activity').classList.add('gh-activity--offline'); });
     }
 
     // 3. TYPEWRITER EFFECT
