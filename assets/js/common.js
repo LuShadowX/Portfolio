@@ -118,6 +118,32 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.toggle('at-intro', entry.intersectionRatio > 0.35);
         }, { threshold: [0, 0.35, 1] }).observe(stage);
 
+        // Clock animation: copy the square around the dot from the video and turn black into transparency
+        const clip = stage.querySelector('.signal-clip');
+        const source = stage.querySelector('.signal-source');
+        if (clip && source) {
+            const ctx = clip.getContext('2d', { willReadFrequently: true });
+            const draw = () => {
+                const size = Math.round(clip.clientWidth * Math.min(devicePixelRatio, 2));
+                if (source.readyState >= 2 && size > 0 && body.classList.contains('at-intro')) {
+                    if (clip.width !== size) { clip.width = size; clip.height = size; }
+                    const side = source.videoWidth;
+                    const top = source.videoHeight * 0.497 - side / 2;
+                    ctx.drawImage(source, 0, top, side, side, 0, 0, size, size);
+                    const frame = ctx.getImageData(0, 0, size, size);
+                    const px = frame.data;
+                    for (let i = 0; i < px.length; i += 4) {
+                        px[i + 3] = Math.min(255, Math.max(px[i], px[i + 1], px[i + 2]) * 1.3);
+                        px[i] = px[i + 1] = px[i + 2] = 255;
+                    }
+                    ctx.putImageData(frame, 0, 0);
+                }
+                requestAnimationFrame(draw);
+            };
+            source.play().catch(() => {});
+            requestAnimationFrame(draw);
+        }
+
         stage.querySelectorAll('.cutout').forEach(cutout => {
             let drag = null;
             let offsetX = 0, offsetY = 0;

@@ -278,6 +278,11 @@ body {
 .stage.is-active .masthead { animation: stage-header-drop 1s var(--ease-premium) 0.25s both; }
 .wordmark { display: block; color: var(--paper); text-decoration: none; font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; }
 .wordmark b { font-size: clamp(1.25rem, 1.65vw, 2rem); line-height: 0.66; letter-spacing: -0.08em; }
+.signal-clip {
+    position: absolute; left: 50%; top: -0.6rem; transform: translate(-50%);
+    width: clamp(7rem, 10vw, 10rem); aspect-ratio: 1; pointer-events: none;
+}
+.signal-source { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .signal { position: absolute; left: 50%; transform: translate(-50%); display: flex; gap: 0.4rem; }
 .signal i { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--amber); }
 .stage.is-active .signal i { animation: stage-signal 2.4s ease-in-out infinite; }
@@ -378,6 +383,7 @@ body.on-light .js-menu:not(.is-active) .menu-text { color: #11110f; }
     .stage { min-height: max(44rem, 100svh); }
     .wordmark b { font-size: 1.2rem; }
     .signal { top: 0.2rem; }
+    .signal-clip { top: -0.4rem; width: 6.5rem; }
     .stage-copy { width: 82%; top: 48%; }
     .stage-copy h1 { font-size: clamp(3.2rem, 14vw, 4.75rem); }
     .title-label { padding: 0.28rem 0.4rem; font-size: 0.34rem; left: 52%; }
