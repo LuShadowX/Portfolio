@@ -141,16 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
         stage.querySelectorAll('.cutout').forEach(cutout => {
             let drag = null;
             let offsetX = 0, offsetY = 0;
-            cutout.addEventListener('pointermove', (e) => {
+            // Pointer updates are batched to one per frame so the tilt never queues up behind the cursor
+            let pending = null;
+            const apply = () => {
+                const e = pending; pending = null;
                 const box = cutout.getBoundingClientRect();
                 const px = (e.clientX - box.left) / box.width - 0.5;
                 const py = (e.clientY - box.top) / box.height - 0.5;
-                cutout.style.setProperty('--tilt-x', `${py * -12}deg`);
-                cutout.style.setProperty('--tilt-y', `${px * 12}deg`);
+                cutout.style.setProperty('--tilt-x', `${(py * -12).toFixed(2)}deg`);
+                cutout.style.setProperty('--tilt-y', `${(px * 12).toFixed(2)}deg`);
                 if (!drag) return;
                 offsetX = drag.x + e.clientX - drag.startX;
                 offsetY = drag.y + e.clientY - drag.startY;
                 cutout.style.translate = `${offsetX}px ${offsetY}px`;
+            };
+            cutout.addEventListener('pointermove', (e) => {
+                if (!pending) requestAnimationFrame(apply);
+                pending = e;
             });
             cutout.addEventListener('pointerleave', () => {
                 if (drag) return;
@@ -179,10 +186,125 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `mailto:${contactForm.dataset.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
             contactForm.querySelector('[role="status"]').textContent = 'Opening your email app...';
         });
-        // The menu button sits over this light section once it reaches the top of the screen
+        // The menu button turns dark while a light section (About, Contact) sits under it
+        const underMenu = new Set();
+        const lightWatch = new IntersectionObserver((entries) => {
+            entries.forEach(entry => entry.isIntersecting ? underMenu.add(entry.target) : underMenu.delete(entry.target));
+            body.classList.toggle('on-light', underMenu.size > 0);
+        }, { rootMargin: '-40px 0px -90% 0px' });
+        document.querySelectorAll('.contact-section, .about-page').forEach(el => lightWatch.observe(el));
+    }
+
+    // About + Skills in Orbit: reveal on scroll, the "Skills" hand-off, and the particle globe
+    document.documentElement.classList.add('motion-ready');
+    const revealItems = document.querySelectorAll('.about-page [data-reveal], .skills-orbit-page [data-orbit-reveal]');
+    const revealer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            revealer.unobserve(entry.target);
+        });
+    }, { threshold: 0.12 });
+    revealItems.forEach(el => revealer.observe(el));
+
+    const transferClone = document.querySelector('.skills-transfer-clone');
+    const handoffSource = document.querySelector('.skills-handoff-source');
+    const handoffTarget = document.querySelector('.skills-handoff-target');
+    const aboutPage = document.querySelector('.about-page');
+    const orbitPage = document.querySelector('.skills-orbit-page');
+    if (transferClone && handoffSource && handoffTarget && aboutPage && orbitPage) {
+        const root = document.documentElement;
+        const noMotion = matchMedia('(prefers-reduced-motion: reduce), (max-width: 74rem)');
+        let path = null;
+        const pageTop = el => el.getBoundingClientRect().top + scrollY;
+        const measure = () => {
+            // Measure without the hand-off hiding either word
+            delete root.dataset.skillsTransfer;
+            const from = handoffSource.getBoundingClientRect();
+            const to = handoffTarget.getBoundingClientRect();
+            path = {
+                start: pageTop(aboutPage), end: pageTop(orbitPage),
+                sourceX: from.left, sourceY: from.top + scrollY, targetX: to.left, targetY: to.top + scrollY,
+                sourceSize: parseFloat(getComputedStyle(handoffSource).fontSize),
+                targetSize: parseFloat(getComputedStyle(handoffTarget).fontSize)
+            };
+            update();
+        };
+        const update = () => {
+            const y = scrollY;
+            if (!path || noMotion.matches || y < path.start || y >= path.end) { delete root.dataset.skillsTransfer; return; }
+            const t = (y - path.start) / Math.max(path.end - path.start, 1);
+            const k = t * t * (3 - 2 * t);
+            const x = path.sourceX + (path.targetX - path.sourceX) * k;
+            const top = path.sourceY + (path.targetY - path.sourceY) * k;
+            const size = path.sourceSize + (path.targetSize - path.sourceSize) * k;
+            transferClone.style.setProperty('--transfer-x', `${x.toFixed(1)}px`);
+            transferClone.style.setProperty('--transfer-y', `${(top - y).toFixed(1)}px`);
+            transferClone.style.setProperty('--transfer-size', `${size.toFixed(2)}px`);
+            transferClone.style.setProperty('--transfer-turn', `${(-2.4 + 2.4 * k).toFixed(3)}deg`);
+            transferClone.dataset.phase = k > 0.58 ? 'dark' : 'paper';
+            root.dataset.skillsTransfer = 'active';
+        };
+        let ticking = false;
+        addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => { ticking = false; update(); });
+        }, { passive: true });
+        addEventListener('resize', measure, { passive: true });
+        addEventListener('load', measure);
+        new ResizeObserver(measure).observe(document.body);
+        measure();
+    }
+
+    const sphere = document.querySelector('.particle-sphere-canvas');
+    if (sphere) {
+        const colors = ['#3159c7', '#e8e2d4', '#4b70dc', '#c95d43', '#879fe8'];
+        const fibonacci = n => {
+            const step = Math.PI * (3 - Math.sqrt(5));
+            return Array.from({ length: n }, (_, i) => {
+                const y = 1 - i / (n - 1) * 2, r = Math.sqrt(1 - y * y), a = step * i;
+                return { x: Math.cos(a) * r, y, z: Math.sin(a) * r, color: colors[i % colors.length] };
+            });
+        };
+        const small = fibonacci(320), large = fibonacci(560);
+        const ctx = sphere.getContext('2d');
+        const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let raf = 0, visible = false, last = 0, w = 0, h = 0, points = large;
+        const draw = (now = 0) => {
+            if (!still && now - last < 32) { raf = requestAnimationFrame(draw); return; }
+            last = now;
+            ctx.clearRect(0, 0, w, h);
+            const turn = still ? -0.18 : 75e-6 * now, cos = Math.cos(turn), sin = Math.sin(turn);
+            const radius = 0.405 * Math.min(w, h), cx = w / 2, cy = 0.51 * h;
+            for (const p of points) {
+                const x = p.x * cos - p.z * sin, z = p.x * sin + p.z * cos;
+                const scale = 1.95 / (2.65 - 0.42 * z), depth = (z + 1) / 2;
+                ctx.globalAlpha = 0.18 + 0.78 * depth;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(cx + x * radius * scale, cy + p.y * radius * scale, 0.45 + 1.35 * depth, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+            if (!still && visible) raf = requestAnimationFrame(draw);
+        };
+        const size = () => {
+            cancelAnimationFrame(raf);
+            const box = sphere.getBoundingClientRect(), ratio = Math.min(devicePixelRatio || 1, 1.35);
+            w = Math.max(box.width, 1); h = Math.max(box.height, 1);
+            points = innerWidth < 768 ? small : large;
+            sphere.width = Math.round(w * ratio); sphere.height = Math.round(h * ratio);
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            if (still) draw(); else if (visible) raf = requestAnimationFrame(draw);
+        };
+        size();
+        new ResizeObserver(size).observe(sphere);
         new IntersectionObserver(([entry]) => {
-            body.classList.toggle('on-light', entry.isIntersecting);
-        }, { rootMargin: '-40px 0px -90% 0px' }).observe(contactForm.closest('.contact-section'));
+            visible = entry.isIntersecting;
+            cancelAnimationFrame(raf);
+            if (visible) raf = requestAnimationFrame(draw);
+        }, { rootMargin: '12% 0%' }).observe(sphere);
     }
 
     // GitHub contribution graph (last 12 months)
