@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(href.length > 1) {
                 const target = document.querySelector(href);
                 if(target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    if (window.lenis) window.lenis.scrollTo(target); else target.scrollIntoView({ behavior: 'smooth' });
                     if(menuBtn) menuBtn.classList.remove('is-active');
                     if(header) header.classList.remove('is-active');
                     body.style.overflow = '';
@@ -600,3 +600,227 @@ document.addEventListener('DOMContentLoaded', () => {
         startAutoSlide();
     }
 });
+
+/* ==== PLC listing sections (projects / open source / field notes), behaviour ported from plcossette.com ==== */
+(() => {
+    const sections = [...document.querySelectorAll('.plc')];
+    if (!sections.length) return;
+    const DATA = JSON.parse(document.getElementById('plc-data')?.textContent || '{}');
+    const root = document.documentElement, page = document.body;
+    const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const clamp = v => Math.min(1, Math.max(0, v));
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Smooth scroll (Lenis, same lerp as the reference)
+    let lenis = null;
+    if (window.Lenis && !reduced) {
+        lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+        window.lenis = lenis;
+        const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+        requestAnimationFrame(raf);
+    }
+    const lock = () => { lenis?.stop(); root.classList.add('pl-locked'); };
+    const unlock = () => { root.classList.remove('pl-locked'); lenis?.start(); };
+
+    // Fade the copy in the first time each section shows up
+    const seen = new IntersectionObserver(entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-ready'); seen.unobserve(e.target); }
+    }), { threshold: 0.08 });
+    sections.forEach(s => seen.observe(s));
+
+    // --progress: 0 when the element's top meets the viewport bottom, 1 when its bottom leaves the top
+    const visuals = [...document.querySelectorAll('.plc [data-pl-progress]')].map(el => ({ el, box: el.parentElement }));
+    const measure = ({ el, box }) => {
+        const r = box.getBoundingClientRect();
+        const top = r.top + (el.offsetTop - box.offsetTop);
+        const vh = innerHeight;
+        return clamp((vh - top) / (vh + el.offsetHeight));
+    };
+    let queued = false;
+    const update = () => {
+        queued = false;
+        const vh = innerHeight;
+        for (const v of visuals) {
+            const r = v.box.getBoundingClientRect();
+            if (r.bottom < -vh || r.top > vh * 2) continue;
+            v.el.style.setProperty('--progress', measure(v).toFixed(4));
+        }
+        let inside = false;
+        for (const s of sections) { const r = s.getBoundingClientRect(); if (r.top <= 60 && r.bottom > 60) inside = true; }
+        page.classList.toggle('in-plc', inside || detail.classList.contains('is-open'));
+    };
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue, { passive: true });
+    lenis?.on('scroll', queue);
+
+    // Detail view
+    const detail = document.createElement('div');
+    detail.className = 'pl-detail';
+    detail.setAttribute('role', 'dialog');
+    detail.setAttribute('aria-modal', 'true');
+    detail.setAttribute('aria-label', 'Project details');
+    detail.setAttribute('data-lenis-prevent', '');
+    page.appendChild(detail);
+    const ARROW_LEFT = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M14 8H2.5M6.5 4 2.5 8l4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+    const GRID = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h4.5v4.5H2zM9.5 2H14v4.5H9.5zM2 9.5h4.5V14H2zM9.5 9.5H14V14H9.5z" fill="none" stroke="currentColor" stroke-width="1"/></svg>';
+    const BACK = { projects: 'Back to projects', oss: 'Back to open source', notes: 'Back to notes' };
+    const image = (src, alt, cls = '', pos = '') => `<div class="pl-gallery_item_inner pl-wireframe" data-pl-dprogress><div class="pl-gallery_element"><div class="pl-image"><div class="pl-image_inner"><img class="pl-image_img ${cls}" src="${src}" alt="${esc(alt)}" decoding="async"${pos ? ` style="object-position:${pos}"` : ''}></div></div></div></div>`;
+    const render = (kind, i) => {
+        const f = DATA[kind][i];
+        const blocks = f.blocks.map(([l, t]) => `<div class="pl-text_content"><div class="pl-text_content_label pl-label">${esc(l)}</div><div class="pl-text_content_inner pl-serif"><p>${t}</p></div></div>`).join('');
+        const links = f.links.length ? `<div class="pl-project_links pl-text-label">${f.links.map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} ↗</a>`).join('')}</div>` : '';
+        detail.innerHTML = `<article class="pl-project">
+            <h1 class="pl-project_title"><span class="pl-project_title_inner pl-h1">${esc(f.name)}</span></h1>
+            <div class="pl-project_grid">
+                <div class="pl-project_side"><div class="pl-project_sticky"><div class="pl-project_inner">
+                    <div class="pl-project_header"><button type="button" class="pl-project_header_button" data-back><span class="pl-icon">${ARROW_LEFT}</span><span class="pl-text-label">${BACK[kind]}</span></button>
+                        <button type="button" class="pl-modal-toggler" data-index-open><span class="pl-icon">${GRID}</span><span class="pl-modal-toggler_label pl-text-label">View Index</span></button></div>
+                    <div class="pl-project_content"><div class="pl-project_content_scroll" data-lenis-prevent><div style="position:relative">
+                        <div class="pl-tag pl-project_tag">${f.tags.map(t => `<span class="pl-tag_item">${esc(t)}</span>`).join('')}</div>
+                        <div class="pl-text"><div class="pl-text_sticky"><h2 class="pl-label pl-text_title"><span>Info</span></h2></div><div class="pl-text_inner">${blocks}</div></div>
+                        <div class="pl-project_info">
+                            <div class="pl-project_context"><h3 class="pl-project_context_title pl-text-label">Context</h3><div class="pl-project_context_row"><p class="pl-serif">${esc(f.context)}</p><p class="pl-text-label">${esc(f.year)}</p></div></div>
+                            <div class="pl-serif pl-project_credits"><p>${f.credits.map(([k, v]) => `${k} : ${v}`).join('<br>')}</p></div>${links}
+                        </div></div></div></div>
+                    <div class="pl-project_button"><a class="pl-button" href="${esc(f.button.href)}" target="_blank" rel="noopener noreferrer">${esc(f.button.label)}</a></div>
+                </div></div></div>
+                <div class="pl-gallery_wrap"><div class="pl-gallery">
+                    <div class="pl-gallery_item">${image(f.image, f.name)}</div>
+                    <div class="pl-gallery_item -dual"><div>${image(f.image, '', '', '18% 50%')}</div><div>${image(f.image, '', '-tall', '72% 50%')}</div></div>
+                    <div class="pl-gallery_item">${image(f.image, '', '', '50% 100%')}</div>
+                </div></div>
+            </div></article>`;
+        detail.scrollTop = 0;
+        detailProgress();
+    };
+    const detailProgress = () => {
+        const proj = detail.querySelector('.pl-project');
+        if (!proj) return;
+        const max = Math.max(detail.scrollHeight - detail.clientHeight, 1);
+        proj.style.setProperty('--progress', clamp(detail.scrollTop / max).toFixed(4));
+        const vh = innerHeight;
+        detail.querySelectorAll('[data-pl-dprogress]').forEach(el => {
+            const r = el.parentElement.getBoundingClientRect();
+            el.style.setProperty('--progress', clamp((vh - r.top) / (vh + r.height)).toFixed(4));
+        });
+    };
+    let dq = false;
+    detail.addEventListener('scroll', () => { if (!dq) { dq = true; requestAnimationFrame(() => { dq = false; detailProgress(); }); } }, { passive: true });
+
+    let current = null, busy = false, returnFocus = null;
+    const play = async () => {
+        await wait(300); detail.classList.add('is-rendering');
+        await wait(400); detail.classList.add('is-ready');
+    };
+    const open = async (sec, kind, i) => {
+        if (current || busy) return;
+        busy = true; current = { sec, kind, i }; returnFocus = document.activeElement;
+        sec.style.setProperty('--pl-shift', `${sec.clientWidth * 7 / 12}px`);
+        lock();
+        render(kind, i);
+        detail.classList.add('is-open');
+        sec.classList.add('is-leaving');
+        update();
+        await play();
+        detail.querySelector('[data-back]')?.focus({ preventScroll: true });
+        await wait(600);
+        detail.classList.add('is-solid');
+        sec.classList.remove('is-leaving');
+        busy = false;
+    };
+    const swap = async (kind, i) => {
+        if (!current || busy) return;
+        busy = true;
+        detail.classList.add('is-switching');
+        detail.classList.remove('is-ready', 'is-rendering');
+        await wait(600);
+        current.i = i; render(kind, i);
+        detail.classList.remove('is-switching');
+        await play();
+        busy = false;
+    };
+    const close = async () => {
+        if (!current || busy) return;
+        busy = true;
+        const { sec } = current;
+        const slide = sec.querySelector('.pl-slide');
+        detail.style.setProperty('--pl-shift-back', sec.style.getPropertyValue('--pl-shift'));
+        slide.style.transition = 'none';
+        sec.classList.add('is-leaving');
+        void slide.offsetWidth;
+        slide.style.transition = '';
+        detail.classList.remove('is-solid', 'is-ready', 'is-rendering');
+        detail.classList.add('is-closing');
+        await wait(20);
+        sec.classList.remove('is-leaving');
+        sec.classList.add('is-returning');
+        await wait(1000);
+        detail.classList.remove('is-open', 'is-closing');
+        detail.innerHTML = '';
+        sec.classList.remove('is-returning');
+        current = null; busy = false;
+        unlock(); update();
+        returnFocus?.focus({ preventScroll: true });
+    };
+
+    // Index modal
+    const modal = document.createElement('div');
+    modal.className = 'pl-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Index');
+    modal.setAttribute('data-lenis-prevent', '');
+    page.appendChild(modal);
+    let modalFrom = null;
+    const openIndex = (kind, sec) => {
+        modalFrom = { kind, sec };
+        modal.innerHTML = `<button type="button" class="pl-modal_close" aria-label="Close index"><span class="pl-modal_close_inner"></span></button>
+            <div class="pl-modal_inner"><ul class="pl-modal_list">${DATA[kind].map((f, i) => `<li class="pl-modal_item" style="--i:${i % 8}">
+                <button type="button" class="pl-modal_thumbnail" data-pick="${i}"><div class="pl-modal_thumbnail_inner"><div class="pl-modal_thumbnail_visual_wrap"><div class="pl-modal_thumbnail_visual pl-wireframe"><img src="${f.image}" alt="" loading="lazy" decoding="async"></div><span class="pl-modal_hover"></span></div></div>
+                <div class="pl-modal_thumbnail_info"><span class="pl-label">${esc(f.name)}</span></div></button></li>`).join('')}</ul></div>`;
+        void modal.offsetWidth;
+        modal.classList.add('is-open');
+        (current ? detail : sec).classList.add('is-modal');
+        lock();
+        modal.querySelector('.pl-modal_close').focus({ preventScroll: true });
+    };
+    const closeIndex = () => {
+        if (!modal.classList.contains('is-open')) return;
+        modal.classList.remove('is-open');
+        detail.classList.remove('is-modal');
+        sections.forEach(s => s.classList.remove('is-modal'));
+        if (!current) unlock();
+    };
+    modal.addEventListener('click', e => {
+        if (e.target.closest('.pl-modal_close')) return closeIndex();
+        const pick = e.target.closest('[data-pick]');
+        if (!pick) { if (e.target === modal.querySelector('.pl-modal_inner')) closeIndex(); return; }
+        const i = Number(pick.dataset.pick), { kind, sec } = modalFrom;
+        closeIndex();
+        if (current) { if (current.kind === kind && current.i === i) return; current.kind = kind; swap(kind, i); }
+        else open(sec, kind, i);
+    });
+
+    sections.forEach(sec => {
+        const kind = sec.dataset.plc;
+        sec.addEventListener('click', e => {
+            const link = e.target.closest('[data-open]');
+            if (link) { e.preventDefault(); open(sec, kind, Number(link.dataset.open)); return; }
+            if (e.target.closest('[data-index-open]')) openIndex(kind, sec);
+        });
+    });
+    detail.addEventListener('click', e => {
+        if (e.target.closest('[data-back]')) close();
+        else if (e.target.closest('[data-index-open]') && current) openIndex(current.kind, current.sec);
+    });
+    addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (modal.classList.contains('is-open')) closeIndex();
+        else if (current) close();
+    });
+
+    addEventListener('load', update);
+    update();
+})();
