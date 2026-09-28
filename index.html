@@ -32,15 +32,15 @@
 <body data-theme="dark">
 
     <header class="header js-header">
+        <div class="js-menu">
+            <div class="menu-lines-wrapper">
+                <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
+            </div>
+            <span class="menu-text text-open">MENU</span>
+            <span class="menu-text text-close">CLOSE</span>
+        </div>
         <div class="top-bar">
             <div class="nav-left-group">
-                <div class="js-menu">
-                    <div class="menu-lines-wrapper">
-                        <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
-                    </div>
-                    <span class="menu-text text-open">MENU</span>
-                    <span class="menu-text text-close">CLOSE</span>
-                </div>
                 <div class="site-logo" onclick="window.scrollTo(0,0);">PORTFOLIO</div>
             </div>
 
@@ -143,7 +143,7 @@
             <p>I build machine learning models and Python tools, and fix real bugs in the open-source libraries I use every day.</p>
             <a href="#contact" class="hero-cta">Let's connect <span aria-hidden="true">&#8599;</span></a>
         </div>
-        <div class="hero-status"><span class="hero-status__dot"></span>Actively seeking opportunities</div>
+        <div class="hero-status"><span class="hero-status__dot"></span>Luck can be freaky</div>
         <a href="#github" class="hero-scroll">Scroll to explore <span aria-hidden="true">&#8600;</span></a>
     </main>
 
@@ -155,7 +155,10 @@
                 <p class="gh-activity__total" id="gh-total"></p>
                 <a href="https://github.com/LuShadowX" target="_blank" class="gh-activity__link"><i class="fab fa-github"></i> View GitHub profile <span aria-hidden="true">&#8599;</span></a>
             </div>
-            <div class="gh-graph" id="gh-graph" data-user="LuShadowX"></div>
+            <div class="gh-graph-card">
+                <div class="gh-graph" id="gh-graph" data-user="LuShadowX"></div>
+                <img class="gh-graph-art" src="assets/images/sukuna.jpg" alt="" aria-hidden="true">
+            </div>
         </div>
     </section>
 
