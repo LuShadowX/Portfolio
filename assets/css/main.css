@@ -761,7 +761,7 @@ html[data-skills-transfer=active] .skills-handoff-source,html[data-skills-transf
 .ascii-project-card:focus-visible{outline:none}
 .ascii-project-card:focus-visible .ascii-preview{outline:.1rem solid var(--ascii-accent);outline-offset:.5rem}
 .ascii-project-card:focus-visible .ascii-preview canvas{opacity:0;filter:blur(.18rem);transform:scale(.985)}
-.ascii-project-card:focus-visible .ascii-source-image{opacity:1;filter:none;transform:none}
+.ascii-project-card:focus-visible .ascii-window{opacity:1;filter:none;transform:none}
 .ascii-project-meta{color:#efede780;font:700 clamp(.54rem, .6vw, .68rem)/1 var(--mono);letter-spacing:.1em;justify-content:space-between;gap:1rem;margin-top:.8rem;display:flex}
 .ascii-project-meta b{color:var(--ascii-accent)}
 .ascii-project-meta i{font-style:normal}
@@ -839,7 +839,7 @@ html[data-skills-transfer=active] .skills-handoff-source,html[data-skills-transf
 }
 @media (hover:hover) and (pointer:fine) {
 .ascii-project-card:hover .ascii-preview canvas{opacity:0;filter:blur(.18rem);transform:scale(.985)}
-.ascii-project-card:hover .ascii-source-image{opacity:1;filter:none;transform:none}
+.ascii-project-card:hover .ascii-window{opacity:1;filter:none;transform:none}
 .ascii-project-card:hover .ascii-preview:before,.ascii-project-card:hover .ascii-preview:after{border-color:var(--ascii-accent);opacity:1}
 }
 @supports (color:color-mix(in lab, red, red)) {
@@ -864,10 +864,10 @@ html[data-skills-transfer=active] .skills-handoff-source,html[data-skills-transf
 @media (hover:none),(pointer:coarse),(max-width:64rem) {
 .ascii-project-card{grid-template-rows:auto auto minmax(4.2rem,auto) minmax(2.5rem,auto)}
 .ascii-project-card.is-touch-revealed .ascii-preview canvas{opacity:0;filter:blur(.18rem);transform:scale(.985)}
-.ascii-project-card.is-touch-revealed .ascii-source-image{opacity:1;filter:none;transform:none}
+.ascii-project-card.is-touch-revealed .ascii-window{opacity:1;filter:none;transform:none}
 .ascii-project-card.is-touch-revealed .ascii-preview:before,.ascii-project-card.is-touch-revealed .ascii-preview:after{border-color:var(--ascii-accent);opacity:1}
 .ascii-project-card:focus-visible:not(.is-touch-revealed) .ascii-preview canvas{opacity:1;filter:none;transform:none}
-.ascii-project-card:focus-visible:not(.is-touch-revealed) .ascii-source-image{opacity:0}
+.ascii-project-card:focus-visible:not(.is-touch-revealed) .ascii-window{opacity:0}
 .ascii-hover-instruction{letter-spacing:.08em;opacity:.82;justify-content:flex-end;align-items:center;min-height:2.5rem;margin-top:.35rem;padding:.65rem 0 .35rem;font-size:clamp(.82rem,2.4vw,1rem);line-height:1.25;display:flex;transform:none}
 .ascii-project-card.is-touch-revealed .ascii-hover-instruction{color:var(--ascii-accent);opacity:1}
 .ascii-instruction-desktop{display:none}
@@ -1369,4 +1369,20 @@ html.project-dialog-open .top-bar, html.project-dialog-open .js-menu { display: 
 /* Optional: Ensure the background page content doesn't scroll/interfere */
 body.menu-open {
     overflow: hidden;
+}
+.ascii-window{z-index:2;display:flex;flex-direction:column;position:absolute;inset:8% 7%;border-radius:.7rem;overflow:hidden;background:#1d1e20;border:.0625rem solid #ffffff2e;box-shadow:0 1.6rem 3.2rem #000c,0 .3rem .8rem #0008;opacity:0;transform:translateY(1.4rem) scale(.93);transition:opacity .5s var(--ease-premium),transform .75s var(--ease-premium)}
+.ascii-window-bar{flex:none;height:1.6rem;display:flex;align-items:center;gap:.42rem;padding:0 .75rem;background:linear-gradient(#36373a,#2a2b2e);border-bottom:.0625rem solid #0009;position:relative}
+.ascii-window-bar i{width:.66rem;height:.66rem;border-radius:50%;background:#ff5f57;box-shadow:inset 0 0 0 .04rem #0003}
+.ascii-window-bar i:nth-child(2){background:#febc2e}.ascii-window-bar i:nth-child(3){background:#28c840}
+.ascii-window-bar b{position:absolute;left:50%;transform:translate(-50%);max-width:62%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 .64rem/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#ffffffa6;letter-spacing:.01em}
+.ascii-window .ascii-source-image{position:relative;inset:auto;flex:1;min-height:0;width:100%;height:auto;object-fit:cover;object-position:center;opacity:1;filter:none;transform:scale(1.06);transition:transform 1.1s var(--ease-premium)}
+.ascii-project-card:focus-visible .ascii-window .ascii-source-image{transform:none}
+@media (hover:hover) and (pointer:fine){
+.ascii-project-card:hover .ascii-preview canvas{opacity:.18}
+.ascii-project-card:hover .ascii-window .ascii-source-image{transform:none}
+}
+@media (hover:none),(pointer:coarse),(max-width:64rem){
+.ascii-project-card.is-touch-revealed .ascii-preview canvas{opacity:.18}
+.ascii-project-card.is-touch-revealed .ascii-window .ascii-source-image{transform:none}
+.ascii-window-bar{height:1.3rem}.ascii-window-bar i{width:.55rem;height:.55rem}
 }
