@@ -111,6 +111,43 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mouseleave', () => { bgLayer.style.transform = 'translate(0px, 0px)'; });
     }
 
+    // Intro stage: hide the top bar while it is on screen, and let the paper cutouts tilt and drag
+    const stage = document.querySelector('.stage');
+    if (stage) {
+        new IntersectionObserver(([entry]) => {
+            body.classList.toggle('at-intro', entry.intersectionRatio > 0.35);
+        }, { threshold: [0, 0.35, 1] }).observe(stage);
+
+        stage.querySelectorAll('.cutout').forEach(cutout => {
+            let drag = null;
+            let offsetX = 0, offsetY = 0;
+            cutout.addEventListener('pointermove', (e) => {
+                const box = cutout.getBoundingClientRect();
+                const px = (e.clientX - box.left) / box.width - 0.5;
+                const py = (e.clientY - box.top) / box.height - 0.5;
+                cutout.style.setProperty('--tilt-x', `${py * -12}deg`);
+                cutout.style.setProperty('--tilt-y', `${px * 12}deg`);
+                if (!drag) return;
+                offsetX = drag.x + e.clientX - drag.startX;
+                offsetY = drag.y + e.clientY - drag.startY;
+                cutout.style.translate = `${offsetX}px ${offsetY}px`;
+            });
+            cutout.addEventListener('pointerleave', () => {
+                if (drag) return;
+                cutout.style.setProperty('--tilt-x', '0deg');
+                cutout.style.setProperty('--tilt-y', '0deg');
+            });
+            cutout.addEventListener('pointerdown', (e) => {
+                drag = { startX: e.clientX, startY: e.clientY, x: offsetX, y: offsetY };
+                cutout.setPointerCapture(e.pointerId);
+                cutout.classList.add('is-grabbed');
+            });
+            const release = () => { drag = null; cutout.classList.remove('is-grabbed'); };
+            cutout.addEventListener('pointerup', release);
+            cutout.addEventListener('pointercancel', release);
+        });
+    }
+
     // GitHub contribution graph (last 12 months)
     const graph = document.getElementById('gh-graph');
     if (graph) {
