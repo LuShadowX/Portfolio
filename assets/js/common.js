@@ -683,8 +683,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const vh = innerHeight;
         return clamp((vh - top) / (vh + el.offsetHeight));
     };
+    // Timeline star: spring-follows how far the list has moved past the middle of the screen
+    const timelines = sections.map(sec => {
+        const tl = sec.querySelector('[data-pl-timeline]');
+        return tl && { sec, wrap: sec.querySelector('.pl-listing_wrap'), star: tl.querySelector('.pl-timeline_star'), items: [...tl.querySelectorAll('.pl-timeline_item')], p: 0, v: 0, target: 0, raf: 0, last: 0 };
+    }).filter(Boolean);
+    const stepStar = (t, now) => {
+        let dt = Math.min(0.05, (now - (t.last || now)) / 1000); t.last = now;
+        while (dt > 0) { const h = Math.min(dt, 0.004); dt -= h; t.v += ((60 * (t.target - t.p) - 22 * t.v) / 0.5) * h; t.p += t.v * h; }
+        t.star.style.setProperty('--star', `${(Math.min(1, Math.max(0, t.p)) * 100).toFixed(2)}%`);
+        const y = t.star.getBoundingClientRect().top + 12;
+        let active = 0;
+        t.items.forEach((it, i) => { if (it.getBoundingClientRect().top - 6 <= y) active = i; });
+        t.items.forEach((it, i) => it.classList.toggle('is-active', i === active));
+        if (Math.abs(t.target - t.p) + Math.abs(t.v) > 0.0005) t.raf = requestAnimationFrame(n => stepStar(t, n));
+        else { t.raf = 0; t.last = 0; }
+    };
+    const updateTimelines = () => {
+        const mid = innerHeight / 2;
+        for (const t of timelines) {
+            const r = t.wrap.getBoundingClientRect();
+            t.target = clamp((mid - r.top) / Math.max(r.height - mid, 1));
+            if (!t.raf) t.raf = requestAnimationFrame(n => stepStar(t, n));
+        }
+    };
+
     let queued = false;
     const update = () => {
+        updateTimelines();
         queued = false;
         const vh = innerHeight;
         for (const v of visuals) {

@@ -1461,7 +1461,7 @@ html.lenis,html.lenis body{height:auto}
 .pl-header_tagline{width:100%;height:var(--pl-tagline-h);position:relative;z-index:10;margin-bottom:-300px;padding:0 var(--pl-m)}
 .pl-header_tagline_sticky{height:var(--pl-tagline-h)}
 .pl-header_tagline_sticky_inner{position:sticky;top:90px}
-.pl-header_tagline_title{padding-bottom:var(--pl-m);text-wrap:balance;display:inline-block;max-width:83%}
+.pl-header_tagline_title{padding-bottom:var(--pl-m);text-wrap:balance;display:inline-block;max-width:calc(58.333% - 24px)}
 @media (min-width:1200px){.pl-header_tagline{margin-bottom:-290px}}
 @media (min-width:1600px){.pl-header_tagline_sticky_inner{top:80px}}
 @media (max-width:1199px){.pl-header_tagline_sticky_inner{top:140px}}
@@ -1727,4 +1727,42 @@ body.in-plc .top-bar,body.in-plc .js-menu,body.in-plc .scroll-progress{opacity:0
   .pl-gallery_item_inner,.pl-gallery_item.-dual>div:nth-child(2n) .pl-gallery_item_inner{transform:none}
   .pl-gallery_element{opacity:1}
   .pl-button{font-size:26px;height:54px}
+}
+
+/* ==== timeline in the INFO column: a glowing star glides down as the list scrolls (from waleedahmed.site) ==== */
+.pl-text_inner{display:flex;flex-direction:column;height:calc(100vh - 32px - var(--pl-contact-height) / 2 - 12px)}
+.pl-text_content{flex:none}
+.plc .pl-text{padding-bottom:48px}
+.plc .pl-text_sticky{z-index:3}
+.plc .pl-text_inner{z-index:1}
+.pl-timeline{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:26px;padding-bottom:10px}
+.pl-timeline_label{margin-left:-12px;flex:none}
+.pl-timeline_rail{position:absolute;left:10px;top:52px;bottom:14px;width:1px;background:linear-gradient(to bottom,rgba(242,239,233,.15),rgba(242,239,233,.1) 60%,rgba(242,239,233,0))}
+.pl-timeline_star{position:absolute;left:50%;top:var(--star,0%);width:24px;height:24px;margin:-12px 0 0 -12px;color:#7b92a6;animation:plStarPulse 7s ease-in-out infinite;will-change:top}
+.pl-timeline_star i{position:absolute;inset:-8px;border-radius:50%;background:rgba(123,146,166,.2);filter:blur(10px)}
+.pl-timeline_star svg{position:relative;display:block;width:100%;height:100%}
+@keyframes plStarPulse{0%,100%{scale:.95;opacity:.8}50%{scale:1.05;opacity:1}}
+.pl-timeline_list{list-style:none;margin:8px 0 0;padding:0 0 0 38px;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:space-around}
+.pl-timeline_item{display:grid;grid-template-columns:minmax(6.2rem,.3fr) minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid rgba(242,239,233,.1);opacity:.42;transition:opacity .6s cubic-bezier(.16,1,.3,1)}
+.pl-timeline_item:first-child{border-top:0}
+.pl-timeline_item.is-active,.pl-timeline_item:hover{opacity:1}
+.pl-timeline_chapter{font-family:"Instrument Serif",var(--pl-serif);font-style:italic;font-weight:400;font-size:1.3rem;line-height:1.05;color:#7b92a6;letter-spacing:0}
+.pl-timeline_date{margin-top:7px;font:600 .68rem/1.2 var(--pl-sans);letter-spacing:.28em;text-transform:uppercase;color:#9a968e}
+.pl-timeline_title{font-family:var(--pl-sans);font-weight:700;font-size:1.4rem;line-height:1;text-transform:uppercase;letter-spacing:.025em;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.pl-timeline_item:hover .pl-timeline_title,.pl-timeline_item.is-active .pl-timeline_title{transform:translateX(6px)}
+.pl-timeline_text{margin-top:6px;font-family:var(--pl-serif);font-weight:500;font-size:1rem;line-height:1.22;letter-spacing:-.01em;color:#9a968e}
+.pl-timeline_tags{margin-top:9px;display:flex;flex-wrap:wrap;gap:6px}
+.pl-timeline_tags span{border:1px solid rgba(242,239,233,.15);border-radius:999px;padding:3px 9px 2px;font:600 .72rem/1.2 var(--pl-sans);letter-spacing:.05em;text-transform:uppercase;color:#9a968e;transition:border-color .5s cubic-bezier(.16,1,.3,1)}
+.pl-timeline_item:hover .pl-timeline_tags span,.pl-timeline_item.is-active .pl-timeline_tags span{border-color:rgba(123,146,166,.45)}
+@media (max-height:800px){.pl-timeline_tags{display:none}}
+@media (max-height:660px){.pl-timeline{margin-top:14px}.pl-timeline_text{display:none}.pl-timeline_item{padding:5px 0;gap:12px}.pl-timeline_chapter{font-size:1.1rem}.pl-timeline_date{margin-top:3px}.pl-timeline_title{font-size:1.15rem}.pl-timeline_rail{top:44px}}
+@media (max-width:999px){.pl-timeline_item{grid-template-columns:1fr;gap:6px}}
+@media (max-width:699px){
+  .pl-text_inner{height:auto;display:block}
+  .pl-timeline{margin-top:32px}
+  .pl-timeline_rail{display:none}
+  .pl-timeline_list{padding-left:12px}
+  .pl-timeline_item{opacity:1}
+  .pl-timeline_tags,.pl-timeline_text{display:flex}
+  .pl-timeline_text{display:block}
 }
