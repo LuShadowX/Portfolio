@@ -690,6 +690,100 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 })();
 
+/* Contact: rotating ASCII tesseract (from gmmohit.com) that scatters across the section when the pointer comes close */
+(() => {
+    const section = document.getElementById('contact');
+    const lead = section?.querySelector('.contact-heading > p');
+    const heading = section?.querySelector('.contact-heading h2');
+    if (!section || !lead || !heading) return;
+    const pre = document.createElement('pre');
+    pre.className = 'contact-tesseract';
+    pre.setAttribute('aria-hidden', 'true');
+    section.prepend(pre);
+
+    const V = []; for (let e = 0; e < 16; e++) V.push([e & 1 ? 1 : -1, e & 2 ? 1 : -1, e & 4 ? 1 : -1, e & 8 ? 1 : -1]);
+    const E = []; for (let a = 0; a < 16; a++) for (let b = a + 1; b < 16; b++) { const x = a ^ b; if ((x & (x - 1)) === 0) E.push([a, b]); }
+    const PER = 30, COUNT = PER * E.length, RAMP = ' .,-~:;=!*#$@';
+    let cols = 0, rows = 0, stride = 0, cw = 6, ch = 10, cx = 0, cy = 0, sc = 1;
+    const layout = () => {
+        const cs = getComputedStyle(pre);
+        const probe = document.createElement('canvas').getContext('2d');
+        probe.font = `${cs.fontSize} ${cs.fontFamily}`;
+        const fs = parseFloat(cs.fontSize) || 9;
+        cw = (probe.measureText('M').width || fs * 0.6) + (parseFloat(cs.letterSpacing) || 0);
+        ch = parseFloat(cs.lineHeight) || fs * 1.1;
+        const oldC = cols, oldR = rows;
+        cols = Math.max(32, Math.ceil(section.clientWidth / cw) + 2);
+        rows = Math.max(16, Math.ceil(section.clientHeight / ch) + 2);
+        if (cols * rows > 90000) { const k = Math.sqrt(90000 / (cols * rows)); cols = Math.floor(cols * k); rows = Math.floor(rows * k); }
+        stride = cols + 1;
+        // Centre of the shape: under the small intro line (wide screens), or beside it (single column)
+        const s = section.getBoundingClientRect(), p = lead.getBoundingClientRect(), h = heading.getBoundingClientRect();
+        const twoCol = h.left - p.left > p.width * 0.8;
+        // At scale 1 the shape spans about 56 columns by 28 rows; shrink it to fit the free space
+        const boxW = twoCol ? h.left - p.left - 40 : s.width * 0.5;
+        const boxH = twoCol ? h.bottom - p.bottom - 24 : p.height + 60;
+        sc = Math.max(0.45, Math.min(1.25, boxW / (58 * cw), boxH / (30 * ch)));
+        const px = twoCol ? p.left + boxW / 2 : s.left + s.width * 0.74;
+        const py = twoCol ? p.bottom + 12 + boxH / 2 : p.top + p.height / 2 + 20;
+        cx = (px - s.left) / cw; cy = (py - s.top) / ch;
+        return oldC && (oldC !== cols || oldR !== rows);
+    };
+    layout();
+    const P = Array.from({ length: COUNT }, () => ({ x: cx, y: cy, vx: 0, vy: 0, tx: 0, ty: 0, c: '@', seed: Math.random() }));
+    let a1 = 0, a2 = 0, a3 = 0, mx = -1e4, my = -1e4, wasHot = false, raf = 0, running = false, touchTimer = 0;
+    const toCells = (e) => { const r = section.getBoundingClientRect(); mx = (e.clientX - r.left) / cw; my = (e.clientY - r.top) / ch; };
+    section.addEventListener('mousemove', toCells, { passive: true });
+    section.addEventListener('mouseleave', () => { mx = my = -1e4; });
+    section.addEventListener('touchstart', () => { mx = cx; my = cy; clearTimeout(touchTimer); touchTimer = setTimeout(() => { mx = my = -1e4; }, 2500); }, { passive: true });
+    const frame = () => {
+        a1 += 0.003; a2 += 0.005; a3 += 0.0015;
+        const c1 = Math.cos(a1), s1 = Math.sin(a1), c2 = Math.cos(a2), s2 = Math.sin(a2), c3 = Math.cos(a3), s3 = Math.sin(a3);
+        const proj = V.map(([x, y, z, w]) => {
+            let t = x * c1 - w * s1; w = x * s1 + w * c1; x = t;
+            t = y * c2 - w * s2; w = y * s2 + w * c2; y = t;
+            t = x * c3 - y * s3; y = x * s3 + y * c3; x = t;
+            const f = 1 / (3 - w);
+            return [x * f, y * f, z * f];
+        });
+        let k = 0;
+        for (const [a, b] of E) {
+            const A = proj[a], B = proj[b];
+            for (let i = 0; i < PER; i++) {
+                const t = i / (PER - 1), x = A[0] + (B[0] - A[0]) * t, y = A[1] + (B[1] - A[1]) * t, z = A[2] + (B[2] - A[2]) * t;
+                const p = P[k++];
+                p.tx = Math.floor(cx + 40 * sc * x); p.ty = Math.floor(cy + 20 * sc * y);
+                p.c = RAMP[Math.floor(Math.max(0, Math.min(1, (z + 1) / 2)) * (RAMP.length - 1))];
+            }
+        }
+        const grid = new Array(rows * stride).fill(' ');
+        for (let r = 0; r < rows; r++) grid[r * stride + cols] = '\n';
+        const dx = mx - cx, dy = my - cy, hot = Math.sqrt(dx * dx + dy * dy) < 25 * Math.max(sc, 0.7), burst = hot && !wasHot;
+        section.classList.toggle('tess-hot', hot);
+        for (const p of P) {
+            if (burst) {
+                const ex = p.x - cx, ey = p.y - cy, n = Math.sqrt(ex * ex + ey * ey) || 1, sp = 0.4 + 0.8 * p.seed;
+                p.vx = (ex / n * sp + (Math.random() - 0.5) * 0.5) * 3;
+                p.vy = (ey / n * sp + (Math.random() - 0.5) * 0.5) * 0.6;
+            }
+            if (hot) { p.vx *= 0.98; p.vy *= 0.98; p.x += p.vx; p.y += p.vy; }
+            else { p.vx = p.vy = 0; p.x += (p.tx - p.x) * 0.08; p.y += (p.ty - p.y) * 0.08; }
+            const gx = Math.floor(p.x), gy = Math.floor(p.y);
+            if (gx >= 0 && gx < cols && gy >= 0 && gy < rows) grid[gy * stride + gx] = p.c;
+        }
+        wasHot = hot;
+        pre.textContent = grid.join('');
+        if (running) raf = requestAnimationFrame(frame);
+    };
+    new IntersectionObserver(([e]) => {
+        if (e.isIntersecting === running) return;
+        running = e.isIntersecting;
+        if (running) raf = requestAnimationFrame(frame); else cancelAnimationFrame(raf);
+    }, { rootMargin: '200px' }).observe(section);
+    new ResizeObserver(() => { layout(); }).observe(section);
+    document.fonts?.ready.then(layout);
+})();
+
 /* ==== PLC listing sections (projects / open source / field notes), behaviour ported from plcossette.com ==== */
 (() => {
     const sections = [...document.querySelectorAll('.plc')];
