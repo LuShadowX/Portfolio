@@ -797,20 +797,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 })();
 
-/* Certificates: floating 3D key catalog; press a key to open its certificate */
+/* Certificates: a 3D keycap pad (modelled on nipunraj.dev's tech-stack keyboard). Press a key to open its certificate. */
 (() => {
     const sec = document.getElementById('certificates');
-    const board = sec?.querySelector('.cc-board');
+    const mount = sec?.querySelector('.cc-keys');
     const card = sec?.querySelector('.cc-card');
-    if (!sec || !board || !card) return;
+    if (!sec || !mount || !card) return;
     const certs = JSON.parse(document.getElementById('cert-data')?.textContent || '[]');
     const byId = Object.fromEntries(certs.map(c => [c.id, c]));
     const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const marquee = sec.querySelectorAll('.cc-marquee-track span');
+    const path = sec.querySelector('.cc-connector path');
+
+    // ---- card ----
     const overview = () => `<p class="ccd-kanji" aria-hidden="true">証</p>
         <h3 class="ccd-title">The catalog</h3>
         <p class="ccd-desc">Every key holds a certificate. Press one to open it, with the full certificate and a link to view it on Drive.</p>
-        <ul class="ccd-legend">${certs.map(c => `<li><b>${esc(c.key)}</b><span>${esc(c.title)}</span></li>`).join('')}</ul>`;
-    const detail = (c) => `<p class="ccd-issuer">${esc(c.issuer)}</p>
+        <ul class="ccd-legend">${certs.map(c => `<li><button type="button" data-cert="${c.id}"><b style="--c:${c.color}">${esc(c.key)}</b><span>${esc(c.title)}</span></button></li>`).join('')}</ul>`;
+    const detail = (c) => `<p class="ccd-issuer" style="color:${c.color}">${esc(c.issuer)}</p>
         <h3 class="ccd-title">${esc(c.title)}</h3>
         <p class="ccd-desc">${esc(c.desc)}</p>
         <ul class="ccd-tags">${c.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
@@ -819,24 +823,29 @@ document.addEventListener('DOMContentLoaded', () => {
                       : `<span class="ccd-empty"><b>${esc(c.key)}</b>${esc(c.issuer)}<br>certificate image coming soon</span>`}</figure>
         <dl class="ccd-rows"><div><dt>Issued</dt><dd>${esc(c.date)}</dd></div><div><dt>ID</dt><dd>${esc(c.cid)}</dd></div><div><dt>Note</dt><dd>${esc(c.note)}</dd></div></dl>
         ${c.drive ? `<a class="ccd-link" href="${esc(c.drive)}" target="_blank" rel="noopener noreferrer">View on Drive <span aria-hidden="true">↗</span></a>`
-                  : c.image ? `<a class="ccd-link" href="${esc(c.image)}" target="_blank" rel="noopener noreferrer">Open certificate <span aria-hidden="true">↗</span></a>` : ''}`;
-    let current = null, swapTimer = 0;
+                  : c.image ? `<a class="ccd-link" href="${esc(c.image)}" target="_blank" rel="noopener noreferrer">Open certificate <span aria-hidden="true">↗</span></a>` : ''}
+        <button type="button" class="ccd-back" data-cert="">← All certificates</button>`;
+    let current = null, swapTimer = 0, onActive = () => {};
     const show = (id) => {
         if (id === current && card.innerHTML) return;
         current = id;
-        board.querySelectorAll('.ck[data-cert]').forEach(k => k.classList.toggle('is-active', k.dataset.cert === id && !!id));
         card.classList.add('is-swap');
         clearTimeout(swapTimer);
         swapTimer = setTimeout(() => { card.innerHTML = id ? detail(byId[id]) : overview(); card.classList.remove('is-swap'); }, card.innerHTML ? 220 : 0);
+        const name = id ? byId[id].issuer.toUpperCase() : '';
+        marquee.forEach(s => { s.textContent = name ? `${name} · ${name} · ${name} · ` : ''; });
+        sec.classList.toggle('has-active', !!id);
+        onActive(id);
     };
     show('');
-    // Mechanical key sounds, made in the browser: a low "thock" on press, a lighter click on release,
-    // each pitched a little at random like the reference
+    card.addEventListener('click', (e) => { const b = e.target.closest('[data-cert]'); if (b) show(b.dataset.cert); });
+
+    // ---- sound: a low "thock" on press, a lighter click on release, randomly detuned like the reference ----
     let ac = null;
-    const audio = () => { if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (A) ac = new A(); } if (ac?.state === 'suspended') ac.resume(); return ac; };
     const click = (kind) => {
-        const ctx = audio(); if (!ctx) return;
-        const t = ctx.currentTime, detune = 2 ** ((Math.random() * 200 - 100) / 1200), out = ctx.createGain();
+        if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return; ac = new A(); }
+        if (ac.state === 'suspended') ac.resume();
+        const ctx = ac, t = ctx.currentTime, detune = 2 ** ((Math.random() * 200 - 100) / 1200), out = ctx.createGain();
         out.gain.value = 0.4; out.connect(ctx.destination);
         const len = Math.floor(ctx.sampleRate * 0.06), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
         for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, kind === 'press' ? 5 : 8);
@@ -849,37 +858,141 @@ document.addEventListener('DOMContentLoaded', () => {
         const bg = ctx.createGain(); bg.gain.setValueAtTime(kind === 'press' ? 0.55 : 0.18, t); bg.gain.exponentialRampToValueAtTime(0.001, t + (kind === 'press' ? 0.08 : 0.04));
         body.connect(bg).connect(out); body.start(t); body.stop(t + 0.1);
     };
-    let held = null;
-    const down = (k) => { if (held === k) return; held = k; k.classList.add('is-pressed'); click('press'); };
-    const up = () => { if (!held) return; const k = held; held = null; setTimeout(() => k.classList.remove('is-pressed'), 60); click('release'); };
-    board.addEventListener('pointerdown', (e) => { const k = e.target.closest('.ck'); if (k) down(k); });
-    addEventListener('pointerup', up);
-    addEventListener('pointercancel', up);
-    board.addEventListener('keydown', (e) => { const k = e.target.closest('.ck'); if (k && (e.key === 'Enter' || e.key === ' ') && !e.repeat) down(k); });
-    board.addEventListener('keyup', (e) => { if (e.key === 'Enter' || e.key === ' ') up(); });
-    board.addEventListener('click', (e) => {
-        const k = e.target.closest('.ck');
-        if (!k) return;
-        if ('cert' in k.dataset) show(k.dataset.cert);
-    });
-    // Tilt the board a little towards the pointer
-    const stage = sec.querySelector('.cc-stage');
-    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        stage.addEventListener('mousemove', (e) => {
-            const r = board.getBoundingClientRect();
-            const dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width * 1.2)));
-            const dy = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height * 1.2)));
-            board.style.setProperty('--rx', `${54 - dy * 7}deg`);
-            board.style.setProperty('--rz', `${-34 + dx * 9}deg`);
-        }, { passive: true });
-        stage.addEventListener('mouseleave', () => { board.style.removeProperty('--rx'); board.style.removeProperty('--rz'); });
-    }
+
+    // ---- 3D keyboard (three.js is loaded only when the section gets close) ----
+    const build = async () => {
+        const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js');
+        const W0 = mount.clientWidth || 600, H0 = mount.clientHeight || 500;
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(W0, H0); renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
+        mount.appendChild(renderer.domElement);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(29, W0 / H0, 0.1, 1000);
+        camera.position.set(-60, 180, 330); camera.lookAt(0, 10, 0);
+        const group = new THREE.Group(); scene.add(group);
+
+        // grid: 2 columns up to 4 keys, then 4 columns
+        const n = certs.length, cols = n <= 4 ? 2 : 4, rows = Math.ceil(n / cols), pitch = 32, key = 38;
+        const caseW = (cols - 1) * pitch + key + 26, caseD = (rows - 1) * pitch + key + 26;
+        const slope = 0.32;
+        const tilt = (geo, lift) => { const p = geo.attributes.position; for (let i = 0; i < p.count; i++) { const z = p.getZ(i), y = p.getY(i), s = Math.max(0, Math.min(1, (y + lift) / 31)); p.setY(i, y - z * slope * s); } geo.computeVertexNormals(); };
+        const rounded = (w, h, r, Cls) => { const s = new Cls(), x = -w / 2, y = -h / 2;
+            s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r);
+            s.quadraticCurveTo(x + w, y + h, x + w - r, y + h); s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s; };
+        const caseMat = new THREE.MeshPhysicalMaterial({ color: 0xf4ede1, roughness: 0.35, metalness: 0.1, clearcoat: 0.2, clearcoatRoughness: 0.3 });
+        const plateMat = new THREE.MeshStandardMaterial({ color: 0xf4ede1, roughness: 0.4, metalness: 0.1 });
+        const outer = rounded(caseW, caseD, 10, THREE.Shape); outer.holes.push(rounded(caseW - 24, caseD - 24, 6, THREE.Path));
+        const caseGeo = new THREE.ExtrudeGeometry(outer, { depth: 31, bevelEnabled: true, bevelSegments: 4, steps: 3, bevelSize: 1.5, bevelThickness: 1.5 });
+        caseGeo.rotateX(-Math.PI / 2); tilt(caseGeo, 0);
+        const shell = new THREE.Mesh(caseGeo, caseMat); shell.castShadow = shell.receiveShadow = true; group.add(shell);
+        const plateY = 25.5, plateGeo = new THREE.ExtrudeGeometry(rounded(caseW - 23, caseD - 23, 6, THREE.Shape), { depth: 3, bevelEnabled: false });
+        plateGeo.rotateX(-Math.PI / 2); tilt(plateGeo, plateY);
+        const plate = new THREE.Mesh(plateGeo, plateMat); plate.position.y = plateY; plate.receiveShadow = true; group.add(plate);
+
+        // sculpted keycap: tapered, rounded corners, dished top
+        const capGeo = (() => { const g = new THREE.BoxGeometry(key, 12, key, 16, 8, 16), p = g.attributes.position, hh = 6, half = key / 2;
+            for (let i = 0; i < p.count; i++) { let x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+                const f = (y + hh) / 12, k = 1 - f * 0.22, lim = half * k, rad = 8.5 * k, ax = Math.abs(x), az = Math.abs(z);
+                if (ax > lim - rad && az > lim - rad) { const cx = Math.sign(x) * (lim - rad), cz = Math.sign(z) * (lim - rad), dx = x - cx, dz = z - cz, dl = Math.hypot(dx, dz); if (dl > 0) { x = cx + dx / dl * rad; z = cz + dz / dl * rad; } }
+                else { x = Math.max(-lim, Math.min(lim, x)); z = Math.max(-lim, Math.min(lim, z)); }
+                if (f > 0.1) { const r = Math.hypot(x, z), m = lim * 1.15, dish = Math.max(0, 1 - (r / m) * (r / m)); y -= 1.5 * dish * dish * f ** 1.5; }
+                p.setXYZ(i, x, y, z); }
+            g.computeVertexNormals(); return g; })();
+        const loadImg = src => new Promise(r => { const im = new Image(); im.onload = () => r(im); im.onerror = () => r(null); im.src = src; });
+        const face = async (c) => { const cv = document.createElement('canvas'); cv.width = cv.height = 256; const g = cv.getContext('2d');
+            g.fillStyle = c.color; g.fillRect(0, 0, 256, 256); g.fillStyle = '#fff';
+            if (c.logo.path) { g.save(); g.translate(62, 62); g.scale(5.5, 5.5); g.fill(new Path2D(c.logo.path)); g.restore(); }
+            else if (c.logo.draw === 'cube') {   // Skillera's mark: an isometric cube in three tones
+                const cx = 128, cy = 132, r = 66, dx = r * Math.cos(Math.PI / 6), dy = r / 2;
+                const poly = (pts, a) => { g.globalAlpha = a; g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fill(); };
+                poly([[cx, cy - r], [cx + dx, cy - dy], [cx, cy], [cx - dx, cy - dy]], 1);
+                poly([[cx - dx, cy - dy], [cx, cy], [cx, cy + r], [cx - dx, cy + dy]], 0.72);
+                poly([[cx + dx, cy - dy], [cx, cy], [cx, cy + r], [cx + dx, cy + dy]], 0.46);
+                g.globalAlpha = 1;
+            }
+            else if (c.logo.img) { const im = await loadImg(c.logo.img); if (im) { const s = Math.min(150 / im.width, 150 / im.height); g.drawImage(im, 128 - im.width * s / 2, 128 - im.height * s / 2, im.width * s, im.height * s); } }
+            const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; };
+        const lean = 28.5 / 31, topY = 34.5, keys = [];
+        for (let i = 0; i < n; i++) {
+            const c = certs[i], col = i % cols, row = Math.floor(i / cols);
+            const gx = (col - (cols - 1) / 2) * pitch, gz = (row - (rows - 1) / 2) * pitch;
+            const side = new THREE.MeshPhysicalMaterial({ color: new THREE.Color(c.color), roughness: 1, metalness: 0 });
+            const top = new THREE.MeshPhysicalMaterial({ map: await face(c), roughness: 1, metalness: 0 });
+            const mesh = new THREE.Mesh(capGeo, [side, side, top, side, side, side]);
+            const y = topY - gz * slope * lean;
+            mesh.position.set(gx, y, gz); mesh.rotation.x = Math.atan(slope * lean); mesh.castShadow = mesh.receiveShadow = true;
+            group.add(mesh); keys.push({ id: c.id, mesh, defaultY: y, down: false, release: undefined });
+        }
+        // lights, as in the reference
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        const sun = new THREE.DirectionalLight(0xfffff0, 3.5); sun.position.set(120, 220, -60); sun.castShadow = true;
+        sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0008; Object.assign(sun.shadow.camera, { left: -90, right: 90, top: 90, bottom: -90, near: 50, far: 400 }); scene.add(sun);
+        const fill = new THREE.DirectionalLight(0xfcf8f2, 1.2); fill.position.set(-200, 100, 50); scene.add(fill);
+        const under = new THREE.DirectionalLight(0xfff6e6, 0.6); under.position.set(0, -100, 100); scene.add(under);
+        const rim = new THREE.DirectionalLight(0xffffff, 0.6); rim.position.set(200, 50, 0); scene.add(rim);
+        const glow = new THREE.PointLight(0x4f8dff, 0, 130, 1.3); glow.position.set(0, topY - 4, 0); scene.add(glow);
+        const baseScale = 1.1 * Math.min(1.6, 160 / caseW);
+
+        const fit = () => { const w = mount.clientWidth, h = mount.clientHeight; if (!w || !h) return; const a = w / h;
+            const s = 2 * Math.atan(Math.tan(26 * Math.PI / 180 / 2) * 1.77); camera.fov = Math.min(2 * Math.atan(Math.tan(s / 2) / a) * 180 / Math.PI, 75);
+            camera.aspect = a; camera.updateProjectionMatrix(); renderer.setSize(w, h); };
+        new ResizeObserver(fit).observe(mount); fit();
+
+        const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(-9, -9); let inside = false, active = null;
+        const pick = () => { if (!inside) return null; ray.setFromCamera(ptr, camera); const hit = ray.intersectObjects(keys.map(k => k.mesh))[0]; return hit ? keys.find(k => k.mesh === hit.object) : null; };
+        const setPtr = (x, y) => { const r = renderer.domElement.getBoundingClientRect(); inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; ptr.set((x - r.left) / r.width * 2 - 1, -((y - r.top) / r.height) * 2 + 1); };
+        addEventListener('pointermove', e => setPtr(e.clientX, e.clientY), { passive: true });
+        renderer.domElement.addEventListener('pointerdown', e => { setPtr(e.clientX, e.clientY); const k = pick(); if (!k) return; e.preventDefault(); k.down = true; click('press'); show(k.id); });
+        addEventListener('pointerup', () => keys.forEach(k => { if (k.down) { k.down = false; k.release = performance.now(); click('release'); } }));
+        onActive = (id) => { active = keys.find(k => k.id === id) || null; };
+        onActive(current);
+
+        const clock = new THREE.Clock(), v = new THREE.Vector3(); let running = false, raf = 0;
+        const narrow = () => innerWidth <= 1024;
+        const frame = () => {
+            raf = requestAnimationFrame(frame);
+            const t = clock.getElapsedTime(), small = innerWidth < 700;
+            group.position.set(0, (small ? -5 : -10) + Math.sin(t * 1.5) * 5, 0);
+            const sc = baseScale * (small ? 1.1 : narrow() ? 0.85 : 1); group.scale.set(sc, sc, sc);
+            let rx = 0.08, ry = 0.45; if (inside && !narrow()) { rx += ptr.y * 0.15; ry += ptr.x * 0.25; }
+            group.rotation.x += (rx - group.rotation.x) * 0.05; group.rotation.y += (ry - group.rotation.y) * 0.05; group.rotation.z = Math.sin(t * 0.8) * 0.03;
+            const hover = pick(); renderer.domElement.style.cursor = hover ? 'pointer' : '';
+            mount.toggleAttribute('data-cursor-hover', !!hover);
+            let lit = 0;
+            for (const k of keys) {
+                const isActive = active === k, target = k.down ? k.defaultY - 5 : isActive ? k.defaultY - 1.5 : hover === k ? k.defaultY + 1.2 : k.defaultY;
+                k.mesh.position.y += (target - k.mesh.position.y) * (k.down ? 0.6 : 0.4);
+                if (k.down) { lit = 95 * (1 + Math.sin(t * 45) * 0.15 + Math.cos(t * 80) * 0.15); glow.position.set(k.mesh.position.x, 0.5, k.mesh.position.z); }
+                else if (k.release !== undefined) { const e = (performance.now() - k.release) / 1000; if (e > 0.4) k.release = undefined; else { const f = (1 - e / 0.4) ** 2; lit = Math.max(lit, (25 + f * 70) * (1 + Math.sin(e * 45) * 0.15)); glow.position.set(k.mesh.position.x, 0.5, k.mesh.position.z); } }
+                else if (isActive && !lit) { lit = 25 * (1 + Math.sin(t * 15) * 0.05 + Math.cos(t * 25) * 0.05); glow.position.set(k.mesh.position.x, 0.5, k.mesh.position.z); }
+            }
+            glow.intensity = lit;
+            renderer.render(scene, camera);
+            // connector from the active key to the card
+            if (path) {
+                if (active && !narrow()) {
+                    active.mesh.getWorldPosition(v); v.project(camera);
+                    const m = mount.getBoundingClientRect(), s = sec.querySelector('.cc-stage').getBoundingClientRect(), c = card.getBoundingClientRect();
+                    const x1 = (v.x * 0.5 + 0.5) * m.width + m.left - s.left, y1 = (-v.y * 0.5 + 0.5) * m.height + m.top - s.top;
+                    const x2 = c.left - s.left, y2 = Math.min(c.bottom - s.top - 40, Math.max(c.top - s.top + 40, y1)), mx = (x1 + x2) / 2;
+                    path.setAttribute('d', `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${mx.toFixed(1)} ${y1.toFixed(1)}, ${mx.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`);
+                    path.parentNode.classList.add('is-on');
+                } else path.parentNode.classList.remove('is-on');
+            }
+        };
+        new IntersectionObserver(([e]) => {
+            if (e.isIntersecting && !running) { running = true; clock.start(); raf = requestAnimationFrame(frame); }
+            else if (!e.isIntersecting && running) { running = false; clock.stop(); cancelAnimationFrame(raf); }
+        }, { rootMargin: '100px' }).observe(sec);
+        sec.classList.add('keys-ready');
+    };
     new IntersectionObserver(([e], obs) => {
         if (!e.isIntersecting) return;
-        sec.classList.add('is-in');
-        setTimeout(() => sec.classList.add('is-settled'), 1400);
         obs.disconnect();
-    }, { threshold: 0.2 }).observe(sec);
+        build().catch(err => { console.warn('Certificate keys fell back to the list:', err); sec.classList.add('keys-failed'); });
+    }, { rootMargin: '500px' }).observe(sec);
 })();
 
 /* ==== PLC listing sections (projects / open source / field notes), behaviour ported from plcossette.com ==== */
