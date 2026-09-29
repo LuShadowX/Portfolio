@@ -604,6 +604,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+/* Hover cursor (from waleedahmed.site): spring-follows the mouse, grows into a glowing circle over clickable things */
+(() => {
+    if (matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    const ring = document.createElement('div');
+    ring.className = 'cursor-ring';
+    ring.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(ring);
+    const TARGETS = 'a, button, [role="button"], [data-cursor-hover], .js-menu, .cutout, .gh-graph-card, label, summary, select';
+    const root = document.documentElement;
+    // Same spring as the reference: stiffness 1400, damping 40, mass 0.12
+    const K = 1400, C = 40, M = 0.12;
+    let tx = -100, ty = -100, x = -100, y = -100, vx = 0, vy = 0, last = 0, raf = 0, hovering = false;
+    const step = (now) => {
+        let dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+        while (dt > 0) {
+            const h = Math.min(dt, 0.002); dt -= h;
+            vx += ((K * (tx - x) - C * vx) / M) * h; vy += ((K * (ty - y) - C * vy) / M) * h;
+            x += vx * h; y += vy * h;
+        }
+        ring.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+        if (Math.abs(tx - x) + Math.abs(ty - y) + Math.abs(vx) + Math.abs(vy) > 0.05) raf = requestAnimationFrame(step);
+        else { raf = 0; last = 0; }
+    };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
+    const setHover = (on) => {
+        if (on === hovering) return;
+        hovering = on;
+        ring.classList.toggle('is-hover', on);
+        root.classList.toggle('cursor-hovering', on);
+    };
+    addEventListener('mousemove', (e) => {
+        tx = e.clientX; ty = e.clientY;
+        if (x === -100 && y === -100) { x = tx; y = ty; }
+        const t = e.target instanceof Element ? e.target.closest(TARGETS) : null;
+        setHover(!!t && !t.matches(':disabled'));
+        kick();
+    }, { passive: true });
+    document.addEventListener('mouseleave', () => setHover(false));
+    addEventListener('blur', () => setHover(false));
+    addEventListener('mousedown', () => ring.classList.add('is-down'));
+    addEventListener('mouseup', () => ring.classList.remove('is-down'));
+})();
+
 /* ==== PLC listing sections (projects / open source / field notes), behaviour ported from plcossette.com ==== */
 (() => {
     const sections = [...document.querySelectorAll('.plc')];
