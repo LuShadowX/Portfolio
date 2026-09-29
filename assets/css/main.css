@@ -1516,6 +1516,16 @@ html.cursor-hovering .cursor-trail{opacity:0}
   .cc-board{--k:clamp(62px,19vw,92px)}
   .cc-vertical{display:none}
 }
+/* Certificate image framed by circuit art (the user's collage, cut into four pieces) */
+.ccd-img.ccd-img--circuit{aspect-ratio:1.18;background:#fff;border-radius:10px}
+.ccd-img--circuit img,.ccd-img--circuit .ccd-empty{position:absolute;left:19%;top:9%;width:68%;height:auto;aspect-ratio:1.414;z-index:1;object-fit:contain;background:#fff;border:1px solid rgba(14,42,92,.14);border-radius:4px;box-shadow:0 10px 22px -10px rgba(14,42,92,.5)}
+.ccd-img--circuit .ccd-empty{display:grid;place-content:center;text-align:center;padding:10px;background:linear-gradient(160deg,#dcecff,#f5f9ff);color:var(--cc-blue);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.62rem}
+.ccd-img--circuit .ccd-empty b{display:block;font:700 2rem/1 Antonio,Oswald,sans-serif;margin-bottom:6px;color:var(--cc-ink)}
+.ccf{position:absolute;z-index:0;display:block;pointer-events:none;background:no-repeat center/contain}
+.ccf--tl{left:0;top:0;height:64%;aspect-ratio:262/548;background-image:url('../images/frame/circuit-tl.webp')}
+.ccf--rm{right:0;top:30%;height:34%;aspect-ratio:114/352;background-image:url('../images/frame/circuit-rm.webp')}
+.ccf--br{right:0;bottom:0;height:44%;aspect-ratio:196/410;background-image:url('../images/frame/circuit-br.webp')}
+.ccf--bl{left:1%;bottom:0;width:58%;aspect-ratio:530/158;background-image:url('../images/frame/circuit-bl.webp')}
 /* ==== PLC listing sections (projects / open source / field notes), ported from plcossette.com ==== */
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}

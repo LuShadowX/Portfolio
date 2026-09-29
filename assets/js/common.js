@@ -814,8 +814,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <h3 class="ccd-title">${esc(c.title)}</h3>
         <p class="ccd-desc">${esc(c.desc)}</p>
         <ul class="ccd-tags">${c.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-        ${c.image ? `<figure class="ccd-img"><img src="${esc(c.image)}" alt="${esc(c.title)} certificate" loading="lazy" decoding="async"></figure>`
-                  : `<div class="ccd-img ccd-img--empty"><span><b>${esc(c.key)}</b>${esc(c.issuer)}<br>certificate image coming soon</span></div>`}
+        <figure class="ccd-img ccd-img--circuit"><i class="ccf ccf--tl"></i><i class="ccf ccf--rm"></i><i class="ccf ccf--br"></i><i class="ccf ccf--bl"></i>
+            ${c.image ? `<img src="${esc(c.image)}" alt="${esc(c.title)} certificate" loading="lazy" decoding="async">`
+                      : `<span class="ccd-empty"><b>${esc(c.key)}</b>${esc(c.issuer)}<br>certificate image coming soon</span>`}</figure>
         <dl class="ccd-rows"><div><dt>Issued</dt><dd>${esc(c.date)}</dd></div><div><dt>ID</dt><dd>${esc(c.cid)}</dd></div><div><dt>Note</dt><dd>${esc(c.note)}</dd></div></dl>
         ${c.drive ? `<a class="ccd-link" href="${esc(c.drive)}" target="_blank" rel="noopener noreferrer">View on Drive <span aria-hidden="true">↗</span></a>`
                   : c.image ? `<a class="ccd-link" href="${esc(c.image)}" target="_blank" rel="noopener noreferrer">Open certificate <span aria-hidden="true">↗</span></a>` : ''}`;
