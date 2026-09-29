@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach(entry => entry.isIntersecting ? underMenu.add(entry.target) : underMenu.delete(entry.target));
             body.classList.toggle('on-light', underMenu.size > 0);
         }, { rootMargin: '-40px 0px -90% 0px' });
-        document.querySelectorAll('.contact-section, .about-page').forEach(el => lightWatch.observe(el));
+        document.querySelectorAll('.contact-section, .about-page, .cert-catalog').forEach(el => lightWatch.observe(el));
     }
 
     // About + Skills in Orbit: reveal on scroll, the "Skills" hand-off, and the particle globe
@@ -782,6 +782,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { rootMargin: '200px' }).observe(section);
     new ResizeObserver(() => { layout(); }).observe(section);
     document.fonts?.ready.then(layout);
+})();
+
+/* Hero name: the letter under the pointer goes thin, its neighbours step back up (from nipunraj.dev) */
+(() => {
+    if (!matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1025px)').matches) return;
+    const W = [300, 500, 700];
+    document.querySelectorAll('.var-word').forEach(word => {
+        const letters = [...word.querySelectorAll('.var-letter')];
+        letters.forEach((l, i) => l.addEventListener('mouseenter', () => {
+            letters.forEach((o, j) => { o.style.fontWeight = W[Math.abs(i - j)] || ''; });
+        }));
+        word.addEventListener('mouseleave', () => letters.forEach(o => { o.style.fontWeight = ''; }));
+    });
+})();
+
+/* Certificates: floating 3D key catalog; press a key to open its certificate */
+(() => {
+    const sec = document.getElementById('certificates');
+    const board = sec?.querySelector('.cc-board');
+    const card = sec?.querySelector('.cc-card');
+    if (!sec || !board || !card) return;
+    const certs = JSON.parse(document.getElementById('cert-data')?.textContent || '[]');
+    const byId = Object.fromEntries(certs.map(c => [c.id, c]));
+    const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const overview = () => `<p class="ccd-kanji" aria-hidden="true">証</p>
+        <h3 class="ccd-title">The catalog</h3>
+        <p class="ccd-desc">Every key holds a certificate. Press one to open it, with the full certificate and a link to view it on Drive.</p>
+        <ul class="ccd-legend">${certs.map(c => `<li><b>${esc(c.key)}</b><span>${esc(c.title)}</span></li>`).join('')}</ul>`;
+    const detail = (c) => `<p class="ccd-issuer">${esc(c.issuer)}</p>
+        <h3 class="ccd-title">${esc(c.title)}</h3>
+        <p class="ccd-desc">${esc(c.desc)}</p>
+        <ul class="ccd-tags">${c.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+        ${c.image ? `<figure class="ccd-img"><img src="${esc(c.image)}" alt="${esc(c.title)} certificate" loading="lazy" decoding="async"></figure>`
+                  : `<div class="ccd-img ccd-img--empty"><span><b>${esc(c.key)}</b>${esc(c.issuer)}<br>certificate image coming soon</span></div>`}
+        <dl class="ccd-rows"><div><dt>Issued</dt><dd>${esc(c.date)}</dd></div><div><dt>ID</dt><dd>${esc(c.cid)}</dd></div><div><dt>Note</dt><dd>${esc(c.note)}</dd></div></dl>
+        ${c.drive ? `<a class="ccd-link" href="${esc(c.drive)}" target="_blank" rel="noopener noreferrer">View on Drive <span aria-hidden="true">↗</span></a>`
+                  : c.image ? `<a class="ccd-link" href="${esc(c.image)}" target="_blank" rel="noopener noreferrer">Open certificate <span aria-hidden="true">↗</span></a>` : ''}`;
+    let current = null, swapTimer = 0;
+    const show = (id) => {
+        if (id === current && card.innerHTML) return;
+        current = id;
+        board.querySelectorAll('.ck[data-cert]').forEach(k => k.classList.toggle('is-active', k.dataset.cert === id && !!id));
+        card.classList.add('is-swap');
+        clearTimeout(swapTimer);
+        swapTimer = setTimeout(() => { card.innerHTML = id ? detail(byId[id]) : overview(); card.classList.remove('is-swap'); }, card.innerHTML ? 220 : 0);
+    };
+    show('');
+    const press = (k) => { k.classList.add('is-pressed'); setTimeout(() => k.classList.remove('is-pressed'), 170); };
+    board.addEventListener('click', (e) => {
+        const k = e.target.closest('.ck');
+        if (!k) return;
+        press(k);
+        if ('cert' in k.dataset) show(k.dataset.cert);
+    });
+    // Tilt the board a little towards the pointer
+    const stage = sec.querySelector('.cc-stage');
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        stage.addEventListener('mousemove', (e) => {
+            const r = board.getBoundingClientRect();
+            const dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width * 1.2)));
+            const dy = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height * 1.2)));
+            board.style.setProperty('--rx', `${54 - dy * 7}deg`);
+            board.style.setProperty('--rz', `${-34 + dx * 9}deg`);
+        }, { passive: true });
+        stage.addEventListener('mouseleave', () => { board.style.removeProperty('--rx'); board.style.removeProperty('--rz'); });
+    }
+    new IntersectionObserver(([e], obs) => {
+        if (!e.isIntersecting) return;
+        sec.classList.add('is-in');
+        setTimeout(() => sec.classList.add('is-settled'), 1400);
+        obs.disconnect();
+    }, { threshold: 0.2 }).observe(sec);
 })();
 
 /* ==== PLC listing sections (projects / open source / field notes), behaviour ported from plcossette.com ==== */
