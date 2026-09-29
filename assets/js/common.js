@@ -829,11 +829,36 @@ document.addEventListener('DOMContentLoaded', () => {
         swapTimer = setTimeout(() => { card.innerHTML = id ? detail(byId[id]) : overview(); card.classList.remove('is-swap'); }, card.innerHTML ? 220 : 0);
     };
     show('');
-    const press = (k) => { k.classList.add('is-pressed'); setTimeout(() => k.classList.remove('is-pressed'), 170); };
+    // Mechanical key sounds, made in the browser: a low "thock" on press, a lighter click on release,
+    // each pitched a little at random like the reference
+    let ac = null;
+    const audio = () => { if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (A) ac = new A(); } if (ac?.state === 'suspended') ac.resume(); return ac; };
+    const click = (kind) => {
+        const ctx = audio(); if (!ctx) return;
+        const t = ctx.currentTime, detune = 2 ** ((Math.random() * 200 - 100) / 1200), out = ctx.createGain();
+        out.gain.value = 0.4; out.connect(ctx.destination);
+        const len = Math.floor(ctx.sampleRate * 0.06), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, kind === 'press' ? 5 : 8);
+        const noise = ctx.createBufferSource(); noise.buffer = buf;
+        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1; bp.frequency.value = (kind === 'press' ? 2300 : 3600) * detune;
+        const ng = ctx.createGain(); ng.gain.setValueAtTime(kind === 'press' ? 0.9 : 0.5, t); ng.gain.exponentialRampToValueAtTime(0.001, t + (kind === 'press' ? 0.05 : 0.03));
+        noise.connect(bp).connect(ng).connect(out); noise.start(t);
+        const body = ctx.createOscillator(); body.type = 'sine';
+        body.frequency.setValueAtTime((kind === 'press' ? 190 : 420) * detune, t); body.frequency.exponentialRampToValueAtTime((kind === 'press' ? 85 : 260) * detune, t + 0.06);
+        const bg = ctx.createGain(); bg.gain.setValueAtTime(kind === 'press' ? 0.55 : 0.18, t); bg.gain.exponentialRampToValueAtTime(0.001, t + (kind === 'press' ? 0.08 : 0.04));
+        body.connect(bg).connect(out); body.start(t); body.stop(t + 0.1);
+    };
+    let held = null;
+    const down = (k) => { if (held === k) return; held = k; k.classList.add('is-pressed'); click('press'); };
+    const up = () => { if (!held) return; const k = held; held = null; setTimeout(() => k.classList.remove('is-pressed'), 60); click('release'); };
+    board.addEventListener('pointerdown', (e) => { const k = e.target.closest('.ck'); if (k) down(k); });
+    addEventListener('pointerup', up);
+    addEventListener('pointercancel', up);
+    board.addEventListener('keydown', (e) => { const k = e.target.closest('.ck'); if (k && (e.key === 'Enter' || e.key === ' ') && !e.repeat) down(k); });
+    board.addEventListener('keyup', (e) => { if (e.key === 'Enter' || e.key === ' ') up(); });
     board.addEventListener('click', (e) => {
         const k = e.target.closest('.ck');
         if (!k) return;
-        press(k);
         if ('cert' in k.dataset) show(k.dataset.cert);
     });
     // Tilt the board a little towards the pointer
