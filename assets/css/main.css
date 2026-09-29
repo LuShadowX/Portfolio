@@ -707,6 +707,20 @@ html[data-skills-transfer=active] .skills-handoff-source,html[data-skills-transf
 @keyframes about-ticker{to{transform:translate(-50%)}}
 /* Local adjustments: no photo row, and the sticker art already has its own outline */
 .about-copy { grid-template: "heading heading" auto "intro facts" minmax(0,1fr) / minmax(0,.68fr) minmax(0,1.32fr); width: auto; justify-self: stretch; padding-top: 6.4rem; }
+/* Two polaroids (resume + computer) under Experience/Skills, sized to each picture */
+.about-copy { grid-template: "heading heading" auto "intro facts" auto "intro photos" minmax(var(--duo-h),1fr) / minmax(0,.68fr) minmax(0,1.32fr); --duo-h: clamp(14rem, 30svh, 19rem); }
+.photo-story-duo { grid-area: photos; display: flex; align-items: flex-end; justify-content: center; gap: clamp(1.4rem, 3vw, 3rem); height: auto; padding: 1.2rem 0 1.6rem; }
+.photo-story-duo .story-frame { flex: none; height: var(--duo-h); width: calc((var(--duo-h) - 2.75rem) * (var(--ar)) + 1.2rem); }
+.photo-story-duo .story-frame a { display: block; width: 100%; height: 100%; cursor: pointer; }
+.frame-resume { --frame-rotation: -3deg; --photo-enter-x: -4rem; --photo-enter-r: -9deg; --photo-mid-x: .24rem; }
+.frame-computer { --frame-rotation: 3deg; --photo-enter-x: 4rem; --photo-enter-r: 9deg; --photo-mid-x: -.24rem; }
+.photo-story-duo .story-frame img { object-position: center top; }
+.frame-computer img { object-fit: contain; background: #fff; }
+@media (max-width: 74rem) {
+  .photo-story-duo { grid-area: auto; grid-column: 1 / -1; padding: 2.5rem var(--page-gutter) 4rem; --duo-h: clamp(15rem, 34vw, 19rem); }
+  .photo-story-duo .story-frame { aspect-ratio: auto; justify-self: auto; height: var(--duo-h); width: calc((var(--duo-h) - 2.75rem) * (var(--ar)) + 1.2rem); }
+}
+@media (max-width: 40rem) { .photo-story-duo { flex-wrap: wrap; --duo-h: 17rem; gap: 2.5rem; } }
 /* Room for the fixed top bar: the page grows instead of clipping */
 .about-page { height: auto; }
 .about-spread { height: auto; min-height: calc(100svh - var(--about-ticker-height)); }
