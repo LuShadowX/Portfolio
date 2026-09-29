@@ -647,6 +647,49 @@ document.addEventListener('DOMContentLoaded', () => {
     addEventListener('mouseup', () => ring.classList.remove('is-down'));
 })();
 
+/* Cursor trail (from gmmohit.com): a thin line that follows the pointer and fades out towards its tail */
+(() => {
+    if (matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'cursor-trail';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const N = 20, pts = Array.from({ length: N }, () => ({ x: 0, y: 0 }));
+    let mx = 0, my = 0, hx = 0, hy = 0, started = false, raf = 0;
+    const size = () => {
+        const d = devicePixelRatio || 1;
+        canvas.width = innerWidth * d; canvas.height = innerHeight * d;
+        ctx.setTransform(d, 0, 0, d, 0, 0);
+    };
+    size();
+    addEventListener('resize', size);
+    const draw = () => {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        hx += (mx - hx) * 0.3; hy += (my - hy) * 0.3;
+        pts[0].x = hx; pts[0].y = hy;
+        for (let i = 1; i < N; i++) { pts[i].x += (pts[i - 1].x - pts[i].x) * 0.4; pts[i].y += (pts[i - 1].y - pts[i].y) * 0.4; }
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        for (let i = 1; i < N - 1; i++) {
+            const a = pts[i - 1], b = pts[i], c = pts[i + 1], r = Math.pow(1 - i / N, 1.2);
+            ctx.beginPath();
+            if (i === 1) ctx.moveTo(a.x, a.y); else ctx.moveTo((a.x + b.x) / 2, (a.y + b.y) / 2);
+            ctx.quadraticCurveTo(b.x, b.y, (b.x + c.x) / 2, (b.y + c.y) / 2);
+            ctx.lineWidth = 1.5 * r;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${r})`;
+            ctx.stroke();
+        }
+        const tail = pts[N - 1];
+        if (Math.abs(tail.x - mx) + Math.abs(tail.y - my) > 0.1) raf = requestAnimationFrame(draw);
+        else { raf = 0; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+    };
+    addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
+        if (!started) { started = true; hx = mx; hy = my; pts.forEach(p => { p.x = mx; p.y = my; }); }
+        if (!raf) raf = requestAnimationFrame(draw);
+    }, { passive: true });
+})();
+
 /* ==== PLC listing sections (projects / open source / field notes), behaviour ported from plcossette.com ==== */
 (() => {
     const sections = [...document.querySelectorAll('.plc')];
